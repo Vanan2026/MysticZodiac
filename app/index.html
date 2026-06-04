@@ -3818,6 +3818,11 @@
         <div id="monthly-classical" style="color:var(--text-secondary); font-style:italic;"></div>
       </div>
       
+      <div class="whisper-card" id="monthly-closing-advice" style="display:none; background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);">
+        <div class="section-label" style="margin-bottom:8px;">The Fortune-Teller's Final Word</div>
+        <div id="monthly-closing-text" style="color:var(--gold); line-height:1.6; font-style:italic;"></div>
+      </div>
+      
       <button class="share-btn" onclick="shareMonthlyGuide()" style="margin-top:16px;">
         ✦ Share Monthly Guide
       </button>
@@ -6917,6 +6922,16 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
       document.getElementById('monthly-watch-palace').textContent = result.watchPalace || '--';
       document.getElementById('monthly-classical').textContent = result.classicalAdvice ? '"' + result.classicalAdvice + '"' : '';
 
+      // Closing advice
+      var closingEl = document.getElementById('monthly-closing-advice');
+      var closingText = document.getElementById('monthly-closing-text');
+      if (result.closingAdvice && closingEl && closingText) {
+        closingEl.style.display = 'block';
+        closingText.textContent = '"' + result.closingAdvice + '"';
+      } else if (closingEl) {
+        closingEl.style.display = 'none';
+      }
+
       var weeksContainer = document.getElementById('monthly-weeks');
       weeksContainer.innerHTML = '';
 
@@ -7083,7 +7098,8 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
               '<div class="soulmate-section"><div class="soulmate-section-title">Challenges</div><div id="soulmate-challenges" style="color:var(--text-secondary);"></div></div>' +
               '<div class="soulmate-section"><div class="soulmate-section-title">Your Ideal Partner</div><div id="soulmate-partner-profile" style="color:var(--text-secondary); line-height:1.6;"></div></div>' +
               '<div class="soulmate-section"><div class="soulmate-section-title">Timing Insight</div><div id="soulmate-timing-insight" style="color:var(--purple); font-style:italic;"></div></div>' +
-              '<div class="soulmate-section"><div class="soulmate-section-title">Ancient Wisdom</div><div id="soulmate-deep-wisdom" style="color:var(--gold); font-family:var(--font-classical); font-style:italic;"></div></div>' +
+              '<div class="soulmate-section" id="soulmate-deeper-section" style="display:none;"><div class="soulmate-section-title">Deeper Connection</div><div id="soulmate-deeper-text" style="color:var(--text-secondary); line-height:1.6;"></div></div>' +
+              '<div class="whisper-card" id="soulmate-closing-section" style="display:none; margin-top:16px; background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);"><div class="section-label" style="margin-bottom:8px;">The Fortune-Teller's Final Word</div><div id="soulmate-closing-text" style="color:var(--gold); line-height:1.6; font-style:italic;"></div></div>' +
             '</div>';
           wisdomBtn.parentNode.insertBefore(deepDiv, wisdomBtn);
         }
@@ -7148,6 +7164,26 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
 
       var wisdomEl = document.getElementById('soulmate-deep-wisdom');
       if (wisdomEl) wisdomEl.textContent = result.classicalWisdom ? '"' + result.classicalWisdom + '"' : '';
+
+      // Deeper connection
+      var deeperSection = document.getElementById('soulmate-deeper-section');
+      var deeperText = document.getElementById('soulmate-deeper-text');
+      if (result.deeperConnection && deeperSection && deeperText) {
+        deeperSection.style.display = 'block';
+        deeperText.textContent = result.deeperConnection;
+      } else if (deeperSection) {
+        deeperSection.style.display = 'none';
+      }
+
+      // Closing wisdom
+      var closingSection = document.getElementById('soulmate-closing-section');
+      var closingText = document.getElementById('soulmate-closing-text');
+      if (result.closingWisdom && closingSection && closingText) {
+        closingSection.style.display = 'block';
+        closingText.textContent = '"' + result.closingWisdom + '"';
+      } else if (closingSection) {
+        closingSection.style.display = 'none';
+      }
     }
 
     /**
