@@ -3158,7 +3158,7 @@
     </div>
     
     <button class="deep-reading-btn" id="deep-reading-btn" onclick="toggleDeepReading()">
-      Deep Oracle Reading <span style="color: var(--purple);">*</span> 3
+      Full Oracle Reading <span id="deep-reading-cost" style="color: var(--purple);">* 1</span>
     </button>
     
     <div class="deep-reading-content" id="deep-reading-content">
@@ -3175,7 +3175,7 @@
         <span>☯</span>
         <span>Your Life Chapter Forecast</span>
         <span class="fortune-chevron" id="fortune-chevron" style="margin-left:auto; transition:transform 0.3s;">▼</span>
-        <span class="ai-badge" style="font-size:10px; background:rgba(201,169,110,0.2); color:var(--gold); padding:2px 8px; border-radius:10px;">AI</span>
+        <!-- ai-badge removed in v2.2 -->
       </div>
       <div class="fortune-content" id="fortune-content" style="display:none; overflow:hidden; transition:max-height 0.4s ease;">
         <div class="fortune-header" id="fortune-header">
@@ -3404,7 +3404,7 @@
     </div>
     
     <div class="compat-verdict">
-      <h3>The Ancient Verdict <span class="ai-badge" id="compat-ai-badge" style="display:none;">AI</span></h3>
+      <h3>The Ancient Verdict <span class="ai-badge" id="compat-ai-badge" style="display:none;"><!-- v2.2 removed --></span></h3>
       <div class="text" id="compat-verdict-text"></div>
     </div>
     
@@ -3485,7 +3485,7 @@
   </div>
 
   <script src="app-config.js"></script>
-  <script src="ai-engine.js"></script>
+  <script src="wisdom-engine.js"></script>
   <script src="personality-engine.js"></script>
   <script src="share-cards.js"></script>
   <script src="compliance.js"></script>
@@ -3998,7 +3998,7 @@ function generateHexagram(question) {
      */
     let currentChart = null;
     let currentUserAge = 30;
-    let credits = 30;
+    let credits = 8; // v2.2: 注册送8点，默认8
     let selectedPain = { pain1: null, pain2: null, pain3: null };
     let selectedDate = { year: 1990, month: 1, day: 15 };
     let selectedHour = 11;
@@ -4841,6 +4841,11 @@ function generateHexagram(question) {
      */
     function updateCreditsDisplay() {
       document.getElementById('credit-count').textContent = getCredits();
+      const costEl = document.getElementById('deep-reading-cost');
+      if (costEl) {
+        const cost = window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 1;
+        costEl.textContent = '* ' + cost;
+      }
     }
 
     // Initialize
@@ -5351,7 +5356,7 @@ Financial wisdom comes from understanding your own patterns around money. What d
       // Reset deep reading visibility
       deepReadingVisible = false;
       document.getElementById('deep-reading-content').classList.remove('visible');
-      document.getElementById('deep-reading-btn').innerHTML = 'Deep Oracle Reading <span style="color: var(--purple);">*</span> 3';
+      document.getElementById('deep-reading-btn').innerHTML = 'Full Oracle Reading <span style="color: var(--purple);">*</span> 3';
 
       // ====== AI 增强：异步调用 deepseek-v4-pro (xiaowen) 生成个性化解读 ======
       enhanceOracleWithAI();
@@ -5443,7 +5448,7 @@ Financial wisdom comes from understanding your own patterns around money. What d
     }
 
     function toggleDeepReading() {
-      if (getCredits() < 3) {
+      if (getCredits() < (window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 3)) {
         showCreditPurchaseModal();
         return;
       }
@@ -5451,10 +5456,10 @@ Financial wisdom comes from understanding your own patterns around money. What d
       deepReadingVisible = !deepReadingVisible;
       const content = document.getElementById('deep-reading-content');
       if (deepReadingVisible) {
-        spendCredits(3);
+        spendCredits(window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 3);
         updateCreditsDisplay();
         content.classList.add('visible');
-        document.getElementById('deep-reading-btn').innerHTML = 'Deep Oracle Reading <span style="color: #7BAF7A;">Unlocked</span>';
+        document.getElementById('deep-reading-btn').innerHTML = 'Full Oracle Reading <span style="color: #7BAF7A;">Unlocked</span>';
 
         // ====== AI 增强：异步生成深度解读，替换硬编码内容 ======
         enhanceDeepReadingWithAI();

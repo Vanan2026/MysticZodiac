@@ -101,7 +101,7 @@ const PAYMENT_CONFIG = {
 
 class PaymentManager {
   constructor() {
-    this.credits = 30; // 默认30积分
+    this.credits = 8; // 默认8积分（v2.2: 注册送8）
     this.subscription = null;
     this.listeners = [];
     
