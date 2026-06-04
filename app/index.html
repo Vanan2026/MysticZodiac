@@ -1719,6 +1719,146 @@
       color: var(--text-primary);
     }
     
+    /* ========== CARD OF THE DAY ========== */
+    .card-of-day {
+      background: linear-gradient(135deg, rgba(20,20,31,0.95), rgba(201,169,110,0.08));
+      border: 1px solid var(--gold-dim);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .card-of-day.revealed {
+      border-color: var(--gold);
+      background: linear-gradient(135deg, rgba(20,20,31,0.95), rgba(201,169,110,0.15));
+    }
+    
+    .card-of-day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    
+    .card-of-day-header .label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+    
+    .card-of-day-header .cost {
+      font-size: 0.75rem;
+      color: var(--purple);
+    }
+    
+    .card-of-day-face {
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 0;
+    }
+    
+    .card-of-day-face .back {
+      text-align: center;
+    }
+    
+    .card-of-day-face .back .symbol {
+      font-size: 2.5rem;
+      color: var(--gold-dim);
+      margin-bottom: 8px;
+    }
+    
+    .card-of-day-face .back .hint {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+    
+    .card-of-day-face .front {
+      display: none;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .card-of-day.revealed .card-of-day-face .back { display: none; }
+    .card-of-day.revealed .card-of-day-face .front { display: block; animation: slideUpFade 0.5s ease; }
+    
+    .card-of-day-star {
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    
+    .card-of-day-element {
+      font-size: 0.8rem;
+      color: var(--purple);
+      margin-bottom: 10px;
+    }
+    
+    .card-of-day-fortune {
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    
+    .card-of-day-fortune.great { background: rgba(91,140,90,0.2); color: var(--hua-lu); border: 1px solid var(--hua-lu); }
+    .card-of-day-fortune.good { background: rgba(74,123,157,0.2); color: var(--hua-ke); border: 1px solid var(--hua-ke); }
+    .card-of-day-fortune.neutral { background: rgba(201,169,110,0.15); color: var(--gold); border: 1px solid var(--gold-dim); }
+    .card-of-day-fortune.challenging { background: rgba(196,91,62,0.15); color: var(--hua-quan); border: 1px solid var(--hua-quan); }
+    
+    .card-of-day-meaning {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      padding: 0 8px;
+    }
+    
+    .card-of-day-advice {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      padding: 0 8px;
+    }
+    
+    .card-of-day-footer {
+      display: none;
+      margin-top: 12px;
+      text-align: right;
+    }
+    
+    .card-of-day.revealed .card-of-day-footer {
+      display: block;
+    }
+    
+    .card-of-day-footer .share-link {
+      font-size: 0.75rem;
+      color: var(--purple);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    
+    .card-of-day-footer .share-link:hover {
+      background: rgba(139,92,246,0.15);
+    }
+    
     .deep-reading-btn {
       width: 100%;
       padding: 16px;
@@ -3135,6 +3275,30 @@
           <span class="sym"><></span> Don't
         </div>
         <div id="dont-list"></div>
+      </div>
+    </div>
+    
+    <!-- ========== CARD OF THE DAY ========== -->
+    <div class="card-of-day" id="card-of-day">
+      <div class="card-of-day-header">
+        <span class="label">* Today's Celestial Card</span>
+        <span class="cost">* 1</span>
+      </div>
+      <div class="card-of-day-face" id="card-of-day-face">
+        <div class="back">
+          <div class="symbol">*?</div>
+          <div class="hint">Tap to reveal today's star</div>
+        </div>
+        <div class="front">
+          <div class="card-of-day-star" id="cod-star"></div>
+          <div class="card-of-day-element" id="cod-element"></div>
+          <div class="card-of-day-fortune" id="cod-fortune"></div>
+          <div class="card-of-day-meaning" id="cod-meaning"></div>
+          <div class="card-of-day-advice" id="cod-advice"></div>
+        </div>
+      </div>
+      <div class="card-of-day-footer">
+        <button class="share-link" onclick="shareCardOfDay()">✦ Share This Card</button>
       </div>
     </div>
     
@@ -4863,6 +5027,137 @@ function generateHexagram(question) {
     };
 
     /**
+     * ========== CARD OF THE DAY DATA ==========
+     */
+    const CARDS_OF_THE_DAY = [
+      { id: 'purple_star', name: 'The Emperor', element: 'Fire', fortune: 'great',
+        meaning: 'Leadership beckons today. Your presence carries authority — step into it. The universe aligns behind your decisions.',
+        advice: 'Take the lead in a situation you have been avoiding. Trust your instinct.' },
+      { id: 'celestial_mechanic', name: 'The Strategist', element: 'Wood', fortune: 'good',
+        meaning: 'Your mind is sharper than usual. Hidden connections reveal themselves — pay attention to synchronicities.',
+        advice: 'Write down every idea that comes today. The thread will reveal itself.' },
+      { id: 'solar_radiance', name: 'The Radiant', element: 'Fire', fortune: 'great',
+        meaning: 'Clarity burns bright today. Speak what you see — your words carry weight and warmth.',
+        advice: 'Share your vision with someone who matters. Your light illuminates their path too.' },
+      { id: 'martial_virtue', name: 'The Warrior', element: 'Metal', fortune: 'good',
+        meaning: 'Action today yields rewards tomorrow. The martial energy favors discipline over impulse.',
+        advice: 'Tackle the task you have been postponing. Momentum is on your side.' },
+      { id: 'celestial_harmony', name: 'The Harmonist', element: 'Water', fortune: 'good',
+        meaning: 'Cooperation flows naturally today. Your gentle nature is your greatest strength.',
+        advice: 'Reach out to someone you have been meaning to reconnect with.' },
+      { id: 'righteous_spirit', name: 'The Flame', element: 'Fire', fortune: 'neutral',
+        meaning: 'Passion meets principle today. Emotions run deep — navigate with compassion, not impulse.',
+        advice: 'Pause before reacting. Let the fire illuminate, not burn.' },
+      { id: 'celestial_treasury', name: 'The Guardian', element: 'Earth', fortune: 'good',
+        meaning: 'Stability is your ally today. Resources you have built are ready to serve a larger purpose.',
+        advice: 'Review your assets — time, energy, wealth. One of them is ready to multiply.' },
+      { id: 'lunar_grace', name: 'The Moon', element: 'Water', fortune: 'good',
+        meaning: 'Intuition peaks today. The surface hides depths — look beneath what is shown to you.',
+        advice: 'Trust your first impression about a person or situation.' },
+      { id: 'greedy_wolf', name: 'The Seeker', element: 'Wood', fortune: 'neutral',
+        meaning: 'Desire drives discovery today. Hunger for more is not greed — it is the engine of growth.',
+        advice: 'Channel your ambition into learning something new.' },
+      { id: 'great_gate', name: 'The Gate', element: 'Water', fortune: 'challenging',
+        meaning: 'Words carry extra weight today. The Gate opens both ways — choose what you let out and what you let in.',
+        advice: 'Listen twice as much as you speak. A hidden truth awaits your silence.' },
+      { id: 'celestial_minister', name: 'The Servant', element: 'Earth', fortune: 'good',
+        meaning: 'Service is your power today. Supporting others does not diminish you — it elevates everyone.',
+        advice: 'Offer help without being asked. The gesture will return in unexpected ways.' },
+      { id: 'celestial_beam', name: 'The Protector', element: 'Earth', fortune: 'great',
+        meaning: 'Protection surrounds you today. An ancestor or mentor watches over your steps.',
+        advice: 'Take a risk you have been afraid of. You are being guided.' },
+      { id: 'seven_kills', name: 'The Breaker', element: 'Metal', fortune: 'challenging',
+        meaning: 'Transformation is non-negotiable today. What no longer serves you will break — let it.',
+        advice: 'Release one attachment today. The space it leaves is exactly what you need.' },
+      { id: 'breaker', name: 'The Destroyer', element: 'Metal', fortune: 'challenging',
+        meaning: 'Old structures crumble to make way for the new. Resistance is futile — flow with the destruction.',
+        advice: 'Identify what is ending in your life and thank it. Something better is forming.' },
+      { id: 'heavenly_phoenix', name: 'The Phoenix', element: 'Fire', fortune: 'great',
+        meaning: 'Rebirth energy surrounds you. A chapter is closing — not as loss, but as transformation.',
+        advice: 'Burn one bridge today. The ashes will reveal a path you could not see before.' },
+      { id: 'jade_dragon', name: 'The Dragon', element: 'Wood', fortune: 'great',
+        meaning: 'Power and grace align today. Luck favors the bold — and you have never been more ready.',
+        advice: 'Make the move you have been rehearsing in your mind. The timing is flawless.' },
+      { id: 'silver_fox', name: 'The Fox', element: 'Water', fortune: 'neutral',
+        meaning: 'Cunning serves wisdom today. Not everything needs to be said directly.',
+        advice: 'Use diplomacy, not force. A subtle approach will open doors that brute strength cannot.' },
+      { id: 'golden_tortoise', name: 'The Sage', element: 'Earth', fortune: 'good',
+        meaning: 'Patience is your ally. The tortoise teaches that steady progress outlasts explosive starts.',
+        advice: 'Choose consistency over intensity today. Small steps compound into lasting change.' },
+      { id: 'crimson_phoenix', name: 'The Passion', element: 'Fire', fortune: 'neutral',
+        meaning: 'Creative energy surges. Your heart wants to express — do not let logic silence it.',
+        advice: 'Create something today with no audience in mind. Pure expression heals.' },
+      { id: 'white_tiger', name: 'The Tiger', element: 'Metal', fortune: 'challenging',
+        meaning: 'Fierce energy awakens. Boundaries need to be drawn — with clarity, not aggression.',
+        advice: 'Say no to something today. Your power lies in what you decline, not what you accept.' },
+      { id: 'mystic_serpent', name: 'The Serpent', element: 'Water', fortune: 'neutral',
+        meaning: 'Wisdom slithers in shadows. What you cannot see is more important than what you can.',
+        advice: 'Trust your gut about a hidden agenda. You sense the truth beneath the surface.' },
+      { id: 'celestial_stag', name: 'The Stag', element: 'Wood', fortune: 'good',
+        meaning: 'Gentle strength carries the day. Lead not by force but by presence.',
+        advice: 'Be the calm one in a chaotic situation. Your steadiness anchors others.' }
+    ];
+
+    function getTodayCard() {
+      const today = new Date();
+      const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+      const index = seed % CARDS_OF_THE_DAY.length;
+      return CARDS_OF_THE_DAY[index];
+    }
+
+    function revealCardOfDay() {
+      const card = getTodayCard();
+      const alreadyRevealed = localStorage.getItem('mystic_cod_revealed_' + card.id);
+      
+      if (alreadyRevealed) {
+        // Already revealed today, show directly
+        showCardFront(card);
+        document.getElementById('card-of-day').classList.add('revealed');
+        return;
+      }
+      
+      // Check credits
+      const cost = window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 1;
+      if (getCredits() < cost) {
+        showCreditPurchaseModal();
+        return;
+      }
+      
+      spendCredits(cost);
+      updateCreditsDisplay();
+      localStorage.setItem('mystic_cod_revealed_' + card.id, 'true');
+      showCardFront(card);
+      document.getElementById('card-of-day').classList.add('revealed');
+    }
+    
+    function showCardFront(card) {
+      document.getElementById('cod-star').textContent = '*' + card.name;
+      document.getElementById('cod-element').textContent = 'Element of ' + card.element;
+      
+      const fortuneEl = document.getElementById('cod-fortune');
+      fortuneEl.textContent = card.fortune.charAt(0).toUpperCase() + card.fortune.slice(1) + ' Fortune';
+      fortuneEl.className = 'card-of-day-fortune ' + card.fortune;
+      
+      document.getElementById('cod-meaning').textContent = card.meaning;
+      document.getElementById('cod-advice').textContent = '"' + card.advice + '"';
+    }
+
+    function shareCardOfDay() {
+      const card = getTodayCard();
+      const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      const shareText = '* ' + card.name + ' *\n' + card.element + '\n' + card.meaning + '\n\n" ' + card.advice + ' "\n\nMystic Zodiac - ' + today;
+      
+      // Try native share, fallback to clipboard
+      if (navigator.share) {
+        navigator.share({ title: 'Today Celestial Card', text: shareText });
+      } else {
+        navigator.clipboard.writeText(shareText).then(function() {
+          showToast('Card copied — share it with the world');
+        });
+      }
+    }
+
+    /**
      * ========== ORACLE DATA ==========
      */
     const ORACLE_WHISPERS = {
@@ -5360,6 +5655,21 @@ Financial wisdom comes from understanding your own patterns around money. What d
 
       // ====== AI 增强：异步调用 deepseek-v4-pro (xiaowen) 生成个性化解读 ======
       enhanceOracleWithAI();
+
+      // ========== CARD OF THE DAY INIT ==========
+      const codEl = document.getElementById('card-of-day');
+      if (codEl) {
+        const card = getTodayCard();
+        const alreadyRevealed = localStorage.getItem('mystic_cod_revealed_' + card.id);
+        if (alreadyRevealed) {
+          showCardFront(card);
+          codEl.classList.add('revealed');
+        } else {
+          codEl.classList.remove('revealed');
+        }
+        // Replace onclick to avoid duplicate bindings
+        codEl.onclick = revealCardOfDay;
+      }
     }
 
     /**
