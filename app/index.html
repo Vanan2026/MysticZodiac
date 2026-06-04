@@ -8,7 +8,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ========== MOBILE OPTIMIZATIONS ========== */
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+    body { -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
+    .screen { padding-top: max(20px, env(safe-area-inset-top)); padding-bottom: max(80px, env(safe-area-inset-bottom)); }
+    button, .clickable { cursor: pointer; transition: transform 0.15s ease, opacity 0.15s ease; }
+    button:active, .clickable:active { transform: scale(0.97); opacity: 0.85; }
+    img, a { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 2px; }
     
     :root {
       --bg-primary: #0A0A0F;
@@ -1773,6 +1783,59 @@
       font-style: italic;
     }
     
+    /* ========== FORTUNE FORECAST ========== */
+    .fortune-section {
+      margin-top: 20px;
+      border-top: 1px solid rgba(201,169,110,0.15);
+      padding-top: 8px;
+    }
+    .fortune-content {
+      padding: 0 4px 16px 4px;
+    }
+    .fortune-header {
+      text-align: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(201,169,110,0.1);
+    }
+    .fortune-period {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .fortune-palace {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .fortune-stars {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      padding: 10px 0;
+    }
+    .fortune-star-tag {
+      background: rgba(201,169,110,0.1);
+      border: 1px solid rgba(201,169,110,0.2);
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 0.8rem;
+      color: var(--gold);
+    }
+    .fortune-reading {
+      padding: 12px;
+      background: rgba(201,169,110,0.04);
+      border-radius: 12px;
+      margin-top: 8px;
+    }
+    .fortune-reading-text {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--text-primary);
+    }
+    
     /* ========== CHAPTERS SCREEN ========== */
     .chapters-screen {
       padding-bottom: 80px;
@@ -3105,6 +3168,29 @@
         <div class="en" id="deep-classical-en"></div>
       </div>
     </div>
+
+    <!-- ========== FORTUNE FORECAST SECTION ========== -->
+    <div class="fortune-section">
+      <div class="section-title" style="cursor:pointer; display:flex; align-items:center; gap:8px; padding:16px; background:rgba(255,215,0,0.05); border-radius:12px; margin-bottom:0;" onclick="toggleFortuneForecast()">
+        <span>☯</span>
+        <span>Your Life Chapter Forecast</span>
+        <span class="fortune-chevron" id="fortune-chevron" style="margin-left:auto; transition:transform 0.3s;">▼</span>
+        <span class="ai-badge" style="font-size:10px; background:rgba(201,169,110,0.2); color:var(--gold); padding:2px 8px; border-radius:10px;">AI</span>
+      </div>
+      <div class="fortune-content" id="fortune-content" style="display:none; overflow:hidden; transition:max-height 0.4s ease;">
+        <div class="fortune-header" id="fortune-header">
+          <div class="fortune-period" id="fortune-period"></div>
+          <div class="fortune-palace" id="fortune-palace"></div>
+        </div>
+        <div class="fortune-stars" id="fortune-stars"></div>
+        <div class="fortune-reading" id="fortune-reading">
+          <div class="fortune-reading-text" id="fortune-reading-text"></div>
+        </div>
+        <button class="deep-reading-btn" onclick="shareFortuneCard()" style="margin-top:12px; font-size:12px; padding:8px 16px;">
+          ✦ Share My Chapter
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- ========== CHAPTERS SCREEN ========== -->
@@ -3805,6 +3891,7 @@ function calculateBirthChart(input) {
     mingGongIndex,
     shenGongIndex,
     mingGongMainStar,
+    mingGongName: PALACE_NAMES_EN[mingGongIndex],
     palaces,
     siHua: {
       stem: lunarInfo.yearPillar.stem,
@@ -3817,6 +3904,31 @@ function calculateBirthChart(input) {
       huaKePalace,
       huaJiPalace
     }
+  };
+}
+
+/**
+ * Calculate Big Limit (大限) - 10-year periods in Ziwei Doushu
+ * Determines which palace governs the user's current life chapter
+ */
+function calculateBigLimit(chart, currentAge) {
+  const BUREAU_AGES = { '水二局': 2, '木三局': 3, '金四局': 4, '土五局': 5, '火六局': 6 };
+  const startAge = BUREAU_AGES[chart.fiveElementBureau] || 2;
+  const YANG_STEMS = ['甲', '丙', '戊', '庚', '壬'];
+  const isYangYear = YANG_STEMS.includes(chart.yearPillar.stem);
+  const clockwise = (isYangYear && chart.gender === 'male') || (!isYangYear && chart.gender === 'female');
+  const ageInPeriod = currentAge - startAge;
+  if (ageInPeriod < 0) return { palaceIndex: chart.mingGongIndex, periodIndex: 0, startAge };
+  const periodIndex = Math.min(Math.max(Math.floor(ageInPeriod / 10), 0), 11);
+  const offset = clockwise ? periodIndex : -periodIndex;
+  const palaceIndex = ((chart.mingGongIndex + offset) % 12 + 12) % 12;
+  const periodStartAge = startAge + periodIndex * 10;
+  return {
+    palaceIndex, periodIndex, startAge, currentAge,
+    periodStartAge, periodEndAge: periodStartAge + 9, clockwise,
+    palaceName: PALACE_NAMES_CN[palaceIndex],
+    palaceNameEn: PALACE_NAMES_EN[palaceIndex],
+    branch: BRANCHES[palaceIndex]
   };
 }
 
@@ -3885,6 +3997,7 @@ function generateHexagram(question) {
      * ========== APP STATE ==========
      */
     let currentChart = null;
+    let currentUserAge = 30;
     let credits = 30;
     let selectedPain = { pain1: null, pain2: null, pain3: null };
     let selectedDate = { year: 1990, month: 1, day: 15 };
@@ -4291,6 +4404,12 @@ function generateHexagram(question) {
         hour: selectedHour,
         gender: selectedGender
       });
+
+      // Calculate user age for Big Limit
+      const now = new Date();
+      currentUserAge = now.getFullYear() - selectedDate.year - 
+        (now.getMonth() + 1 < selectedDate.month || 
+         (now.getMonth() + 1 === selectedDate.month && now.getDate() < selectedDate.day) ? 1 : 0);
 
       // Create stage
       container.innerHTML = `
@@ -5388,6 +5507,88 @@ Financial wisdom comes from understanding your own patterns around money. What d
       } catch (err) {
         textEl.textContent = originalText;
         textEl.style.opacity = '1';
+      }
+    }
+
+    /* ========== FORTUNE FORECAST FUNCTIONS ========== */
+    let fortuneVisible = false;
+
+    function toggleFortuneForecast() {
+      const content = document.getElementById('fortune-content');
+      const chevron = document.getElementById('fortune-chevron');
+      fortuneVisible = !fortuneVisible;
+      content.style.display = fortuneVisible ? 'block' : 'none';
+      chevron.style.transform = fortuneVisible ? 'rotate(180deg)' : '';
+      if (fortuneVisible) renderFortuneForecast();
+    }
+
+    function renderFortuneForecast() {
+      if (!currentChart || !currentUserAge) return;
+      const bigLimit = calculateBigLimit(currentChart, currentUserAge);
+      const palace = currentChart.palaces[bigLimit.palaceIndex];
+
+      document.getElementById('fortune-period').textContent =
+        `Age ${bigLimit.periodStartAge}–${bigLimit.periodEndAge} · ${bigLimit.clockwise ? 'Forward' : 'Reverse'} Path`;
+      document.getElementById('fortune-palace').textContent =
+        `${palace.palaceNameEn} · ${palace.palaceName} 命宫`;
+
+      // Stars in this palace
+      const allStars = [...(palace.mainStars || []), ...(palace.assistantStars || [])];
+      const starsEl = document.getElementById('fortune-stars');
+      if (allStars.length) {
+        starsEl.innerHTML = allStars.map(s =>
+          `<span class="fortune-star-tag">${STAR_SYMBOLS[s] || '✦'} ${s}</span>`
+        ).join('');
+        starsEl.style.display = 'flex';
+      } else { starsEl.style.display = 'none'; }
+
+      // AI enhancement for reading
+      enhanceFortuneWithAI(bigLimit, palace);
+    }
+
+    async function enhanceFortuneWithAI(bigLimit, palace) {
+      const textEl = document.getElementById('fortune-reading-text');
+      if (!textEl || !window.AIEngine || !window.APP_CONFIG?.DEEPSEEK_API_KEY) return;
+      textEl.textContent = 'Awaiting cosmic insight...';
+      textEl.style.opacity = '0.6';
+      try {
+        const stars = [...(palace.mainStars || []), ...(palace.assistantStars || [])];
+        const result = await window.AIEngine.callDeepSeek([
+          { role: 'system', content: `You are a Ziwei Doushu fortune teller. Based on the user's current Big Limit palace, write a poetic, insightful forecast (300–500 chars) covering the key life themes of this 10-year period. Write in English, with a classical Chinese couplet at the end.` },
+          { role: 'user', content: `Current Age: ${bigLimit.currentAge}
+Big Limit Period: Age ${bigLimit.periodStartAge}–${bigLimit.periodEndAge}
+Governing Palace: ${palace.palaceName} (${palace.palaceNameEn})
+Main Stars: ${(palace.mainStars || []).join(', ')}
+Assistant Stars: ${(palace.assistantStars || []).join(', ')}
+Direction: ${bigLimit.clockwise ? 'Forward' : 'Reverse'}
+Five Element Bureau: ${currentChart.fiveElementBureau}` }
+        ]);
+        if (result) {
+          textEl.textContent = result;
+          textEl.dataset.aiEnhanced = 'true';
+          textEl.style.opacity = '1';
+        }
+      } catch (e) {
+        textEl.textContent = 'The stars are aligning... explore your palace to seek deeper wisdom.';
+        textEl.style.opacity = '1';
+      }
+    }
+
+    function shareFortuneCard() {
+      if (!currentChart || !currentUserAge) return;
+      const bigLimit = calculateBigLimit(currentChart, currentUserAge);
+      const palace = currentChart.palaces[bigLimit.palaceIndex];
+      const userData = {
+        name: window.userName || 'Seeker',
+        mainStar: currentChart.mingGongMainStar || 'Purple Star',
+        element: currentChart.fiveElementBureau || 'Water Bureau',
+        palaceName: palace.palaceNameEn,
+        period: `Age ${bigLimit.periodStartAge}–${bigLimit.periodEndAge}`
+      };
+      if (window.shareDestinyCard && window.AIEngine?.callDeepSeek) {
+        window.shareDestinyCard(userData);
+      } else {
+        showToast('Unlock the chart first');
       }
     }
 
