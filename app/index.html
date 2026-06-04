@@ -139,6 +139,7 @@
       background: var(--gold);
       border-radius: 50%;
       animation: twinkle 2s infinite;
+      pointer-events: none;
     }
     
     @keyframes twinkle {
@@ -175,6 +176,12 @@
       animation: fadeIn 1s ease 1s forwards;
     }
     
+    .splash-tap-area {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1;
+      cursor: pointer;
+    }
     .splash-skip {
       position: absolute;
       bottom: 40px;
@@ -182,6 +189,7 @@
       font-size: 0.8rem;
       cursor: pointer;
       opacity: 0.6;
+      z-index: 2;
     }
     
     /* ========== STEP INDICATOR ========== */
@@ -2986,6 +2994,7 @@
   <!-- ========== SPLASH SCREEN ========== -->
   <div id="splash-screen" class="screen active">
     <div class="stars-bg" id="stars-container"></div>
+    <div class="splash-tap-area" id="splash-tap-area"></div>
     <div class="splash-yin-yang">
       <svg viewBox="0 0 100 100">
         <defs>
@@ -3826,7 +3835,7 @@
         </div>
         
         <div class="whisper-card" id="monthly-closing-advice" style="display:none; background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);">
-          <div class="section-label" style="margin-bottom:8px;">The Fortune-Teller's Final Word</div>
+          <div class="section-label" style="margin-bottom:8px;">The Fortune-Teller\u0027s Final Word</div>
           <div id="monthly-closing-text" style="color:var(--gold); line-height:1.6; font-style:italic;"></div>
         </div>
         
@@ -4681,10 +4690,12 @@ function generateHexagram(question) {
     }
 
     function setupEventListeners() {
-      // Splash skip
+      // Splash - tap anywhere to continue
       document.getElementById('splash-skip')?.addEventListener('click', () => showScreen('pain1-screen'));
+      document.getElementById('splash-tap-area')?.addEventListener('click', () => showScreen('pain1-screen'));
+      // Full-screen fallback: tap on splash itself (catches taps on title/subtitle/yin-yang)
       document.getElementById('splash-screen')?.addEventListener('click', (e) => {
-        if (e.target.id !== 'splash-skip') showScreen('pain1-screen');
+        if (e.target.id !== 'splash-skip' && e.target.id !== 'splash-tap-area') showScreen('pain1-screen');
       });
 
       // Auto advance splash after 3s
@@ -7115,7 +7126,7 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
               '<div class="soulmate-section"><div class="soulmate-section-title">Your Ideal Partner</div><div id="soulmate-partner-profile" style="color:var(--text-secondary); line-height:1.6;"></div></div>' +
               '<div class="soulmate-section"><div class="soulmate-section-title">Timing Insight</div><div id="soulmate-timing-insight" style="color:var(--purple); font-style:italic;"></div></div>' +
               '<div class="soulmate-section" id="soulmate-deeper-section" style="display:none;"><div class="soulmate-section-title">Deeper Connection</div><div id="soulmate-deeper-text" style="color:var(--text-secondary); line-height:1.6;"></div></div>' +
-              '<div class="whisper-card" id="soulmate-closing-section" style="display:none; margin-top:16px; background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);"><div class="section-label" style="margin-bottom:8px;">The Fortune-Teller's Final Word</div><div id="soulmate-closing-text" style="color:var(--gold); line-height:1.6; font-style:italic;"></div></div>' +
+              '<div class="whisper-card" id="soulmate-closing-section" style="display:none; margin-top:16px; background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);"><div class="section-label" style="margin-bottom:8px;">The Fortune-Teller\u0027s Final Word</div><div id="soulmate-closing-text" style="color:var(--gold); line-height:1.6; font-style:italic;"></div></div>' +
             '</div>';
           wisdomBtn.parentNode.insertBefore(deepDiv, wisdomBtn);
         }
