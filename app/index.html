@@ -56,6 +56,8 @@
       padding: 20px;
       animation: slideUpFade 0.5s ease;
       position: relative;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
     
     .screen.active { display: flex; flex-direction: column; }
@@ -1039,7 +1041,28 @@
     
     /* ========== MAIN CHART SCREEN ========== */
     #chart-screen {
-      padding-bottom: 80px;
+      padding-bottom: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    #chart-screen .chart-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 16px;
+    }
+    
+    #chart-screen .chart-sticky-bottom {
+      position: sticky;
+      bottom: 0;
+      background: var(--bg-primary);
+      padding: 12px 0 24px;
+      z-index: 10;
+      border-top: 1px solid rgba(201, 169, 110, 0.15);
+      margin: 0 -20px;
+      padding-left: 20px;
+      padding-right: 20px;
     }
     
     .chart-header {
@@ -3192,71 +3215,75 @@
 
   <!-- ========== MAIN CHART SCREEN ========== -->
   <div id="chart-screen" class="screen">
-    <div class="chart-header">
-      <h2 id="chart-user-name">Your Cosmic Blueprint</h2>
-      <div class="credit-badge">
-        <span style="color: var(--purple);">◆</span>
-        <span id="credit-count">30</span>
+    <div class="chart-scroll-area">
+      <div class="chart-header">
+        <h2 id="chart-user-name">Your Cosmic Blueprint</h2>
+        <div class="credit-badge">
+          <span style="color: var(--purple);">◆</span>
+          <span id="credit-count">30</span>
+        </div>
       </div>
-    </div>
-    
-    <div class="bureau-card">
-      <h3 id="bureau-name">水二局</h3>
-      <p class="main-star" id="main-star-name">◈ Purple Star</p>
-      <p class="quote" id="main-star-quote">"Born to lead, tempered by wisdom."</p>
-    </div>
-    
-    <div class="dimension-cards">
-      <div class="dim-card">
-        <div class="label">Power</div>
-        <div class="value" id="power-value">85%</div>
-        <div class="bar"><div class="bar-fill" id="power-bar" style="width: 85%"></div></div>
+      
+      <div class="bureau-card">
+        <h3 id="bureau-name">水二局</h3>
+        <p class="main-star" id="main-star-name">◈ Purple Star</p>
+        <p class="quote" id="main-star-quote">"Born to lead, tempered by wisdom."</p>
       </div>
-      <div class="dim-card">
-        <div class="label">Love</div>
-        <div class="value" id="love-value">72%</div>
-        <div class="bar"><div class="bar-fill" id="love-bar" style="width: 72%"></div></div>
+      
+      <div class="dimension-cards">
+        <div class="dim-card">
+          <div class="label">Power</div>
+          <div class="value" id="power-value">85%</div>
+          <div class="bar"><div class="bar-fill" id="power-bar" style="width: 85%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="label">Love</div>
+          <div class="value" id="love-value">72%</div>
+          <div class="bar"><div class="bar-fill" id="love-bar" style="width: 72%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="label">Path</div>
+          <div class="value" id="path-value">90%</div>
+          <div class="bar"><div class="bar-fill" id="path-bar" style="width: 90%"></div></div>
+        </div>
       </div>
-      <div class="dim-card">
-        <div class="label">Path</div>
-        <div class="value" id="path-value">90%</div>
-        <div class="bar"><div class="bar-fill" id="path-bar" style="width: 90%"></div></div>
-      </div>
-    </div>
-    
-    <button class="pain-reading-btn" id="pain-reading-btn">
-      Your Pain Point Reading
-    </button>
-    
-    <div class="sihua-legend">
-      <span><span class="dot" style="background: var(--hua-lu)"></span> Lu</span>
-      <span><span class="dot" style="background: var(--hua-quan)"></span> Quan</span>
-      <span><span class="dot" style="background: var(--hua-ke)"></span> Ke</span>
-      <span><span class="dot" style="background: var(--hua-ji)"></span> Ji</span>
-    </div>
-    
-    <div class="palace-grid" id="palace-grid"></div>
-    
-    <div class="feature-buttons" style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">
-      <button class="deep-reading-btn" onclick="showFullChartReading()" style="width:100%;">
-        Full Chart Reading <span style="color:var(--purple);">* 12</span>
+      
+      <button class="pain-reading-btn" id="pain-reading-btn">
+        Your Pain Point Reading
       </button>
-      <div style="display:flex; gap:10px;">
-        <button class="deep-reading-btn" onclick="showMonthlyGuide()" style="flex:1; font-size:0.8rem; padding:12px;">
-          Monthly Guide <span style="color:var(--purple);">* 10</span>
+      
+      <div class="sihua-legend">
+        <span><span class="dot" style="background: var(--hua-lu)"></span> Lu</span>
+        <span><span class="dot" style="background: var(--hua-quan)"></span> Quan</span>
+        <span><span class="dot" style="background: var(--hua-ke)"></span> Ke</span>
+        <span><span class="dot" style="background: var(--hua-ji)"></span> Ji</span>
+      </div>
+      
+      <div class="palace-grid" id="palace-grid"></div>
+      
+      <div class="feature-buttons" style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">
+        <button class="deep-reading-btn" onclick="showFullChartReading()" style="width:100%;">
+          Full Chart Reading <span style="color:var(--purple);">* 12</span>
         </button>
-        <button class="deep-reading-btn" onclick="showPastLife()" style="flex:1; font-size:0.8rem; padding:12px;">
-          Past Life <span style="color:var(--purple);">* 4</span>
+        <div style="display:flex; gap:10px;">
+          <button class="deep-reading-btn" onclick="showMonthlyGuide()" style="flex:1; font-size:0.8rem; padding:12px;">
+            Monthly Guide <span style="color:var(--purple);">* 10</span>
+          </button>
+          <button class="deep-reading-btn" onclick="showPastLife()" style="flex:1; font-size:0.8rem; padding:12px;">
+            Past Life <span style="color:var(--purple);">* 4</span>
+          </button>
+        </div>
+        <button class="deep-reading-btn" onclick="showSoulmateDeepDive()" style="width:100%;">
+          Soulmate Deep Dive <span style="color:var(--purple);">* 6</span>
         </button>
       </div>
-      <button class="deep-reading-btn" onclick="showSoulmateDeepDive()" style="width:100%;">
-        Soulmate Deep Dive <span style="color:var(--purple);">* 6</span>
-      </button>
     </div>
     
-    <button class="share-btn" onclick="shareChartCard()" style="margin-top:12px;">
-      ✦ Share Destiny Card
-    </button>
+    <div class="chart-sticky-bottom">
+      <button class="share-btn" onclick="shareChartCard()" style="width:100%; margin-top:0;">
+        ✦ Share Destiny Card
+      </button>
+    </div>
   </div>
 
   <!-- ========== PAIN READING SCREEN ========== -->
