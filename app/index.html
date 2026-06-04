@@ -424,7 +424,22 @@
     }
     
     /* ========== BIRTH HOUR SCREEN ========== */
-    .birth-hour-screen { padding-top: 40px; }
+    .birth-hour-screen {
+      padding-top: 40px;
+      padding-bottom: 0;
+    }
+    .hour-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 20px;
+    }
+    .hour-sticky-bar {
+      flex-shrink: 0;
+      padding: 12px 20px max(12px, env(safe-area-inset-bottom));
+      background: var(--bg-primary);
+      border-top: 1px solid rgba(201, 169, 110, 0.15);
+    }
     
     .hour-header {
       text-align: center;
@@ -536,14 +551,14 @@
     
     .unsure-btn {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       background: transparent;
       border: 1px dashed var(--gold-dim);
       border-radius: 10px;
       color: var(--text-secondary);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       cursor: pointer;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
       transition: all 0.3s;
     }
     
@@ -3145,25 +3160,29 @@
 
   <!-- ========== BIRTH HOUR SCREEN ========== -->
   <div id="birthhour-screen" class="screen birth-hour-screen">
-    <button class="back-btn" onclick="showScreen('birthdate-screen')">← Back</button>
-    <div class="step-indicator">
-      <span style="color: var(--gold); font-size: 0.8rem;">◆ Date</span>
-      <div class="step-line"></div>
-      <span style="color: var(--text-secondary); font-size: 0.8rem;">◆ Time</span>
-      <div class="step-line"></div>
-      <span style="color: var(--gold-dim); font-size: 0.8rem;">◇ Gender</span>
+    <div class="hour-scroll-area">
+      <button class="back-btn" onclick="showScreen('birthdate-screen')">← Back</button>
+      <div class="step-indicator">
+        <span style="color: var(--gold); font-size: 0.8rem;">◆ Date</span>
+        <div class="step-line"></div>
+        <span style="color: var(--text-secondary); font-size: 0.8rem;">◆ Time</span>
+        <div class="step-line"></div>
+        <span style="color: var(--gold-dim); font-size: 0.8rem;">◇ Gender</span>
+      </div>
+      <div class="hour-header">
+        <h2>The moment heaven<br>wrote your fate</h2>
+        <p>Select your birth hour</p>
+      </div>
+      <div class="hour-list" id="hour-list"></div>
+      <div class="hour-result" id="hour-result">
+        <div class="main" id="hour-result-main"></div>
+        <div class="sub" id="hour-result-sub"></div>
+      </div>
     </div>
-    <div class="hour-header">
-      <h2>The moment heaven<br>wrote your fate</h2>
-      <p>Select your birth hour</p>
+    <div class="hour-sticky-bar">
+      <button class="unsure-btn" id="unsure-btn">I'm not sure of my birth hour</button>
+      <button class="continue-btn" id="hour-continue">Continue</button>
     </div>
-    <div class="hour-list" id="hour-list"></div>
-    <div class="hour-result" id="hour-result">
-      <div class="main" id="hour-result-main"></div>
-      <div class="sub" id="hour-result-sub"></div>
-    </div>
-    <button class="unsure-btn" id="unsure-btn">I'm not sure of my birth hour</button>
-    <button class="continue-btn" id="hour-continue">Continue</button>
   </div>
 
   <!-- ========== GENDER SCREEN ========== -->
