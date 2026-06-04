@@ -1,5 +1,5 @@
 /**
- * MysticZodiac - AI驱动功能引擎
+ * MysticFate - AI驱动功能引擎
  * AI-Powered Fortune Generation Engine
  * 
  * 功能：

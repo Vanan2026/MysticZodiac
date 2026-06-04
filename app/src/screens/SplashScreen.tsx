@@ -64,8 +64,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
             <circle cx="50" cy="72.5" r="5" fill={colors.gold} />
           </svg>
         </div>
-        <h1 style={styles.title}>Mystic Zodiac</h1>
-        <p style={styles.subtitle}>Discover Your Cosmic Blueprint</p>
+        <h1 style={styles.title}>Mystic Fate</h1>
+        <p style={styles.subtitle}>紫微斗数 · 东方命理</p>
       </div>
 
       {/* Hint */}

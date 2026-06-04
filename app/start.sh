@@ -1,9 +1,9 @@
 #!/bin/bash
-# Start Mystic Zodiac Development Server
+# Start Mystic Fate Development Server
 
 cd /app/data/所有对话/主对话/MysticZodiac/app
 
-echo "Starting Mystic Zodiac..."
+echo "Starting Mystic Fate..."
 echo "Open http://localhost:5173 in your browser"
 echo ""
 

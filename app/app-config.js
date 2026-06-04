@@ -1,5 +1,5 @@
 /**
- * MysticZodiac - App Configuration
+ * MysticFate - App Configuration
  * 应用全局配置（API密钥、模型参数等）
  *
  * ⚠️ 生产环境必须通过环境变量注入或Supabase Edge Function代理

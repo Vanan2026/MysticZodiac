@@ -1,5 +1,5 @@
 /**
- * MysticZodiac - 订阅+内购支付集成模块
+ * MysticFate - 订阅+内购支付集成模块
  * Subscription & In-App Purchase Module
  * 
  * 功能：

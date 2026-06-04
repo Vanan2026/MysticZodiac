@@ -1,5 +1,5 @@
 /**
- * MysticZodiac - 生肖+五行性格测试引擎
+ * MysticFate - 生肖+五行性格测试引擎
  * Chinese Zodiac + Five Elements Personality Engine
  * 
  * 基于用户的生肖和五行局，生成个性化性格描述

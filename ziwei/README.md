@@ -1,4 +1,4 @@
-# Mystic Zodiac - Ziwei Dōufū Fortune Telling System
+# Mystic Fate - Ziwei Dōufū Fortune Telling System
 
 A comprehensive TypeScript implementation of the Ziwei Dōufū (紫微斗数) fortune telling algorithm for the Mystic Zodiac app. This module provides accurate birth chart calculations following traditional Chinese astrology principles.
 

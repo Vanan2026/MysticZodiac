@@ -1,5 +1,5 @@
 /**
- * MysticZodiac - 社交分享卡片生成器
+ * MysticFate - 社交分享卡片生成器
  * Social Share Card Generator
  * 
  * 生成3种分享卡片：
@@ -201,11 +201,11 @@ class ShareCardGenerator {
     ctx.font = '16px Georgia';
     ctx.fillStyle = this.config.colors.agedGold;
     ctx.textAlign = 'center';
-    ctx.fillText('MYSTIC ZODIAC', centerX, y);
+    ctx.fillText('MYSTIC FATE', centerX, y);
     
     ctx.font = '12px Georgia';
     ctx.fillStyle = this.config.colors.ash;
-    ctx.fillText('Eastern Wisdom • Cosmic Guidance', centerX, y + 20);
+    ctx.fillText('紫微斗数 • 东方命理', centerX, y + 20);
   }
 }
 
@@ -238,7 +238,7 @@ function generateDestinyCard(userData) {
   ctx.stroke();
   
   // 标题
-  generator.drawTextCentered('✦ MYSTIC ZODIAC ✦', 90, 20, config.colors.imperialGold);
+  generator.drawTextCentered('✦ MYSTIC FATE ✦', 90, 20, config.colors.imperialGold);
   
   // 阴阳图
   generator.drawYinYang(config.width / 2, 180, 80);
@@ -596,7 +596,7 @@ async function shareToSocial(platform, dataUrl, shareText) {
       const file = new File([blob], 'mystic-zodiac-share.png', { type: 'image/png' });
       
       await navigator.share({
-        title: 'Mystic Zodiac',
+        title: 'Mystic Fate',
         text: shareText || 'Check out my cosmic blueprint!',
         files: [file]
       });

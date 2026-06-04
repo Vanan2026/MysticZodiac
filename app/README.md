@@ -1,4 +1,4 @@
-# Mystic Zodiac - Eastern Wisdom App
+# Mystic Fate - 紫微斗数 · 东方命理
 
 A beautiful React Native-style application for Eastern astrology (紫微斗数), built with React and TypeScript.
 

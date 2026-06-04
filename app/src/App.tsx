@@ -1,5 +1,5 @@
 /**
- * Mystic Zodiac - Main App Component
+ * Mystic Fate - Main App Component
  * React Native Web Version
  */
 
