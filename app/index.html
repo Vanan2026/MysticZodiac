@@ -826,6 +826,12 @@
       letter-spacing: 2px;
     }
     
+    .seal-btn:not(:disabled) {
+      background: linear-gradient(135deg, rgba(201, 169, 110, 0.15), rgba(139, 92, 246, 0.1));
+      box-shadow: 0 0 20px rgba(201, 169, 110, 0.2), 0 0 40px rgba(201, 169, 110, 0.1);
+      animation: stampIn 0.5s ease;
+    }
+    
     .seal-btn:hover {
       background: var(--gold);
       color: var(--bg-primary);
@@ -2000,6 +2006,34 @@
       color: var(--bg-primary);
     }
     
+    /* Share Button */
+    .share-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      background: linear-gradient(135deg, rgba(201, 169, 110, 0.15), rgba(139, 92, 246, 0.1));
+      border: 1px solid var(--gold-dim);
+      border-radius: 12px;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .share-btn:hover {
+      background: linear-gradient(135deg, rgba(201, 169, 110, 0.3), rgba(139, 92, 246, 0.2));
+      border-color: var(--gold);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(201, 169, 110, 0.15);
+    }
+    .share-btn:active {
+      transform: scale(0.97);
+    }
+    
     /* Chapter Unlock Modal */
     .unlock-modal {
       text-align: center;
@@ -2906,6 +2940,10 @@
     </div>
     
     <div class="palace-grid" id="palace-grid"></div>
+    
+    <button class="share-btn" onclick="shareChartCard()">
+      ✦ Share Destiny Card
+    </button>
   </div>
 
   <!-- ========== PAIN READING SCREEN ========== -->
@@ -2981,6 +3019,10 @@
         <div id="modal-sihua" style="color: var(--text-primary);"></div>
       </div>
     </div>
+
+    <button class="share-btn" onclick="shareOracleCard()" style="margin-top: 16px;">
+      ✦ Share Today's Whisper
+    </button>
   </div>
 
   <!-- ========== TAB NAVIGATION ========== -->
@@ -3340,6 +3382,20 @@
     </div>
   </div>
 
+  <!-- ========== SHARE PREVIEW MODAL ========== -->
+  <div class="modal-overlay" id="share-modal">
+    <div class="modal-content" style="max-width: 320px; text-align: center; padding: 20px;">
+      <h3 style="color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 12px;">✦ Share Card</h3>
+      <div class="share-preview-container" style="width: 100%; max-height: 480px; overflow: hidden; border-radius: 12px; margin-bottom: 16px; background: #000;">
+        <img id="share-preview-img" src="" alt="Share Card" style="width: 100%; height: auto; display: block;">
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button id="share-download-btn" class="share-btn" style="flex: 1; margin-top: 0; padding: 12px;">📥 Download</button>
+        <button id="share-native-btn" class="share-btn" style="flex: 1; margin-top: 0; padding: 12px;">📤 Share</button>
+      </div>
+      <button class="modal-close-btn" onclick="document.getElementById('share-modal').classList.remove('active')" style="margin-top: 12px;">Close</button>
+    </div>
+  </div>
 
   <script src="app-config.js"></script>
   <script src="ai-engine.js"></script>
@@ -3886,6 +3942,84 @@ function generateHexagram(question) {
     }
 
     /**
+     * ========== SHARE CARD FUNCTIONS ==========
+     */
+    function shareChartCard() {
+      if (!currentChart || !userName) {
+        showToast('Please generate your chart first');
+        return;
+      }
+      const mainStar = currentChart.mingGongMainStar;
+      const starName = STAR_EN[mainStar] || mainStar;
+      const quote = MAIN_STAR_QUOTES[mainStar] || 'The stars have written your story.';
+      
+      // Derive element from bureau
+      const bureauToElement = { '水二局': 'Water', '木三局': 'Wood', '金四局': 'Metal', '土五局': 'Earth', '火六局': 'Fire' };
+      const element = bureauToElement[currentChart.fiveElementBureau] || 'Water';
+      
+      // Generate card
+      const { cardData, shareText } = shareDestinyCard({
+        name: userName,
+        zodiac: BRANCH_NAMES[currentChart.mingGongIndex] || 'Cosmic',
+        element: element,
+        mainStar: starName,
+        bureau: currentChart.fiveElementBureau,
+        quote: quote
+      });
+      
+      // Show preview modal
+      showSharePreview(cardData, shareText);
+    }
+
+    function shareOracleCard() {
+      const whisper = document.getElementById('whisper-text').textContent;
+      if (!whisper) {
+        showToast('Please visit the Oracle first');
+        return;
+      }
+      
+      // Gather oracle data from DOM
+      const date = document.getElementById('oracle-date').textContent;
+      const direction = document.getElementById('lucky-direction').textContent;
+      const element = document.getElementById('lucky-element').textContent;
+      
+      // Get do/dont items from DOM
+      const doItems = Array.from(document.querySelectorAll('#do-list .energy-item')).map(el => el.textContent.trim().replace(/^\*\s?/, ''));
+      const dontItems = Array.from(document.querySelectorAll('#dont-list .energy-item')).map(el => el.textContent.trim().replace(/^<>\s?/, ''));
+      
+      // Generate card
+      const { cardData, shareText } = shareDailyWhisper({
+        name: userName || 'Seeker',
+        whisper: whisper,
+        date: date,
+        luckyDo: doItems,
+        luckyDont: dontItems,
+        direction: direction,
+        element: element
+      });
+      
+      showSharePreview(cardData, shareText);
+    }
+
+    /**
+     * ========== SHARE PREVIEW MODAL ==========
+     */
+    function showSharePreview(cardData, shareText) {
+      const modal = document.getElementById('share-modal');
+      const previewImg = document.getElementById('share-preview-img');
+      const downloadBtn = document.getElementById('share-download-btn');
+      const shareBtn = document.getElementById('share-native-btn');
+      
+      previewImg.src = cardData;
+      previewImg.style.display = 'block';
+      
+      downloadBtn.onclick = () => downloadShareCard(cardData, 'mystic-fate-share.png');
+      shareBtn.onclick = () => shareToSocial('native', cardData, shareText);
+      
+      modal.classList.add('active');
+    }
+
+    /**
      * ========== INITIALIZATION ==========
      */
     function init() {
@@ -4102,9 +4236,19 @@ function generateHexagram(question) {
      * ========== SCREEN NAVIGATION ==========
      */
     function showScreen(screenId) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(screenId)?.classList.add('active');
-      window.scrollTo(0, 0);
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        // Reset animation for re-entry
+        s.style.animation = 'none';
+        void s.offsetHeight; // force reflow
+        s.style.animation = '';
+      });
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active');
+        // Scroll to top with smooth behavior
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
 
     /**
