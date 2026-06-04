@@ -1,0 +1,68 @@
+/* Global styles for Mystic Zodiac */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #0A0A0F;
+  --bg-card: #14141F;
+  --bg-card-hover: #1a1a2e;
+  --text-primary: #E8E4DF;
+  --text-secondary: #7A7572;
+  --gold: #C9A96E;
+  --gold-dim: #8B7355;
+  --purple: #8B5CF6;
+  --hua-lu: #5B8C5A;
+  --hua-quan: #C45B3E;
+  --hua-ke: #4A7B9D;
+  --hua-ji: #8B2252;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-card);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dim);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* Focus styles */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(201, 169, 110, 0.3);
+  color: var(--text-primary);
+}
