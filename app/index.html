@@ -3318,10 +3318,11 @@
     </div>
     
     <div class="compat-verdict">
-      <h3>The Ancient Verdict</h3>
+      <h3>The Ancient Verdict <span class="ai-badge" id="compat-ai-badge" style="display:none;">AI</span></h3>
       <div class="text" id="compat-verdict-text"></div>
     </div>
     
+    <button class="seal-wisdom-btn" onclick="shareCompatCard()">✦ Share Compatibility Card</button>
     <button class="seal-wisdom-btn" onclick="showToast('Compatibility sealed in your memory')">Seal This Wisdom</button>
   </div>
 
@@ -3996,6 +3997,29 @@ function generateHexagram(question) {
         luckyDont: dontItems,
         direction: direction,
         element: element
+      });
+      
+      showSharePreview(cardData, shareText);
+    }
+
+    function shareCompatCard() {
+      const ownStar = document.getElementById('user-main-star').textContent;
+      const partnerStar = document.getElementById('partner-main-star').textContent;
+      if (!ownStar || ownStar === '--') {
+        showToast('Please calculate compatibility first');
+        return;
+      }
+      
+      const soulScore = document.getElementById('score-soul').textContent;
+      const verdict = document.getElementById('compat-verdict-text').textContent;
+      
+      const { cardData, shareText } = shareDestinyCard({
+        name: userName || 'Seeker',
+        zodiac: 'Compatibility',
+        element: ownStar + ' ⟷ ' + partnerStar,
+        mainStar: soulScore + ' Soul',
+        bureau: verdict.substring(0, 80) + '...',
+        quote: '"Two souls, one cosmic dance."'
       });
       
       showSharePreview(cardData, shareText);
@@ -5618,7 +5642,46 @@ Financial wisdom comes from understanding your own patterns around money. What d
       document.getElementById('compat-verdict-text').textContent = compat.text;
 
       showScreen('compat-result-screen');
+
+      // AI enhancement: generate personalized compatibility reading
+      enhanceCompatWithAI(userChart, partnerChart);
       showToast('Compatibility calculated');
+    }
+
+    function enhanceCompatWithAI(userChart, partnerChart) {
+      if (typeof AIEngine === 'undefined' || !AIEngine.generateCompatibilityReading) return;
+      const badge = document.getElementById('compat-ai-badge');
+      if (!badge) return;
+      const verdictEl = document.getElementById('compat-verdict-text');
+      const originalText = verdictEl ? verdictEl.textContent : '';
+
+      badge.style.display = 'inline-block';
+      badge.textContent = 'AI...';
+
+      const userData = {
+        name: userName || 'Seeker',
+        mainStar: userChart.mingGongMainStar || 'Purple Star',
+        destinyPalace: 'Life Palace with ' + (userChart.siZhongHua || 'balance'),
+        element: userChart.fiveElementBureau || 'Wood'
+      };
+      const partnerData = {
+        name: 'Partner',
+        mainStar: partnerChart.mingGongMainStar || 'Purple Star',
+        destinyPalace: 'Life Palace with ' + (partnerChart.siZhongHua || 'balance'),
+        element: partnerChart.fiveElementBureau || 'Fire'
+      };
+
+      AIEngine.generateCompatibilityReading(userData, partnerData).then(function(result) {
+        if (result && result.verdict) {
+          var aiText = result.verdict;
+          if (result.advice) aiText += '\n\nAncient Advice: ' + result.advice;
+          if (verdictEl) verdictEl.textContent = aiText + '\n\n' + originalText;
+          verdictEl.dataset.aiEnhanced = 'true';
+          badge.textContent = 'AI';
+        }
+      }).catch(function() {
+        badge.style.display = 'none';
+      });
     }
 
     function showCelebrityScreen() {
