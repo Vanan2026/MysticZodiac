@@ -12,7 +12,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
     body { -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
-    .screen { padding-top: max(20px, env(safe-area-inset-top)); }
+    .screen { padding-top: max(20px, env(safe-area-inset-top)); padding-bottom: max(80px, env(safe-area-inset-bottom)); }
     button, .clickable { cursor: pointer; transition: transform 0.15s ease, opacity 0.15s ease; }
     button:active, .clickable:active { transform: scale(0.97); opacity: 0.85; }
     img, a { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
@@ -49,33 +49,18 @@
     
     .screen {
       display: none;
+      min-height: 100vh;
       width: 100%;
       max-width: 480px;
       margin: 0 auto;
+      padding: 20px;
       animation: slideUpFade 0.5s ease;
       position: relative;
-    }
-    
-    .screen.active {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      min-height: 100dvh;
-    }
-    
-    /* ========== SCROLL CONTENT AREA ========== */
-    .page-scroll-area {
-      flex: 1;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 20px 20px 12px;
     }
-    .page-sticky-bar {
-      flex-shrink: 0;
-      padding: 12px 20px max(12px, env(safe-area-inset-bottom));
-      background: var(--bg-primary);
-      border-top: 1px solid rgba(201, 169, 110, 0.15);
-    }
+    
+    .screen.active { display: flex; flex-direction: column; }
     
     @keyframes slideUpFade {
       from { opacity: 0; transform: translateY(20px); }
@@ -241,6 +226,7 @@
     
     /* ========== PAIN POINT SCREEN ========== */
     .pain-point-screen {
+      padding-top: 60px;
     }
     
     .pain-question {
@@ -332,7 +318,7 @@
     }
     
     /* ========== BIRTH DATE SCREEN ========== */
-    .birth-date-screen { }
+    .birth-date-screen { padding-top: 40px; }
     
     .date-header {
       text-align: center;
@@ -439,8 +425,20 @@
     
     /* ========== BIRTH HOUR SCREEN ========== */
     .birth-hour-screen {
-      padding-top: 0;
+      padding-top: 40px;
       padding-bottom: 0;
+    }
+    .page-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 20px;
+    }
+    .page-sticky-bar {
+      flex-shrink: 0;
+      padding: 12px 20px max(12px, env(safe-area-inset-bottom));
+      background: var(--bg-primary);
+      border-top: 1px solid rgba(201, 169, 110, 0.15);
     }
     
     .hour-header {
@@ -571,6 +569,8 @@
     
     /* ========== GENDER SCREEN ========== */
     .gender-screen {
+      padding-top: 50px;
+      padding-bottom: 0;
     }
     
     .gender-header {
@@ -721,6 +721,8 @@
     
     /* ========== NAME SEAL SCREEN ========== */
     .name-seal-screen {
+      padding-top: 40px;
+      padding-bottom: 0;
     }
     
     .seal-header {
@@ -3032,141 +3034,125 @@
 
   <!-- ========== PAIN POINT 1 ========== -->
   <div id="pain1-screen" class="screen pain-point-screen">
-    <div class="page-scroll-area">
-      <div class="step-indicator">
-        <div class="step-dot active"></div>
-        <div class="step-line"></div>
-        <div class="step-dot"></div>
-        <div class="step-line"></div>
-        <div class="step-dot"></div>
-      </div>
-      <h2 class="pain-question">What keeps you<br>awake at night?</h2>
-      <p class="pain-subtitle">Choose the feeling that resonates most</p>
-      <div class="pain-grid" id="pain1-grid">
-        <div class="pain-card" data-value="lost">
-          <span class="text">I feel lost about who I really am</span>
-        </div>
-        <div class="pain-card" data-value="direction">
-          <span class="text">I can't find my true direction</span>
-        </div>
-        <div class="pain-card" data-value="mistakes">
-          <span class="text">I keep repeating the same mistakes</span>
-        </div>
-        <div class="pain-card" data-value="restless">
-          <span class="text">Something inside me is restless</span>
-        </div>
-      </div>
-      <div class="transition-text" id="pain1-transition" style="display:none;"></div>
+    <div class="step-indicator">
+      <div class="step-dot active"></div>
+      <div class="step-line"></div>
+      <div class="step-dot"></div>
+      <div class="step-line"></div>
+      <div class="step-dot"></div>
     </div>
-    <div class="page-sticky-bar">
-      <button class="continue-btn" id="pain1-continue">Continue</button>
+    <h2 class="pain-question">What keeps you<br>awake at night?</h2>
+    <p class="pain-subtitle">Choose the feeling that resonates most</p>
+    <div class="pain-grid" id="pain1-grid">
+      <div class="pain-card" data-value="lost">
+        <span class="text">I feel lost about who I really am</span>
+      </div>
+      <div class="pain-card" data-value="direction">
+        <span class="text">I can't find my true direction</span>
+      </div>
+      <div class="pain-card" data-value="mistakes">
+        <span class="text">I keep repeating the same mistakes</span>
+      </div>
+      <div class="pain-card" data-value="restless">
+        <span class="text">Something inside me is restless</span>
+      </div>
     </div>
+    <div class="transition-text" id="pain1-transition" style="display:none;"></div>
+    <button class="continue-btn" id="pain1-continue">Continue</button>
   </div>
 
   <!-- ========== PAIN POINT 2 ========== -->
   <div id="pain2-screen" class="screen pain-point-screen">
-    <div class="page-scroll-area">
-      <div class="step-indicator">
-        <div class="step-dot completed"></div>
-        <div class="step-line"></div>
-        <div class="step-dot active"></div>
-        <div class="step-line"></div>
-        <div class="step-dot"></div>
-      </div>
-      <h2 class="pain-question">What are you<br>secretly searching for?</h2>
-      <p class="pain-subtitle">Pick the one that pulls at your heart</p>
-      <div class="pain-grid" id="pain2-grid">
-        <div class="pain-card" data-value="money">
-          <span class="text">Money comes and goes—I never feel secure</span>
-        </div>
-        <div class="pain-card" data-value="career">
-          <span class="text">My career feels stuck or misaligned</span>
-        </div>
-        <div class="pain-card" data-value="love">
-          <span class="text">Love feels like a riddle I can\'t solve</span>
-        </div>
-        <div class="pain-card" data-value="all">
-          <span class="text">All of it—I feel uncertain about everything</span>
-        </div>
-      </div>
-      <div class="transition-text" id="pain2-transition" style="display:none;"></div>
+    <div class="step-indicator">
+      <div class="step-dot completed"></div>
+      <div class="step-line"></div>
+      <div class="step-dot active"></div>
+      <div class="step-line"></div>
+      <div class="step-dot"></div>
     </div>
-    <div class="page-sticky-bar">
-      <button class="continue-btn" id="pain2-continue">Continue</button>
+    <h2 class="pain-question">What are you<br>secretly searching for?</h2>
+    <p class="pain-subtitle">Pick the one that pulls at your heart</p>
+    <div class="pain-grid" id="pain2-grid">
+      <div class="pain-card" data-value="money">
+        <span class="text">Money comes and goes—I never feel secure</span>
+      </div>
+      <div class="pain-card" data-value="career">
+        <span class="text">My career feels stuck or misaligned</span>
+      </div>
+      <div class="pain-card" data-value="love">
+        <span class="text">Love feels like a riddle I can\'t solve</span>
+      </div>
+      <div class="pain-card" data-value="all">
+        <span class="text">All of it—I feel uncertain about everything</span>
+      </div>
     </div>
+    <div class="transition-text" id="pain2-transition" style="display:none;"></div>
+    <button class="continue-btn" id="pain2-continue">Continue</button>
   </div>
 
   <!-- ========== PAIN POINT 3 ========== -->
   <div id="pain3-screen" class="screen pain-point-screen">
-    <div class="page-scroll-area">
-      <div class="step-indicator">
-        <div class="step-dot completed"></div>
-        <div class="step-line"></div>
-        <div class="step-dot completed"></div>
-        <div class="step-line"></div>
-        <div class="step-dot active"></div>
-      </div>
-      <h2 class="pain-question">If the stars could<br>change one thing...</h2>
-      <p class="pain-subtitle">What would you ask them?</p>
-      <div class="pain-grid" id="pain3-grid">
-        <div class="pain-card" data-value="power">
-          <span class="text">What is my hidden power?</span>
-        </div>
-        <div class="pain-card" data-value="person">
-          <span class="text">When will I find my person?</span>
-        </div>
-        <div class="pain-card" data-value="path">
-          <span class="text">What path should I take?</span>
-        </div>
-        <div class="pain-card" data-value="purpose">
-          <span class="text">What is my life's purpose?</span>
-        </div>
-      </div>
-      <div class="transition-text" id="pain3-transition" style="display:none;"></div>
+    <div class="step-indicator">
+      <div class="step-dot completed"></div>
+      <div class="step-line"></div>
+      <div class="step-dot completed"></div>
+      <div class="step-line"></div>
+      <div class="step-dot active"></div>
     </div>
-    <div class="page-sticky-bar">
-      <button class="continue-btn" id="pain3-continue">Continue</button>
+    <h2 class="pain-question">If the stars could<br>change one thing...</h2>
+    <p class="pain-subtitle">What would you ask them?</p>
+    <div class="pain-grid" id="pain3-grid">
+      <div class="pain-card" data-value="power">
+        <span class="text">What is my hidden power?</span>
+      </div>
+      <div class="pain-card" data-value="person">
+        <span class="text">When will I find my person?</span>
+      </div>
+      <div class="pain-card" data-value="path">
+        <span class="text">What path should I take?</span>
+      </div>
+      <div class="pain-card" data-value="purpose">
+        <span class="text">What is my life's purpose?</span>
+      </div>
     </div>
+    <div class="transition-text" id="pain3-transition" style="display:none;"></div>
+    <button class="continue-btn" id="pain3-continue">Continue</button>
   </div>
 
   <!-- ========== BIRTH DATE SCREEN ========== -->
   <div id="birthdate-screen" class="screen birth-date-screen">
-    <div class="page-scroll-area">
-      <div class="step-indicator">
-        <span style="color: var(--text-secondary); font-size: 0.8rem;">◆ Date</span>
-        <div class="step-line"></div>
-        <span style="color: var(--gold-dim); font-size: 0.8rem;">◇ Time</span>
-        <div class="step-line"></div>
-        <span style="color: var(--gold-dim); font-size: 0.8rem;">◇ Gender</span>
+    <div class="step-indicator">
+      <span style="color: var(--text-secondary); font-size: 0.8rem;">◆ Date</span>
+      <div class="step-line"></div>
+      <span style="color: var(--gold-dim); font-size: 0.8rem;">◇ Time</span>
+      <div class="step-line"></div>
+      <span style="color: var(--gold-dim); font-size: 0.8rem;">◇ Gender</span>
+    </div>
+    <div class="date-header">
+      <h2>When did the stars<br>align for you?</h2>
+      <p>Enter your birth information</p>
+    </div>
+    <div class="moon-phase" id="moon-phase">
+      <div class="moon-icon"></div>
+    </div>
+    <div class="date-picker-container">
+      <div class="date-picker-group">
+        <label>Year</label>
+        <select class="date-select" id="birth-year"></select>
       </div>
-      <div class="date-header">
-        <h2>When did the stars<br>align for you?</h2>
-        <p>Enter your birth information</p>
+      <div class="date-picker-group">
+        <label>Month</label>
+        <select class="date-select" id="birth-month"></select>
       </div>
-      <div class="moon-phase" id="moon-phase">
-        <div class="moon-icon"></div>
-      </div>
-      <div class="date-picker-container">
-        <div class="date-picker-group">
-          <label>Year</label>
-          <select class="date-select" id="birth-year"></select>
-        </div>
-        <div class="date-picker-group">
-          <label>Month</label>
-          <select class="date-select" id="birth-month"></select>
-        </div>
-        <div class="date-picker-group">
-          <label>Day</label>
-          <select class="date-select" id="birth-day"></select>
-        </div>
-      </div>
-      <div class="zodiac-preview" id="zodiac-preview">
-        <span class="text" id="zodiac-preview-text"></span>
+      <div class="date-picker-group">
+        <label>Day</label>
+        <select class="date-select" id="birth-day"></select>
       </div>
     </div>
-    <div class="page-sticky-bar">
-      <button class="continue-btn visible" id="date-continue">Continue</button>
+    <div class="zodiac-preview" id="zodiac-preview">
+      <span class="text" id="zodiac-preview-text"></span>
     </div>
+    <button class="continue-btn visible" id="date-continue">Continue</button>
   </div>
 
   <!-- ========== BIRTH HOUR SCREEN ========== -->
