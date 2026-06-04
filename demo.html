@@ -1719,146 +1719,6 @@
       color: var(--text-primary);
     }
     
-    /* ========== CARD OF THE DAY ========== */
-    .card-of-day {
-      background: linear-gradient(135deg, rgba(20,20,31,0.95), rgba(201,169,110,0.08));
-      border: 1px solid var(--gold-dim);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .card-of-day.revealed {
-      border-color: var(--gold);
-      background: linear-gradient(135deg, rgba(20,20,31,0.95), rgba(201,169,110,0.15));
-    }
-    
-    .card-of-day-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-    
-    .card-of-day-header .label {
-      font-family: 'Cinzel', serif;
-      font-size: 0.85rem;
-      color: var(--gold);
-      letter-spacing: 2px;
-    }
-    
-    .card-of-day-header .cost {
-      font-size: 0.75rem;
-      color: var(--purple);
-    }
-    
-    .card-of-day-face {
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 16px 0;
-    }
-    
-    .card-of-day-face .back {
-      text-align: center;
-    }
-    
-    .card-of-day-face .back .symbol {
-      font-size: 2.5rem;
-      color: var(--gold-dim);
-      margin-bottom: 8px;
-    }
-    
-    .card-of-day-face .back .hint {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      font-style: italic;
-    }
-    
-    .card-of-day-face .front {
-      display: none;
-      text-align: center;
-      width: 100%;
-    }
-    
-    .card-of-day.revealed .card-of-day-face .back { display: none; }
-    .card-of-day.revealed .card-of-day-face .front { display: block; animation: slideUpFade 0.5s ease; }
-    
-    .card-of-day-star {
-      font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
-      color: var(--gold);
-      margin-bottom: 4px;
-    }
-    
-    .card-of-day-element {
-      font-size: 0.8rem;
-      color: var(--purple);
-      margin-bottom: 10px;
-    }
-    
-    .card-of-day-fortune {
-      display: inline-block;
-      padding: 4px 16px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-family: 'Cinzel', serif;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
-    }
-    
-    .card-of-day-fortune.great { background: rgba(91,140,90,0.2); color: var(--hua-lu); border: 1px solid var(--hua-lu); }
-    .card-of-day-fortune.good { background: rgba(74,123,157,0.2); color: var(--hua-ke); border: 1px solid var(--hua-ke); }
-    .card-of-day-fortune.neutral { background: rgba(201,169,110,0.15); color: var(--gold); border: 1px solid var(--gold-dim); }
-    .card-of-day-fortune.challenging { background: rgba(196,91,62,0.15); color: var(--hua-quan); border: 1px solid var(--hua-quan); }
-    
-    .card-of-day-meaning {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-      padding: 0 8px;
-    }
-    
-    .card-of-day-advice {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      font-style: italic;
-      padding: 0 8px;
-    }
-    
-    .card-of-day-footer {
-      display: none;
-      margin-top: 12px;
-      text-align: right;
-    }
-    
-    .card-of-day.revealed .card-of-day-footer {
-      display: block;
-    }
-    
-    .card-of-day-footer .share-link {
-      font-size: 0.75rem;
-      color: var(--purple);
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 4px 12px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-    
-    .card-of-day-footer .share-link:hover {
-      background: rgba(139,92,246,0.15);
-    }
-    
     .deep-reading-btn {
       width: 100%;
       padding: 16px;
@@ -2860,99 +2720,6 @@
     .tab-btn .icon {
       font-size: 1.4rem;
     }
-    
-    /* Deep Reading Button Hover */
-    .deep-reading-btn:hover {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(201, 169, 110, 0.15));
-      transform: translateY(-1px);
-    }
-    
-    /* Full Chart Reading */
-    .palace-reading-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(201,169,110,0.15);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 10px;
-      transition: all 0.3s;
-      animation: slideUp 0.3s ease backwards;
-    }
-    
-    .palace-reading-card .palace-name {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    
-    .palace-reading-card .palace-name .en {
-      font-family: 'Cinzel', serif;
-      font-size: 0.95rem;
-      color: var(--gold);
-    }
-    
-    .palace-reading-card .palace-name .zh {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      font-family: var(--font-classical);
-    }
-    
-    .palace-reading-card .palace-stars {
-      font-size: 0.8rem;
-      color: var(--purple);
-      margin-bottom: 8px;
-    }
-    
-    .palace-reading-card .palace-text {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-    
-    /* Monthly Guide */
-    .week-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(201,169,110,0.15);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 10px;
-      animation: slideUp 0.3s ease backwards;
-    }
-    
-    .week-card .week-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    
-    .week-card .week-header .week-name {
-      font-family: 'Cinzel', serif;
-      font-size: 0.9rem;
-      color: var(--gold);
-    }
-    
-    .week-card .week-focus {
-      font-size: 0.85rem;
-      color: var(--purple);
-      margin-bottom: 6px;
-    }
-    
-    .week-card .week-advice {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      line-height: 1.5;
-    }
-    
-    .week-card .week-highlight {
-      display: inline-block;
-      margin-top: 8px;
-      font-size: 0.8rem;
-      color: var(--hua-lu);
-      background: rgba(91,140,90,0.1);
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
 
 </style>
 </head>
@@ -3237,24 +3004,7 @@
     
     <div class="palace-grid" id="palace-grid"></div>
     
-    <div class="feature-buttons" style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">
-      <button class="deep-reading-btn" onclick="showFullChartReading()" style="width:100%;">
-        Full Chart Reading <span style="color:var(--purple);">* 12</span>
-      </button>
-      <div style="display:flex; gap:10px;">
-        <button class="deep-reading-btn" onclick="showMonthlyGuide()" style="flex:1; font-size:0.8rem; padding:12px;">
-          Monthly Guide <span style="color:var(--purple);">* 10</span>
-        </button>
-        <button class="deep-reading-btn" onclick="showPastLife()" style="flex:1; font-size:0.8rem; padding:12px;">
-          Past Life <span style="color:var(--purple);">* 4</span>
-        </button>
-      </div>
-      <button class="deep-reading-btn" onclick="showSoulmateDeepDive()" style="width:100%;">
-        Soulmate Deep Dive <span style="color:var(--purple);">* 6</span>
-      </button>
-    </div>
-    
-    <button class="share-btn" onclick="shareChartCard()" style="margin-top:12px;">
+    <button class="share-btn" onclick="shareChartCard()">
       ✦ Share Destiny Card
     </button>
   </div>
@@ -3388,30 +3138,6 @@
       </div>
     </div>
     
-    <!-- ========== CARD OF THE DAY ========== -->
-    <div class="card-of-day" id="card-of-day">
-      <div class="card-of-day-header">
-        <span class="label">* Today's Celestial Card</span>
-        <span class="cost">* 1</span>
-      </div>
-      <div class="card-of-day-face" id="card-of-day-face">
-        <div class="back">
-          <div class="symbol">*?</div>
-          <div class="hint">Tap to reveal today's star</div>
-        </div>
-        <div class="front">
-          <div class="card-of-day-star" id="cod-star"></div>
-          <div class="card-of-day-element" id="cod-element"></div>
-          <div class="card-of-day-fortune" id="cod-fortune"></div>
-          <div class="card-of-day-meaning" id="cod-meaning"></div>
-          <div class="card-of-day-advice" id="cod-advice"></div>
-        </div>
-      </div>
-      <div class="card-of-day-footer">
-        <button class="share-link" onclick="shareCardOfDay()">✦ Share This Card</button>
-      </div>
-    </div>
-    
     <div class="section-title">Lucky Elements</div>
     <div class="lucky-elements">
       <div class="lucky-item">
@@ -3432,7 +3158,7 @@
     </div>
     
     <button class="deep-reading-btn" id="deep-reading-btn" onclick="toggleDeepReading()">
-      Full Oracle Reading <span id="deep-reading-cost" style="color: var(--purple);">* 1</span>
+      Deep Oracle Reading <span style="color: var(--purple);">*</span> 3
     </button>
     
     <div class="deep-reading-content" id="deep-reading-content">
@@ -3449,7 +3175,7 @@
         <span>☯</span>
         <span>Your Life Chapter Forecast</span>
         <span class="fortune-chevron" id="fortune-chevron" style="margin-left:auto; transition:transform 0.3s;">▼</span>
-        <!-- ai-badge removed in v2.2 -->
+        <span class="ai-badge" style="font-size:10px; background:rgba(201,169,110,0.2); color:var(--gold); padding:2px 8px; border-radius:10px;">AI</span>
       </div>
       <div class="fortune-content" id="fortune-content" style="display:none; overflow:hidden; transition:max-height 0.4s ease;">
         <div class="fortune-header" id="fortune-header">
@@ -3678,7 +3404,7 @@
     </div>
     
     <div class="compat-verdict">
-      <h3>The Ancient Verdict <span class="ai-badge" id="compat-ai-badge" style="display:none;"><!-- v2.2 removed --></span></h3>
+      <h3>The Ancient Verdict <span class="ai-badge" id="compat-ai-badge" style="display:none;">AI</span></h3>
       <div class="text" id="compat-verdict-text"></div>
     </div>
     
@@ -3696,152 +3422,6 @@
     </div>
     
     <div class="celebrity-list" id="celebrity-list"></div>
-  </div>
-
-  <!-- ========== FULL CHART READING SCREEN ========== -->
-  <div id="full-chart-screen" class="screen">
-    <button class="back-btn" onclick="showScreen('chart-screen')">&larr; Back to Chart</button>
-    
-    <div class="oracle-header">
-      <h2>Full Chart Reading</h2>
-      <div class="oracle-date" id="full-chart-date"></div>
-    </div>
-    
-    <div id="full-chart-loading" style="text-align:center; padding:40px 0;">
-      <div style="font-size:2rem; margin-bottom:16px; color:var(--purple);">*</div>
-      <div style="color:var(--text-secondary);">Consulting the 12 palaces...</div>
-    </div>
-    
-    <div id="full-chart-content" style="display:none;">
-      <div class="whisper-card" id="full-chart-overview">
-        <div class="whisper-text" id="full-chart-overview-text"></div>
-      </div>
-      
-      <div id="full-chart-palaces"></div>
-      
-      <div class="whisper-card" style="margin-top:12px; background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);">
-        <div class="whisper-text" id="full-chart-key-theme" style="font-style:italic;"></div>
-      </div>
-      
-      <div class="classical-section" id="full-chart-classical" style="margin-top:16px; padding:16px; background:var(--bg-card); border-radius:12px;">
-        <div class="section-label" style="margin-bottom:8px;">Ancient Wisdom</div>
-        <div class="zh" id="full-chart-classical-zh" style="color:var(--gold); font-family:var(--font-classical); margin-bottom:8px;"></div>
-        <div class="en" id="full-chart-classical-en" style="color:var(--text-secondary); font-size:0.85rem;"></div>
-      </div>
-      
-      <button class="share-btn" onclick="shareFullChartCard()" style="margin-top:16px;">
-        ✦ Share My Chart Reading
-      </button>
-    </div>
-    
-    <div id="full-chart-error" style="display:none; text-align:center; padding:40px 0; color:var(--hua-ji);">
-      <div style="font-size:2rem; margin-bottom:16px;">*</div>
-      <div>The stars are silent today. Please try again later.</div>
-      <button class="continue-btn visible" onclick="showScreen('chart-screen')" style="margin-top:20px;">Back to Chart</button>
-    </div>
-  </div>
-
-  <!-- ========== MONTHLY GUIDE SCREEN ========== -->
-  <div id="monthly-guide-screen" class="screen">
-    <button class="back-btn" onclick="showScreen('chart-screen')">&larr; Back to Chart</button>
-    
-    <div class="oracle-header">
-      <h2>Monthly Guide</h2>
-      <div class="oracle-date">
-        <select id="month-guide-month" style="background:var(--bg-card); color:var(--text-primary); border:1px solid var(--gold-dim); border-radius:8px; padding:8px 12px; font-family:'Cinzel',serif; cursor:pointer;" onchange="requestMonthlyGuide()"></select>
-      </div>
-    </div>
-    
-    <div id="monthly-guide-loading" style="display:none; text-align:center; padding:40px 0;">
-      <div style="font-size:2rem; margin-bottom:16px; color:var(--purple);">*</div>
-      <div style="color:var(--text-secondary);">Reading the monthly celestial patterns...</div>
-    </div>
-    
-    <div id="monthly-guide-content" style="display:none;">
-      <div class="whisper-card" style="text-align:center;">
-        <div style="font-size:0.85rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:2px; margin-bottom:4px;">Month Energy</div>
-        <div style="font-size:0.8rem; color:var(--purple); font-family:'Cinzel',serif; letter-spacing:2px;" id="monthly-keyword"></div>
-        <div class="whisper-text" id="monthly-energy" style="margin-top:8px;"></div>
-        <div id="monthly-overview" style="color:var(--text-secondary); margin-top:8px; line-height:1.6;"></div>
-      </div>
-      
-      <div id="monthly-weeks" style="margin-top:16px;"></div>
-      
-      <div class="lucky-elements" style="margin-top:16px;">
-        <div class="lucky-item">
-          <span class="label">Direction</span>
-          <span class="value" id="monthly-lucky-direction">--</span>
-        </div>
-        <div class="lucky-item">
-          <span class="label">Color</span>
-          <span class="value" id="monthly-lucky-color">--</span>
-        </div>
-        <div class="lucky-item">
-          <span class="label">Number</span>
-          <span class="value" id="monthly-lucky-number">--</span>
-        </div>
-        <div class="lucky-item">
-          <span class="label">Watch</span>
-          <span class="value" id="monthly-watch-palace">--</span>
-        </div>
-      </div>
-      
-      <div class="classical-section" style="margin-top:16px; padding:16px; background:var(--bg-card); border-radius:12px;">
-        <div class="section-label">Ancient Advice</div>
-        <div id="monthly-classical" style="color:var(--text-secondary); font-style:italic;"></div>
-      </div>
-      
-      <button class="share-btn" onclick="shareMonthlyGuide()" style="margin-top:16px;">
-        ✦ Share Monthly Guide
-      </button>
-    </div>
-  </div>
-
-  <!-- ========== PAST LIFE INSIGHT SCREEN ========== -->
-  <div id="past-life-screen" class="screen">
-    <button class="back-btn" onclick="showScreen('chart-screen')">&larr; Back to Chart</button>
-    
-    <div id="past-life-loading" style="text-align:center; padding:60px 0;">
-      <div style="font-size:2.5rem; margin-bottom:16px; color:var(--purple); animation:spin 4s linear infinite;">*</div>
-      <div style="color:var(--text-secondary);">Tracing the threads of your past lives...</div>
-    </div>
-    
-    <div id="past-life-content" style="display:none;">
-      <div class="oracle-header">
-        <h2>Past Life Insight</h2>
-        <div class="oracle-date">"A whisper from another time..."</div>
-      </div>
-      
-      <div class="bureau-card" style="margin-bottom:16px;">
-        <h3 id="past-life-title" style="font-size:1.3rem;">--</h3>
-        <p style="color:var(--purple); margin-top:8px;" id="past-life-era">--</p>
-        <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:4px;" id="past-life-identity">--</p>
-      </div>
-      
-      <div class="whisper-card" style="margin-bottom:16px;">
-        <div class="section-label" style="margin-bottom:8px;">The Story</div>
-        <div class="whisper-text" id="past-life-story"></div>
-      </div>
-      
-      <div class="reading-content" style="padding:16px; background:var(--bg-card); border-radius:12px; margin-bottom:12px;">
-        <div class="section-label" style="margin-bottom:8px;">Why It Still Matters</div>
-        <div id="past-life-relevance" style="color:var(--text-secondary); line-height:1.6;"></div>
-      </div>
-      
-      <div class="reading-content" style="padding:16px; background:rgba(139,92,246,0.05); border:1px solid rgba(139,92,246,0.2); border-radius:12px; margin-bottom:12px;">
-        <div class="section-label" style="color:var(--purple); margin-bottom:8px;">The Lesson Carried Forward</div>
-        <div id="past-life-lesson" style="color:var(--text-primary); font-style:italic; line-height:1.6;"></div>
-      </div>
-      
-      <div class="whisper-card" style="background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);">
-        <div class="section-label" style="margin-bottom:8px;">An Echo in Today's Life</div>
-        <div id="past-life-connection" style="color:var(--gold); line-height:1.6;"></div>
-      </div>
-      
-      <button class="share-btn" onclick="sharePastLifeCard()" style="margin-top:16px;">
-        ✦ Share Past Life Card
-      </button>
-    </div>
   </div>
 
   <!-- ========== CREDIT PURCHASE MODAL ========== -->
@@ -3905,7 +3485,7 @@
   </div>
 
   <script src="app-config.js"></script>
-  <script src="wisdom-engine.js"></script>
+  <script src="ai-engine.js"></script>
   <script src="personality-engine.js"></script>
   <script src="share-cards.js"></script>
   <script src="compliance.js"></script>
@@ -4418,7 +3998,7 @@ function generateHexagram(question) {
      */
     let currentChart = null;
     let currentUserAge = 30;
-    let credits = 8; // v2.2: 注册送8点，默认8
+    let credits = 30;
     let selectedPain = { pain1: null, pain2: null, pain3: null };
     let selectedDate = { year: 1990, month: 1, day: 15 };
     let selectedHour = 11;
@@ -5261,11 +4841,6 @@ function generateHexagram(question) {
      */
     function updateCreditsDisplay() {
       document.getElementById('credit-count').textContent = getCredits();
-      const costEl = document.getElementById('deep-reading-cost');
-      if (costEl) {
-        const cost = window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 1;
-        costEl.textContent = '* ' + cost;
-      }
     }
 
     // Initialize
@@ -5281,137 +4856,6 @@ function generateHexagram(question) {
       '火六局': { primary: '#C45B3E', accent: '#E07B5E', name: 'Fire' },
       '土五局': { primary: '#B8860B', accent: '#D8A62B', name: 'Earth' }
     };
-
-    /**
-     * ========== CARD OF THE DAY DATA ==========
-     */
-    const CARDS_OF_THE_DAY = [
-      { id: 'purple_star', name: 'The Emperor', element: 'Fire', fortune: 'great',
-        meaning: 'Leadership beckons today. Your presence carries authority — step into it. The universe aligns behind your decisions.',
-        advice: 'Take the lead in a situation you have been avoiding. Trust your instinct.' },
-      { id: 'celestial_mechanic', name: 'The Strategist', element: 'Wood', fortune: 'good',
-        meaning: 'Your mind is sharper than usual. Hidden connections reveal themselves — pay attention to synchronicities.',
-        advice: 'Write down every idea that comes today. The thread will reveal itself.' },
-      { id: 'solar_radiance', name: 'The Radiant', element: 'Fire', fortune: 'great',
-        meaning: 'Clarity burns bright today. Speak what you see — your words carry weight and warmth.',
-        advice: 'Share your vision with someone who matters. Your light illuminates their path too.' },
-      { id: 'martial_virtue', name: 'The Warrior', element: 'Metal', fortune: 'good',
-        meaning: 'Action today yields rewards tomorrow. The martial energy favors discipline over impulse.',
-        advice: 'Tackle the task you have been postponing. Momentum is on your side.' },
-      { id: 'celestial_harmony', name: 'The Harmonist', element: 'Water', fortune: 'good',
-        meaning: 'Cooperation flows naturally today. Your gentle nature is your greatest strength.',
-        advice: 'Reach out to someone you have been meaning to reconnect with.' },
-      { id: 'righteous_spirit', name: 'The Flame', element: 'Fire', fortune: 'neutral',
-        meaning: 'Passion meets principle today. Emotions run deep — navigate with compassion, not impulse.',
-        advice: 'Pause before reacting. Let the fire illuminate, not burn.' },
-      { id: 'celestial_treasury', name: 'The Guardian', element: 'Earth', fortune: 'good',
-        meaning: 'Stability is your ally today. Resources you have built are ready to serve a larger purpose.',
-        advice: 'Review your assets — time, energy, wealth. One of them is ready to multiply.' },
-      { id: 'lunar_grace', name: 'The Moon', element: 'Water', fortune: 'good',
-        meaning: 'Intuition peaks today. The surface hides depths — look beneath what is shown to you.',
-        advice: 'Trust your first impression about a person or situation.' },
-      { id: 'greedy_wolf', name: 'The Seeker', element: 'Wood', fortune: 'neutral',
-        meaning: 'Desire drives discovery today. Hunger for more is not greed — it is the engine of growth.',
-        advice: 'Channel your ambition into learning something new.' },
-      { id: 'great_gate', name: 'The Gate', element: 'Water', fortune: 'challenging',
-        meaning: 'Words carry extra weight today. The Gate opens both ways — choose what you let out and what you let in.',
-        advice: 'Listen twice as much as you speak. A hidden truth awaits your silence.' },
-      { id: 'celestial_minister', name: 'The Servant', element: 'Earth', fortune: 'good',
-        meaning: 'Service is your power today. Supporting others does not diminish you — it elevates everyone.',
-        advice: 'Offer help without being asked. The gesture will return in unexpected ways.' },
-      { id: 'celestial_beam', name: 'The Protector', element: 'Earth', fortune: 'great',
-        meaning: 'Protection surrounds you today. An ancestor or mentor watches over your steps.',
-        advice: 'Take a risk you have been afraid of. You are being guided.' },
-      { id: 'seven_kills', name: 'The Breaker', element: 'Metal', fortune: 'challenging',
-        meaning: 'Transformation is non-negotiable today. What no longer serves you will break — let it.',
-        advice: 'Release one attachment today. The space it leaves is exactly what you need.' },
-      { id: 'breaker', name: 'The Destroyer', element: 'Metal', fortune: 'challenging',
-        meaning: 'Old structures crumble to make way for the new. Resistance is futile — flow with the destruction.',
-        advice: 'Identify what is ending in your life and thank it. Something better is forming.' },
-      { id: 'heavenly_phoenix', name: 'The Phoenix', element: 'Fire', fortune: 'great',
-        meaning: 'Rebirth energy surrounds you. A chapter is closing — not as loss, but as transformation.',
-        advice: 'Burn one bridge today. The ashes will reveal a path you could not see before.' },
-      { id: 'jade_dragon', name: 'The Dragon', element: 'Wood', fortune: 'great',
-        meaning: 'Power and grace align today. Luck favors the bold — and you have never been more ready.',
-        advice: 'Make the move you have been rehearsing in your mind. The timing is flawless.' },
-      { id: 'silver_fox', name: 'The Fox', element: 'Water', fortune: 'neutral',
-        meaning: 'Cunning serves wisdom today. Not everything needs to be said directly.',
-        advice: 'Use diplomacy, not force. A subtle approach will open doors that brute strength cannot.' },
-      { id: 'golden_tortoise', name: 'The Sage', element: 'Earth', fortune: 'good',
-        meaning: 'Patience is your ally. The tortoise teaches that steady progress outlasts explosive starts.',
-        advice: 'Choose consistency over intensity today. Small steps compound into lasting change.' },
-      { id: 'crimson_phoenix', name: 'The Passion', element: 'Fire', fortune: 'neutral',
-        meaning: 'Creative energy surges. Your heart wants to express — do not let logic silence it.',
-        advice: 'Create something today with no audience in mind. Pure expression heals.' },
-      { id: 'white_tiger', name: 'The Tiger', element: 'Metal', fortune: 'challenging',
-        meaning: 'Fierce energy awakens. Boundaries need to be drawn — with clarity, not aggression.',
-        advice: 'Say no to something today. Your power lies in what you decline, not what you accept.' },
-      { id: 'mystic_serpent', name: 'The Serpent', element: 'Water', fortune: 'neutral',
-        meaning: 'Wisdom slithers in shadows. What you cannot see is more important than what you can.',
-        advice: 'Trust your gut about a hidden agenda. You sense the truth beneath the surface.' },
-      { id: 'celestial_stag', name: 'The Stag', element: 'Wood', fortune: 'good',
-        meaning: 'Gentle strength carries the day. Lead not by force but by presence.',
-        advice: 'Be the calm one in a chaotic situation. Your steadiness anchors others.' }
-    ];
-
-    function getTodayCard() {
-      const today = new Date();
-      const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-      const index = seed % CARDS_OF_THE_DAY.length;
-      return CARDS_OF_THE_DAY[index];
-    }
-
-    function revealCardOfDay() {
-      const card = getTodayCard();
-      const alreadyRevealed = localStorage.getItem('mystic_cod_revealed_' + card.id);
-      
-      if (alreadyRevealed) {
-        // Already revealed today, show directly
-        showCardFront(card);
-        document.getElementById('card-of-day').classList.add('revealed');
-        return;
-      }
-      
-      // Check credits
-      const cost = window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 1;
-      if (getCredits() < cost) {
-        showCreditPurchaseModal();
-        return;
-      }
-      
-      spendCredits(cost);
-      updateCreditsDisplay();
-      localStorage.setItem('mystic_cod_revealed_' + card.id, 'true');
-      showCardFront(card);
-      document.getElementById('card-of-day').classList.add('revealed');
-    }
-    
-    function showCardFront(card) {
-      document.getElementById('cod-star').textContent = '*' + card.name;
-      document.getElementById('cod-element').textContent = 'Element of ' + card.element;
-      
-      const fortuneEl = document.getElementById('cod-fortune');
-      fortuneEl.textContent = card.fortune.charAt(0).toUpperCase() + card.fortune.slice(1) + ' Fortune';
-      fortuneEl.className = 'card-of-day-fortune ' + card.fortune;
-      
-      document.getElementById('cod-meaning').textContent = card.meaning;
-      document.getElementById('cod-advice').textContent = '"' + card.advice + '"';
-    }
-
-    function shareCardOfDay() {
-      const card = getTodayCard();
-      const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-      const shareText = '* ' + card.name + ' *\n' + card.element + '\n' + card.meaning + '\n\n" ' + card.advice + ' "\n\nMystic Zodiac - ' + today;
-      
-      // Try native share, fallback to clipboard
-      if (navigator.share) {
-        navigator.share({ title: 'Today Celestial Card', text: shareText });
-      } else {
-        navigator.clipboard.writeText(shareText).then(function() {
-          showToast('Card copied — share it with the world');
-        });
-      }
-    }
 
     /**
      * ========== ORACLE DATA ==========
@@ -5907,25 +5351,10 @@ Financial wisdom comes from understanding your own patterns around money. What d
       // Reset deep reading visibility
       deepReadingVisible = false;
       document.getElementById('deep-reading-content').classList.remove('visible');
-      document.getElementById('deep-reading-btn').innerHTML = 'Full Oracle Reading <span style="color: var(--purple);">*</span> 3';
+      document.getElementById('deep-reading-btn').innerHTML = 'Deep Oracle Reading <span style="color: var(--purple);">*</span> 3';
 
       // ====== AI 增强：异步调用 deepseek-v4-pro (xiaowen) 生成个性化解读 ======
       enhanceOracleWithAI();
-
-      // ========== CARD OF THE DAY INIT ==========
-      const codEl = document.getElementById('card-of-day');
-      if (codEl) {
-        const card = getTodayCard();
-        const alreadyRevealed = localStorage.getItem('mystic_cod_revealed_' + card.id);
-        if (alreadyRevealed) {
-          showCardFront(card);
-          codEl.classList.add('revealed');
-        } else {
-          codEl.classList.remove('revealed');
-        }
-        // Replace onclick to avoid duplicate bindings
-        codEl.onclick = revealCardOfDay;
-      }
     }
 
     /**
@@ -6014,7 +5443,7 @@ Financial wisdom comes from understanding your own patterns around money. What d
     }
 
     function toggleDeepReading() {
-      if (getCredits() < (window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 3)) {
+      if (getCredits() < 3) {
         showCreditPurchaseModal();
         return;
       }
@@ -6022,10 +5451,10 @@ Financial wisdom comes from understanding your own patterns around money. What d
       deepReadingVisible = !deepReadingVisible;
       const content = document.getElementById('deep-reading-content');
       if (deepReadingVisible) {
-        spendCredits(window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 3);
+        spendCredits(3);
         updateCreditsDisplay();
         content.classList.add('visible');
-        document.getElementById('deep-reading-btn').innerHTML = 'Full Oracle Reading <span style="color: #7BAF7A;">Unlocked</span>';
+        document.getElementById('deep-reading-btn').innerHTML = 'Deep Oracle Reading <span style="color: #7BAF7A;">Unlocked</span>';
 
         // ====== AI 增强：异步生成深度解读，替换硬编码内容 ======
         enhanceDeepReadingWithAI();
@@ -6639,513 +6068,6 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
     });
 
 
-    /**
-     * ========== PALACE NAMES (12宫) ==========
-     */
-    const PALACE_NAMES = {
-      ming: { en: 'Ming Palace', zh: '命宫', desc: 'Core identity, life direction' },
-      sibling: { en: 'Sibling Palace', zh: '兄弟宫', desc: 'Siblings, early peers' },
-      partnership: { en: 'Partnership Palace', zh: '夫妻宫', desc: 'Romance, marriage, partnership' },
-      children: { en: 'Children Palace', zh: '子女宫', desc: 'Creativity, children, investments' },
-      wealth: { en: 'Wealth Palace', zh: '财帛宫', desc: 'Financial destiny, earning style' },
-      health: { en: 'Health Palace', zh: '疾厄宫', desc: 'Health, constitution, wellness' },
-      travel: { en: 'Travel Palace', zh: '迁移宫', desc: 'Travel, relocation, outer luck' },
-      social: { en: 'Social Palace', zh: '交友宫', desc: 'Friends, benefactors, network' },
-      career: { en: 'Career Palace', zh: '官禄宫', desc: 'Career path, public image' },
-      property: { en: 'Property Palace', zh: '田宅宫', desc: 'Real estate, home, stability' },
-      fortune: { en: 'Fortune Palace', zh: '福德宫', desc: 'Inner happiness, spiritual wealth' },
-      parents: { en: 'Parents Palace', zh: '父母宫', desc: 'Parents, elders, ancestry' }
-    };
-
-    /**
-     * ========== SHOW FULL CHART READING ==========
-     */
-    function showFullChartReading() {
-      var cost = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_COST_FULL_CHART : 12;
-      if (getCredits() < cost) {
-        showCreditPurchaseModal();
-        return;
-      }
-      spendCredits(cost);
-      updateCreditsDisplay();
-
-      showScreen('full-chart-screen');
-      document.getElementById('full-chart-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-      document.getElementById('full-chart-loading').style.display = 'block';
-      document.getElementById('full-chart-content').style.display = 'none';
-      document.getElementById('full-chart-error').style.display = 'none';
-
-      // Try DeepSeek API first
-      if (window.AIEngine && currentChart) {
-        var chartData = currentChart;
-        var userData = {
-          name: document.getElementById('chart-user-name') ? document.getElementById('chart-user-name').textContent.replace('Your Cosmic Blueprint', '').trim() || 'Seeker' : 'Seeker',
-          mainStar: chartData.mingGongMainStar || 'Purple Star',
-          bureau: chartData.fiveElementBureau || 'Water Bureau',
-          mingGong: 'Ming Palace',
-          mingStars: getPalaceStars(chartData, 0),
-          siblingStars: getPalaceStars(chartData, 1),
-          partnershipStars: getPalaceStars(chartData, 2),
-          childrenStars: getPalaceStars(chartData, 3),
-          wealthStars: getPalaceStars(chartData, 4),
-          healthStars: getPalaceStars(chartData, 5),
-          travelStars: getPalaceStars(chartData, 6),
-          socialStars: getPalaceStars(chartData, 7),
-          careerStars: getPalaceStars(chartData, 8),
-          propertyStars: getPalaceStars(chartData, 9),
-          fortuneStars: getPalaceStars(chartData, 10),
-          parentsStars: getPalaceStars(chartData, 11),
-          lu: chartData.sihua ? (chartData.sihua.lu || 'None') : 'None',
-          quan: chartData.sihua ? (chartData.sihua.quan || 'None') : 'None',
-          ke: chartData.sihua ? (chartData.sihua.ke || 'None') : 'None',
-          ji: chartData.sihua ? (chartData.sihua.ji || 'None') : 'None',
-          shenGong: 'Life Palace'
-        };
-
-        window.AIEngine.generateFullChartReading(userData).then(function(result) {
-          if (result && result.palaces) {
-            renderFullChartResult(result);
-          } else {
-            renderFullChartFallback();
-          }
-        }).catch(function() {
-          renderFullChartFallback();
-        });
-      } else {
-        renderFullChartFallback();
-      }
-    }
-
-    function getPalaceStars(chart, index) {
-      if (!chart || !chart.palaces || !chart.palaces[index]) return 'None';
-      var palace = chart.palaces[index];
-      var stars = [];
-      if (palace.mainStars) stars = stars.concat(palace.mainStars);
-      if (palace.assistantStars) stars = stars.concat(palace.assistantStars);
-      return stars.length > 0 ? stars.join(', ') : 'None';
-    }
-
-    function renderFullChartResult(result) {
-      document.getElementById('full-chart-loading').style.display = 'none';
-      document.getElementById('full-chart-content').style.display = 'block';
-
-      document.getElementById('full-chart-overview-text').textContent = result.overview || 'The stars reveal a complex and beautiful chart...';
-      document.getElementById('full-chart-key-theme').textContent = '"' + (result.keyTheme || 'A journey of cosmic alignment.') + '"';
-      
-      if (result.classicalText) {
-        document.getElementById('full-chart-classical-zh').textContent = result.classicalText;
-        document.getElementById('full-chart-classical-en').textContent = result.classicalTranslation || '';
-      }
-
-      var container = document.getElementById('full-chart-palaces');
-      container.innerHTML = '';
-      
-      var palaceKeys = ['ming', 'sibling', 'partnership', 'children', 'wealth', 'health', 'travel', 'social', 'career', 'property', 'fortune', 'parents'];
-      
-      result.palaces.forEach(function(palace, i) {
-        var key = palaceKeys[i] || 'ming';
-        var nameInfo = PALACE_NAMES[key] || { zh: '', desc: '' };
-        var card = document.createElement('div');
-        card.className = 'palace-reading-card';
-        card.style.animationDelay = (i * 0.05) + 's';
-        card.innerHTML = 
-          '<div class="palace-name">' +
-            '<span class="en">' + palace.name + '</span>' +
-            '<span class="zh">' + (palace.chinese || nameInfo.zh) + '</span>' +
-          '</div>' +
-          '<div class="palace-stars">' + (palace.stars || '') + '</div>' +
-          '<div class="palace-text">' + (palace.interpretation || '') + '</div>';
-        container.appendChild(card);
-      });
-    }
-
-    function renderFullChartFallback() {
-      document.getElementById('full-chart-loading').style.display = 'none';
-      document.getElementById('full-chart-content').style.display = 'block';
-      
-      document.getElementById('full-chart-overview-text').textContent = 'Your chart reveals a profound cosmic pattern. The 12 palaces each hold a piece of your destiny, like chapters in a celestial book. Today, the stars are quiet in their details, but their overall message is clear: you are on a path of growth and discovery.';
-      document.getElementById('full-chart-key-theme').textContent = '"Every star in your chart tells a story of potential and purpose."';
-      
-      if (currentChart && currentChart.palaces) {
-        var container = document.getElementById('full-chart-palaces');
-        container.innerHTML = '';
-        
-        var palaceKeys = ['ming', 'sibling', 'partnership', 'children', 'wealth', 'health', 'travel', 'social', 'career', 'property', 'fortune', 'parents'];
-        var fallbackTexts = [
-          'Your life path is marked by strong leadership potential and inner wisdom.',
-          'Relationships with siblings bring valuable life lessons and support.',
-          'The Partnership Palace holds promise for deep, meaningful connections.',
-          'Creative energy flows through you—channel it with purpose.',
-          'Your approach to wealth is thoughtful and strategic.',
-          'Health and vitality are strongly influenced by your elemental balance.',
-          'Travel and new horizons bring transformative experiences.',
-          'Your social circle reflects your inner values and aspirations.',
-          'Career success comes through persistence and authentic expression.',
-          'Home and stability are your anchors in times of change.',
-          'Spiritual fulfillment comes from within—trust your inner compass.',
-          'Your foundation is shaped by wisdom passed through generations.'
-        ];
-
-        palaceKeys.forEach(function(key, i) {
-          var palace = currentChart.palaces[i];
-          var nameInfo = PALACE_NAMES[key] || { zh: '', desc: '' };
-          var palaceName = palace ? (palace.name || nameInfo.en) : nameInfo.en;
-          var stars = palace ? getPalaceStars(currentChart, i) : 'None';
-          
-          var card = document.createElement('div');
-          card.className = 'palace-reading-card';
-          card.style.animationDelay = (i * 0.05) + 's';
-          card.innerHTML = 
-            '<div class="palace-name">' +
-              '<span class="en">' + palaceName + '</span>' +
-              '<span class="zh">' + nameInfo.zh + '</span>' +
-            '</div>' +
-            '<div class="palace-stars">' + stars + '</div>' +
-            '<div class="palace-text">' + (fallbackTexts[i] || 'The stars in this palace speak of growth and potential.') + '</div>';
-          container.appendChild(card);
-        });
-      }
-    }
-
-    /**
-     * ========== SHOW MONTHLY GUIDE ==========
-     */
-    function showMonthlyGuide() {
-      showScreen('monthly-guide-screen');
-      
-      // Populate month selector
-      var monthSelect = document.getElementById('month-guide-month');
-      if (monthSelect.options.length === 0) {
-        var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        var now = new Date();
-        var currentMonth = now.getMonth();
-        for (var m = 0; m < 4; m++) {
-          var monthIdx = (currentMonth + m) % 12;
-          var year = now.getFullYear() + Math.floor((currentMonth + m) / 12);
-          monthSelect.innerHTML += '<option value="' + (monthIdx + 1) + '" data-year="' + year + '">' + monthNames[monthIdx] + ' ' + year + '</option>';
-        }
-      }
-      
-      requestMonthlyGuide();
-    }
-
-    function requestMonthlyGuide() {
-      var cost = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_COST_MONTHLY_GUIDE : 10;
-      if (getCredits() < cost) {
-        showCreditPurchaseModal();
-        return;
-      }
-      spendCredits(cost);
-      updateCreditsDisplay();
-
-      var monthSelect = document.getElementById('month-guide-month');
-      var month = parseInt(monthSelect.value);
-      var year = parseInt(monthSelect.options[monthSelect.selectedIndex].getAttribute('data-year'));
-
-      document.getElementById('monthly-guide-loading').style.display = 'block';
-      document.getElementById('monthly-guide-content').style.display = 'none';
-
-      if (window.AIEngine && currentChart) {
-        var userData = {
-          name: 'Seeker',
-          mainStar: currentChart.mingGongMainStar || 'Purple Star',
-          bureau: currentChart.fiveElementBureau || 'Water Bureau',
-          mingGong: 'Ming Palace',
-          careerStars: getPalaceStars(currentChart, 8),
-          wealthStars: getPalaceStars(currentChart, 4),
-          partnershipStars: getPalaceStars(currentChart, 2),
-          lu: currentChart.sihua ? (currentChart.sihua.lu || 'None') : 'None',
-          quan: currentChart.sihua ? (currentChart.sihua.quan || 'None') : 'None',
-          ke: currentChart.sihua ? (currentChart.sihua.ke || 'None') : 'None',
-          ji: currentChart.sihua ? (currentChart.sihua.ji || 'None') : 'None'
-        };
-
-        window.AIEngine.generateMonthlyGuide(userData, month, year).then(function(result) {
-          if (result) {
-            renderMonthlyGuide(result);
-          } else {
-            renderMonthlyGuideFallback(month, year);
-          }
-        }).catch(function() {
-          renderMonthlyGuideFallback(month, year);
-        });
-      } else {
-        renderMonthlyGuideFallback(month, year);
-      }
-    }
-
-    function renderMonthlyGuide(result) {
-      document.getElementById('monthly-guide-loading').style.display = 'none';
-      document.getElementById('monthly-guide-content').style.display = 'block';
-
-      document.getElementById('monthly-keyword').textContent = (result.keyword || 'Transformation').toUpperCase();
-      document.getElementById('monthly-energy').textContent = '"' + (result.energyPhrase || 'A month of cosmic shifts.') + '"';
-      document.getElementById('monthly-overview').textContent = result.overview || '';
-
-      if (result.luckyElements) {
-        document.getElementById('monthly-lucky-direction').textContent = result.luckyElements.direction || '--';
-        document.getElementById('monthly-lucky-color').textContent = result.luckyElements.color || '--';
-        document.getElementById('monthly-lucky-number').textContent = result.luckyElements.number || '--';
-      }
-      document.getElementById('monthly-watch-palace').textContent = result.watchPalace || '--';
-      document.getElementById('monthly-classical').textContent = result.classicalAdvice ? '"' + result.classicalAdvice + '"' : '';
-
-      var weeksContainer = document.getElementById('monthly-weeks');
-      weeksContainer.innerHTML = '';
-
-      if (result.weeks && result.weeks.length > 0) {
-        result.weeks.forEach(function(week, i) {
-          var card = document.createElement('div');
-          card.className = 'week-card';
-          card.style.animationDelay = (i * 0.1) + 's';
-          card.innerHTML = 
-            '<div class="week-header">' +
-              '<span class="week-name">' + (week.week || 'Week ' + (i + 1)) + '</span>' +
-            '</div>' +
-            '<div class="week-focus">' + (week.focus || '') + '</div>' +
-            '<div class="week-advice">' + (week.advice || '') + '</div>' +
-            (week.highlight ? '<div class="week-highlight">* ' + week.highlight + '</div>' : '');
-          weeksContainer.appendChild(card);
-        });
-      }
-    }
-
-    function renderMonthlyGuideFallback(month, year) {
-      document.getElementById('monthly-guide-loading').style.display = 'none';
-      document.getElementById('monthly-guide-content').style.display = 'block';
-
-      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      document.getElementById('monthly-keyword').textContent = 'TRANSFORMATION';
-      document.getElementById('monthly-energy').textContent = '"The celestial tides are shifting in your favor."';
-      document.getElementById('monthly-overview').textContent = monthNames[month - 1] + ' ' + year + ' brings a focus on inner growth and outer alignment. The stars encourage you to trust your path while staying open to unexpected opportunities.';
-      
-      document.getElementById('monthly-lucky-direction').textContent = 'Northeast';
-      document.getElementById('monthly-lucky-color').textContent = 'Purple';
-      document.getElementById('monthly-lucky-number').textContent = '7';
-      document.getElementById('monthly-watch-palace').textContent = 'Wealth Palace';
-      document.getElementById('monthly-classical').textContent = '"When the wind changes, adjust your sails — the stars favor those who move with grace."';
-
-      var weeksContainer = document.getElementById('monthly-weeks');
-      weeksContainer.innerHTML = '';
-      var weekData = [
-        { week: 'Week 1', focus: 'Setting the Tone', advice: 'Focus on clearing mental clutter and setting intentions for the month ahead. The first week sets the foundation.' },
-        { week: 'Week 2', focus: 'Action and Alignment', advice: 'Take concrete steps toward your goals. The stars favor bold but thoughtful moves this week.' },
-        { week: 'Week 3', focus: 'Deep Reflection', advice: 'A good time to reassess relationships and partnerships. Listen more than you speak.' },
-        { week: 'Week 4', focus: 'Integration', advice: 'Bring together what you have learned. Prepare for the next cycle with wisdom from this one.' }
-      ];
-
-      weekData.forEach(function(w, i) {
-        var card = document.createElement('div');
-        card.className = 'week-card';
-        card.style.animationDelay = (i * 0.1) + 's';
-        card.innerHTML = 
-          '<div class="week-header">' +
-            '<span class="week-name">' + w.week + '</span>' +
-          '</div>' +
-          '<div class="week-focus">' + w.focus + '</div>' +
-          '<div class="week-advice">' + w.advice + '</div>';
-        weeksContainer.appendChild(card);
-      });
-    }
-
-    /**
-     * ========== SHOW PAST LIFE INSIGHT ==========
-     */
-    function showPastLife() {
-      var cost = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_COST_PAST_LIFE : 4;
-      if (getCredits() < cost) {
-        showCreditPurchaseModal();
-        return;
-      }
-      spendCredits(cost);
-      updateCreditsDisplay();
-
-      showScreen('past-life-screen');
-      document.getElementById('past-life-loading').style.display = 'block';
-      document.getElementById('past-life-content').style.display = 'none';
-
-      if (window.AIEngine && currentChart) {
-        var userData = {
-          name: 'Seeker',
-          mainStar: currentChart.mingGongMainStar || 'Purple Star',
-          bureau: currentChart.fiveElementBureau || 'Water Bureau',
-          mingStars: getPalaceStars(currentChart, 0),
-          fortuneStars: getPalaceStars(currentChart, 10),
-          lu: currentChart.sihua ? (currentChart.sihua.lu || 'None') : 'None',
-          quan: currentChart.sihua ? (currentChart.sihua.quan || 'None') : 'None',
-          ke: currentChart.sihua ? (currentChart.sihua.ke || 'None') : 'None',
-          ji: currentChart.sihua ? (currentChart.sihua.ji || 'None') : 'None'
-        };
-
-        window.AIEngine.generatePastLifeInsight(userData).then(function(result) {
-          if (result && result.pastLifeTitle) {
-            renderPastLifeResult(result);
-          } else {
-            renderPastLifeFallback();
-          }
-        }).catch(function() {
-          renderPastLifeFallback();
-        });
-      } else {
-        renderPastLifeFallback();
-      }
-    }
-
-    function renderPastLifeResult(result) {
-      document.getElementById('past-life-loading').style.display = 'none';
-      document.getElementById('past-life-content').style.display = 'block';
-
-      document.getElementById('past-life-title').textContent = result.pastLifeTitle || 'The Forgotten Path';
-      document.getElementById('past-life-era').textContent = result.era || 'Ancient Times';
-      document.getElementById('past-life-identity').textContent = result.identity || 'A Seeker of Truth';
-      document.getElementById('past-life-story').textContent = result.story || 'The threads of time reveal glimpses of a life once lived...';
-      document.getElementById('past-life-relevance').textContent = result.whyStillRelevant || 'This past life echoes in your present through patterns you have carried forward.';
-      document.getElementById('past-life-lesson').textContent = '"' + (result.lesson || 'Every life teaches something the next one needs to remember.') + '"';
-      document.getElementById('past-life-connection').textContent = result.presentConnection || 'Certain fears and talents in this life have roots in experiences from before.';
-    }
-
-    function renderPastLifeFallback() {
-      document.getElementById('past-life-loading').style.display = 'none';
-      document.getElementById('past-life-content').style.display = 'block';
-
-      var fallbacks = [
-        { title: 'The Silk Road Scholar', era: 'Tang Dynasty (618-907 AD)', identity: 'A Keeper of Ancient Texts',
-          story: 'In a life lived among the ancient scrolls of the Silk Road, you were a scholar-monk who preserved wisdom texts through turbulent times. Your days were spent in quiet contemplation, translating celestial observations into the language of men. The stars were your constant companions, guiding merchants and rulers alike.',
-          relevance: 'Your current love for patterns and hidden meanings comes from this lifetime of decoding ancient knowledge.',
-          lesson: 'Knowledge preserved is knowledge that transforms. What you learn today will guide others tomorrow.',
-          connection: 'You feel an inexplicable pull toward old books, maps, or star charts - an echo from this past life.' }
-      ];
-
-      var fb = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-      document.getElementById('past-life-title').textContent = fb.title;
-      document.getElementById('past-life-era').textContent = fb.era;
-      document.getElementById('past-life-identity').textContent = fb.identity;
-      document.getElementById('past-life-story').textContent = fb.story;
-      document.getElementById('past-life-relevance').textContent = fb.relevance;
-      document.getElementById('past-life-lesson').textContent = '"' + fb.lesson + '"';
-      document.getElementById('past-life-connection').textContent = fb.connection;
-    }
-
-    /**
-     * ========== SHOW SOULMATE DEEP DIVE ==========
-     */
-    function showSoulmateDeepDive() {
-      var cost = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_COST_SOULMATE : 6;
-      if (getCredits() < cost) {
-        showCreditPurchaseModal();
-        return;
-      }
-      spendCredits(cost);
-      updateCreditsDisplay();
-
-      var existingName = document.getElementById('soulmate-archetype').textContent;
-      if (existingName && existingName !== '--') {
-        showScreen('soulmate-screen');
-        showToast('Deep Dive unlocked! Scroll for more insights.');
-        
-        var wisdomBtn = document.querySelector('#soulmate-screen .seal-wisdom-btn');
-        if (wisdomBtn && !document.getElementById('soulmate-deep-dive-section')) {
-          var deepDiv = document.createElement('div');
-          deepDiv.id = 'soulmate-deep-dive-section';
-          deepDiv.style.marginTop = '20px';
-          deepDiv.innerHTML = '<div id="soulmate-deep-loading" style="text-align:center; padding:20px;">Consulting the Partnership Palace deeply...</div>' +
-            '<div id="soulmate-deep-content" style="display:none;">' +
-              '<div class="soulmate-section"><div class="soulmate-section-title">Love Archetype</div><div id="soulmate-love-archetype" style="color:var(--gold);"></div></div>' +
-              '<div class="soulmate-section"><div class="soulmate-section-title">Core Desire</div><div id="soulmate-core-desire" style="color:var(--text-secondary); line-height:1.6;"></div></div>' +
-              '<div class="soulmate-section"><div class="soulmate-section-title">Strengths in Love</div><div id="soulmate-strengths" style="display:flex; flex-wrap:wrap; gap:8px;"></div></div>' +
-              '<div class="soulmate-section"><div class="soulmate-section-title">Challenges</div><div id="soulmate-challenges" style="color:var(--text-secondary);"></div></div>' +
-              '<div class="soulmate-section"><div class="soulmate-section-title">Your Ideal Partner</div><div id="soulmate-partner-profile" style="color:var(--text-secondary); line-height:1.6;"></div></div>' +
-              '<div class="soulmate-section"><div class="soulmate-section-title">Timing Insight</div><div id="soulmate-timing-insight" style="color:var(--purple); font-style:italic;"></div></div>' +
-              '<div class="soulmate-section"><div class="soulmate-section-title">Ancient Wisdom</div><div id="soulmate-deep-wisdom" style="color:var(--gold); font-family:var(--font-classical); font-style:italic;"></div></div>' +
-            '</div>';
-          wisdomBtn.parentNode.insertBefore(deepDiv, wisdomBtn);
-        }
-
-        if (window.AIEngine && currentChart) {
-          var userData = {
-            name: 'Seeker',
-            partnershipPalace: currentChart.palaces && currentChart.palaces[2] ? (currentChart.palaces[2].name || 'Partnership Palace') : 'Partnership Palace',
-            partnershipStars: getPalaceStars(currentChart, 2),
-            mainStar: currentChart.mingGongMainStar || 'Purple Star',
-            bureau: currentChart.fiveElementBureau || 'Water Bureau',
-            lu: currentChart.sihua ? (currentChart.sihua.lu || 'None') : 'None',
-            quan: currentChart.sihua ? (currentChart.sihua.quan || 'None') : 'None',
-            ke: currentChart.sihua ? (currentChart.sihua.ke || 'None') : 'None',
-            ji: currentChart.sihua ? (currentChart.sihua.ji || 'None') : 'None',
-            mingGong: 'Ming Palace'
-          };
-
-          window.AIEngine.generateSoulmateDeepDive(userData).then(function(result) {
-            if (result) {
-              renderSoulmateDeepDive(result);
-            }
-          }).catch(function() {});
-        }
-      } else {
-        showSoulmatePortrait();
-      }
-    }
-
-    function renderSoulmateDeepDive(result) {
-      var loadingEl = document.getElementById('soulmate-deep-loading');
-      var contentEl = document.getElementById('soulmate-deep-content');
-      if (loadingEl) loadingEl.style.display = 'none';
-      if (contentEl) contentEl.style.display = 'block';
-
-      var archetypeEl = document.getElementById('soulmate-love-archetype');
-      if (archetypeEl) archetypeEl.textContent = result.loveArchetype || 'The Guardian';
-      
-      var desireEl = document.getElementById('soulmate-core-desire');
-      if (desireEl) desireEl.textContent = result.coreDesire || 'To find a love that feels like coming home.';
-
-      if (result.loveStrengths) {
-        var strengthsEl = document.getElementById('soulmate-strengths');
-        if (strengthsEl) {
-          strengthsEl.innerHTML = '';
-          result.loveStrengths.forEach(function(s) {
-            strengthsEl.innerHTML += '<span class="trait-tag">' + s + '</span>';
-          });
-        }
-      }
-
-      var challengesEl = document.getElementById('soulmate-challenges');
-      if (challengesEl && result.loveChallenges) {
-        challengesEl.innerHTML = result.loveChallenges.map(function(c) { return '<div style="margin-bottom:4px;">* ' + c + '</div>'; }).join('');
-      }
-
-      var partnerEl = document.getElementById('soulmate-partner-profile');
-      if (partnerEl) partnerEl.textContent = result.partnerProfile || 'The stars see someone who matches your depth and curiosity.';
-
-      var timingEl = document.getElementById('soulmate-timing-insight');
-      if (timingEl) timingEl.textContent = result.timingInsight ? '"' + result.timingInsight + '"' : 'The stars suggest a significant chapter is unfolding.';
-
-      var wisdomEl = document.getElementById('soulmate-deep-wisdom');
-      if (wisdomEl) wisdomEl.textContent = result.classicalWisdom ? '"' + result.classicalWisdom + '"' : '';
-    }
-
-    /**
-     * ========== SHARE FUNCTIONS ==========
-     */
-    function shareFullChartCard() {
-      showToast('Share card coming soon!');
-    }
-
-    function shareMonthlyGuide() {
-      showToast('Share card coming soon!');
-    }
-
-    function sharePastLifeCard() {
-      var title = document.getElementById('past-life-title').textContent;
-      var era = document.getElementById('past-life-era').textContent;
-      var story = document.getElementById('past-life-story').textContent;
-      var shareText = 'My Past Life: ' + title + ' (' + era + ') - ' + story.substring(0, 100) + '...';
-
-      if (navigator.share) {
-        navigator.share({ title: 'Mystic Fate - Past Life Insight', text: shareText });
-      } else {
-        showToast('Share: ' + shareText);
-      }
-    }
 
 </script>
 </body>

@@ -207,7 +207,166 @@ Requirements:
 - Score should reflect harmony of elements and stars
 - Reference specific compatibility factors
 - Be honest about challenges but positive
-- Classical text should be authentic`
+- Classical text should be authentic`,
+
+  fullChartReading: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a complete 12-palace life chart reading.
+
+## User's Chart
+- Name: {name}
+- Main Star: {mainStar}
+- Five Element Bureau: {bureau}
+- Ming Palace (命宫): {mingGong} with {mingStars}
+- Sibling Palace (兄弟宫): {siblingStars}
+- Partnership Palace (夫妻宫): {partnershipStars}
+- Children Palace (子女宫): {childrenStars}
+- Wealth Palace (财帛宫): {wealthStars}
+- Health Palace (疾厄宫): {healthStars}
+- Travel Palace (迁移宫): {travelStars}
+- Social Palace (交友宫): {socialStars}
+- Career Palace (官禄宫): {careerStars}
+- Property Palace (田宅宫): {propertyStars}
+- Fortune Palace (福德宫): {fortuneStars}
+- Parents Palace (父母宫): {parentsStars}
+- Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
+- Life Palace (身宫): {shenGong}
+
+## Response Format (JSON)
+{
+  "overview": "One paragraph life overview based on the chart (2-3 sentences)",
+  "palaces": [
+    {
+      "name": "Ming Palace",
+      "chinese": "命宫",
+      "stars": "Purple Star, Tian Fu",
+      "interpretation": "Detailed interpretation of this palace (2-3 sentences)"
+    },
+    ... (all 12 palaces)
+  ],
+  "keyTheme": "One sentence summarizing the chart's most important message",
+  "classicalText": "Classical Chinese text about the chart configuration",
+  "classicalTranslation": "English translation of the classical text"
+}
+
+Requirements:
+- Each palace interpretation must be unique and specific
+- Reference actual stars in each palace
+- Keep interpretations grounded and insightful, not generic fortune-telling
+- Use "the stars suggest" / "the chart indicates" language
+- Under 500 words total
+- Classical text should feel authentic to Chinese astrology tradition`,
+
+  monthlyGuide: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a monthly fortune guide based on the user's birth chart.
+
+## User's Chart
+- Name: {name}
+- Main Star: {mainStar}
+- Five Element Bureau: {bureau}
+- Ming Palace: {mingGong}
+- Career Palace: {careerStars}
+- Wealth Palace: {wealthStars}
+- Partnership Palace: {partnershipStars}
+- Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
+
+## Month
+{month} {year}
+
+## Response Format (JSON)
+{
+  "keyword": "One-word keyword for the month",
+  "energyPhrase": "A poetic phrase describing the month's energy",
+  "overview": "2-3 sentence monthly overview",
+  "weeks": [
+    {
+      "week": "Week 1",
+      "focus": "Main focus for this week",
+      "advice": "Specific advice for this week",
+      "highlight": "One key opportunity this week"
+    },
+    {
+      "week": "Week 2",
+      ...
+    },
+    {
+      "week": "Week 3",
+      ...
+    },
+    {
+      "week": "Week 4",
+      ...
+    }
+  ],
+  "luckyElements": {
+    "direction": "Direction name",
+    "color": "Color name",
+    "number": "A number"
+  },
+  "watchPalace": "Which palace needs attention this month",
+  "classicalAdvice": "Ancient wisdom for this month"
+}
+
+Requirements:
+- Be specific about dates and timing
+- Connect to the user's actual palace activations
+- Practical and actionable advice
+- Under 400 words total`,
+
+  pastLifeInsight: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a past life insight based on the user's birth chart.
+
+## User's Chart
+- Name: {name}
+- Main Star: {mainStar}
+- Five Element Bureau: {bureau}
+- Ming Palace Stars: {mingStars}
+- Fortune Palace: {fortuneStars}
+- Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
+
+## Response Format (JSON)
+{
+  "pastLifeTitle": "A compelling title like 'The Silk Road Scholar' or 'The Jade General'",
+  "era": "Historical era/dynasty (e.g., Tang Dynasty, Warring States Period)",
+  "identity": "What they were in that life (2-3 words)",
+  "story": "A 3-4 sentence narrative of the past life, vivid and specific",
+  "whyStillRelevant": "How this past life connects to their current personality or situation (2 sentences)",
+  "lesson": "What lesson from that life carries over to this one",
+  "presentConnection": "One specific current trait/habit that echoes from the past life"
+}
+
+Requirements:
+- Make it feel personal and specific to the chart
+- Reference actual star energies (e.g., Purple Star → imperial connection)
+- The story should be engaging and shareable
+- Connect past life strengths/weaknesses to current life patterns
+- Keep it positive or neutral in tone`,
+
+  soulmateDeepDive: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a deep soulmate analysis based on the user's Partnership Palace.
+
+## User's Chart
+- Name: {name}
+- Partnership Palace: {partnershipPalace}
+- Partnership Stars: {partnershipStars}
+- Main Star: {mainStar}
+- Five Element Bureau: {bureau}
+- Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
+- Ming Palace: {mingGong}
+
+## Response Format (JSON)
+{
+  "loveArchetype": "Their archetype in relationships (e.g., The Guardian, The Seeker)",
+  "coreDesire": "What they truly seek in a partner (1-2 sentences)",
+  "loveStrengths": ["Strength 1", "Strength 2", "Strength 3"],
+  "loveChallenges": ["Challenge 1", "Challenge 2"],
+  "partnerProfile": "Description of their ideal partner based on the stars (2-3 sentences)",
+  "timingInsight": "When the stars suggest a significant romantic chapter may unfold",
+  "deeperConnection": "How to move from surface to soul-level connection",
+  "classicalWisdom": "Ancient Chinese wisdom about their relationship path"
+}
+
+Requirements:
+- Reference the Partnership Palace stars specifically
+- Be poetic but grounded
+- Avoid generic matchmaking language
+- Use "the stars indicate" not "you will definitely"
+- Keep under 400 words`
 };
 
 // ==================== 核心函数 ====================
@@ -504,6 +663,174 @@ function enhanceDailyWhisper(aiResult, userData) {
   };
 }
 
+/**
+ * 生成命盘全解（12宫）
+ */
+async function generateFullChartReading(userData) {
+  const cacheKey = 'full_chart_' + userData.name + '_' + new Date().toDateString();
+  
+  if (AI_CONFIG.cacheEnabled) {
+    const cached = AI_CONFIG.cache.get(cacheKey);
+    if (cached) return cached;
+  }
+
+  const prompt = PROMPT_TEMPLATES.fullChartReading
+    .replace('{name}', userData.name || 'Seeker')
+    .replace('{mainStar}', userData.mainStar || 'Purple Star')
+    .replace('{bureau}', userData.bureau || 'Water Bureau')
+    .replace('{mingGong}', userData.mingGong || 'Life Palace')
+    .replace('{mingStars}', userData.mingStars || 'Purple Star, Tian Fu')
+    .replace('{siblingStars}', userData.siblingStars || 'None')
+    .replace('{partnershipStars}', userData.partnershipStars || 'Tian Tong')
+    .replace('{childrenStars}', userData.childrenStars || 'None')
+    .replace('{wealthStars}', userData.wealthStars || 'Wu Qu')
+    .replace('{healthStars}', userData.healthStars || 'None')
+    .replace('{travelStars}', userData.travelStars || 'None')
+    .replace('{socialStars}', userData.socialStars || 'None')
+    .replace('{careerStars}', userData.careerStars || 'Zi Wei')
+    .replace('{propertyStars}', userData.propertyStars || 'None')
+    .replace('{fortuneStars}', userData.fortuneStars || 'None')
+    .replace('{parentsStars}', userData.parentsStars || 'None')
+    .replace('{lu}', userData.lu || 'None')
+    .replace('{quan}', userData.quan || 'None')
+    .replace('{ke}', userData.ke || 'None')
+    .replace('{ji}', userData.ji || 'None')
+    .replace('{shenGong}', userData.shenGong || 'Life Palace');
+
+  try {
+    const content = await callDeepSeekAPI(prompt);
+    const result = parseJSONResponse(content);
+    
+    if (AI_CONFIG.cacheEnabled && result) {
+      AI_CONFIG.cache.set(cacheKey, result);
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('Error generating full chart reading:', error);
+    return generateFallbackResponse(prompt);
+  }
+}
+
+/**
+ * 生成月运趋势
+ */
+async function generateMonthlyGuide(userData, month, year) {
+  const cacheKey = 'monthly_' + userData.name + '_' + month + '_' + year;
+  
+  if (AI_CONFIG.cacheEnabled) {
+    const cached = AI_CONFIG.cache.get(cacheKey);
+    if (cached) return cached;
+  }
+
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const monthName = monthNames[month - 1] || 'January';
+
+  const prompt = PROMPT_TEMPLATES.monthlyGuide
+    .replace('{name}', userData.name || 'Seeker')
+    .replace('{mainStar}', userData.mainStar || 'Purple Star')
+    .replace('{bureau}', userData.bureau || 'Water Bureau')
+    .replace('{mingGong}', userData.mingGong || 'Life Palace')
+    .replace('{careerStars}', userData.careerStars || 'Zi Wei')
+    .replace('{wealthStars}', userData.wealthStars || 'Wu Qu')
+    .replace('{partnershipStars}', userData.partnershipStars || 'Tian Tong')
+    .replace('{lu}', userData.lu || 'None')
+    .replace('{quan}', userData.quan || 'None')
+    .replace('{ke}', userData.ke || 'None')
+    .replace('{ji}', userData.ji || 'None')
+    .replace('{month}', monthName)
+    .replace('{year}', year || '2026');
+
+  try {
+    const content = await callDeepSeekAPI(prompt);
+    const result = parseJSONResponse(content);
+    
+    if (AI_CONFIG.cacheEnabled && result) {
+      AI_CONFIG.cache.set(cacheKey, result);
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('Error generating monthly guide:', error);
+    return generateFallbackResponse(prompt);
+  }
+}
+
+/**
+ * 生成前世回响
+ */
+async function generatePastLifeInsight(userData) {
+  const cacheKey = 'past_life_' + userData.name;
+  
+  if (AI_CONFIG.cacheEnabled) {
+    const cached = AI_CONFIG.cache.get(cacheKey);
+    if (cached) return cached;
+  }
+
+  const prompt = PROMPT_TEMPLATES.pastLifeInsight
+    .replace('{name}', userData.name || 'Seeker')
+    .replace('{mainStar}', userData.mainStar || 'Purple Star')
+    .replace('{bureau}', userData.bureau || 'Water Bureau')
+    .replace('{mingStars}', userData.mingStars || 'Purple Star')
+    .replace('{fortuneStars}', userData.fortuneStars || 'None')
+    .replace('{lu}', userData.lu || 'None')
+    .replace('{quan}', userData.quan || 'None')
+    .replace('{ke}', userData.ke || 'None')
+    .replace('{ji}', userData.ji || 'None');
+
+  try {
+    const content = await callDeepSeekAPI(prompt);
+    const result = parseJSONResponse(content);
+    
+    if (AI_CONFIG.cacheEnabled && result) {
+      AI_CONFIG.cache.set(cacheKey, result);
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('Error generating past life insight:', error);
+    return generateFallbackResponse(prompt);
+  }
+}
+
+/**
+ * 生成关系深度解读
+ */
+async function generateSoulmateDeepDive(userData) {
+  const cacheKey = 'soulmate_deep_' + userData.name + '_' + new Date().toDateString();
+  
+  if (AI_CONFIG.cacheEnabled) {
+    const cached = AI_CONFIG.cache.get(cacheKey);
+    if (cached) return cached;
+  }
+
+  const prompt = PROMPT_TEMPLATES.soulmateDeepDive
+    .replace('{name}', userData.name || 'Seeker')
+    .replace('{partnershipPalace}', userData.partnershipPalace || 'Partnership Palace')
+    .replace('{partnershipStars}', userData.partnershipStars || 'Tian Tong')
+    .replace('{mainStar}', userData.mainStar || 'Purple Star')
+    .replace('{bureau}', userData.bureau || 'Water Bureau')
+    .replace('{lu}', userData.lu || 'None')
+    .replace('{quan}', userData.quan || 'None')
+    .replace('{ke}', userData.ke || 'None')
+    .replace('{ji}', userData.ji || 'None')
+    .replace('{mingGong}', userData.mingGong || 'Life Palace');
+
+  try {
+    const content = await callDeepSeekAPI(prompt);
+    const result = parseJSONResponse(content);
+    
+    if (AI_CONFIG.cacheEnabled && result) {
+      AI_CONFIG.cache.set(cacheKey, result);
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('Error generating soulmate deep dive:', error);
+    return generateFallbackResponse(prompt);
+  }
+}
+
 // ==================== 导出 ====================
 
 if (typeof window !== 'undefined') {
@@ -513,6 +840,10 @@ if (typeof window !== 'undefined') {
     generateChartInterpretation,
     generateSoulmatePortrait,
     generateCompatibilityReading,
+    generateFullChartReading,
+    generateMonthlyGuide,
+    generatePastLifeInsight,
+    generateSoulmateDeepDive,
     enhanceDailyWhisper,
     callDeepSeekAPI,
     PROMPT_TEMPLATES,
