@@ -4597,6 +4597,95 @@ function generateHexagram(question) {
       }
 
       showScreen(`pain-reading-screen`);
+
+      // ====== AI 增强：异步调用 deepseek-v4-pro 生成个性化痛点解读 ======
+      enhancePainReadingWithAI(mainPain, pain2Choice, pain3Choice);
+    }
+
+    /**
+     * 异步调用 AI 引擎生成个性化痛点解读
+     * 完全异步，不影响即时展示已有的硬编码内容
+     */
+    async function enhancePainReadingWithAI(pain1, pain2, pain3) {
+      if (!window.AIEngine || !currentChart || !window.APP_CONFIG?.DEEPSEEK_API_KEY) return;
+
+      const painNames = {
+        lost: 'identity lost, not knowing who I am',
+        direction: 'no direction or purpose in life',
+        mistakes: 'repeating the same mistakes',
+        restless: 'inner restlessness and dissatisfaction',
+        money: 'financial uncertainty',
+        career: 'career uncertainty',
+        love: 'relationship and love uncertainty',
+        all: 'everything feels uncertain',
+        power: 'What is my hidden power?',
+        person: 'Will I find the right person?',
+        path: 'What is my life path?',
+        purpose: 'What is my purpose?'
+      };
+
+      const question = `My pain is about ${painNames[pain1] || 'finding myself'}. ` +
+        `I feel uncertain about ${painNames[pain2] || 'my path'}. ` +
+        `My burning question: ${painNames[pain3] || 'What is my purpose?'}`;
+
+      try {
+        const userData = {
+          name: window.userName || 'Seeker',
+          mingGong: currentChart.mingGongName || 'Life Palace',
+          mainStar: currentChart.mingGongMainStar || 'Purple Star',
+          shenGong: currentChart.shenGongName || 'Body Palace',
+          caiBoGong: currentChart.caiBoGong?.star ? currentChart.caiBoGong.name : 'Wealth',
+          fuQiGong: currentChart.fuQiGong?.star ? currentChart.fuQiGong.name : 'Partnership',
+          guanLuGong: currentChart.guanLuGong?.star ? currentChart.guanLuGong.name : 'Ambition',
+          bureau: currentChart.fiveElementBureau || 'Water Bureau',
+          lu: currentChart.siHuaMarks?.lu || 'None',
+          quan: currentChart.siHuaMarks?.quan || 'None',
+          ke: currentChart.siHuaMarks?.ke || 'None',
+          ji: currentChart.siHuaMarks?.ji || 'None',
+          question
+        };
+
+        const readingEl = document.getElementById('reading-text');
+        const readingEl2 = document.getElementById('reading-pain2-text');
+        const readingEl3 = document.getElementById('reading-pain3-text');
+        const zhEl = document.getElementById('classical-zh');
+        const enEl = document.getElementById('classical-en');
+
+        // Show loading state
+        readingEl.style.opacity = '0.6';
+
+        const result = await Promise.race([
+          window.AIEngine.generateChartInterpretation(userData, question),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('AI timeout')), 30000))
+        ]);
+
+        if (result) {
+          readingEl.style.opacity = '1';
+          if (result.interpretation) {
+            readingEl.textContent = result.interpretation;
+            readingEl.dataset.aiEnhanced = 'true';
+          }
+          if (result.opening && readingEl2 && readingEl2.parentElement.style.display !== 'none') {
+            readingEl2.textContent = result.opening;
+            readingEl2.dataset.aiEnhanced = 'true';
+          }
+          if (result.modernAdvice && readingEl3 && readingEl3.parentElement.style.display !== 'none') {
+            readingEl3.textContent = result.modernAdvice;
+            readingEl3.dataset.aiEnhanced = 'true';
+          }
+          if (result.classicalText) {
+            if (zhEl) zhEl.textContent = result.classicalText;
+            if (enEl && result.classicalText.includes('——')) {
+              const parts = result.classicalText.split('——');
+              if (parts.length > 1) enEl.textContent = parts[1];
+            }
+          }
+        }
+      } catch (err) {
+        // 静默回退——硬编码内容保持不变
+        const readingEl = document.getElementById('reading-text');
+        if (readingEl) readingEl.style.opacity = '1';
+      }
     }
 
     /**
@@ -5223,8 +5312,58 @@ Financial wisdom comes from understanding your own patterns around money. What d
         updateCreditsDisplay();
         content.classList.add('visible');
         document.getElementById('deep-reading-btn').innerHTML = 'Deep Oracle Reading <span style="color: #7BAF7A;">Unlocked</span>';
+
+        // ====== AI 增强：异步生成深度解读，替换硬编码内容 ======
+        enhanceDeepReadingWithAI();
       } else {
         content.classList.remove('visible');
+      }
+    }
+
+    /**
+     * 异步生成个性化 Deep Oracle Reading
+     */
+    async function enhanceDeepReadingWithAI() {
+      if (!window.AIEngine || !currentChart || !window.APP_CONFIG?.DEEPSEEK_API_KEY) return;
+
+      const textEl = document.getElementById('deep-reading-text');
+      const zhEl = document.getElementById('deep-classical-zh');
+      const enEl = document.getElementById('deep-classical-en');
+      if (!textEl) return;
+
+      const originalText = textEl.textContent;
+      textEl.style.opacity = '0.6';
+
+      try {
+        const result = await window.AIEngine.generateDailyWhisper({
+          name: window.userName || 'Seeker',
+          destinyPalace: currentChart.mingGongName || 'Life Palace',
+          mainStar: currentChart.mingGongMainStar || 'Purple Star',
+          bureau: currentChart.fiveElementBureau || 'Water Bureau',
+          transformations: [
+            currentChart.siHuaMarks?.lu || '',
+            currentChart.siHuaMarks?.quan || '',
+            currentChart.siHuaMarks?.ke || '',
+            currentChart.siHuaMarks?.ji || ''
+          ].filter(Boolean).join(', ') || 'Balanced'
+        });
+
+        if (result) {
+          textEl.style.opacity = '1';
+          if (result.interpretation) {
+            textEl.textContent = result.interpretation;
+            textEl.dataset.aiEnhanced = 'true';
+          }
+          if (result.classicalText && zhEl) {
+            zhEl.textContent = result.classicalText;
+          }
+          if (result.classicalText && enEl && result.classicalText.includes('"')) {
+            enEl.textContent = result.classicalText;
+          }
+        }
+      } catch (err) {
+        textEl.textContent = originalText;
+        textEl.style.opacity = '1';
       }
     }
 
