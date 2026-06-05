@@ -8,10 +8,21 @@
 
 window.APP_CONFIG = {
   // ====== DeepSeek V4 Pro (official) ======
+  // ⚠️ 生产环境安全说明：
+  // 生产环境必须通过Supabase Edge Function代理调用DeepSeek API，
+  // API Key仅配置在服务器端（Supabase环境变量），绝不暴露到客户端。
+  // 本地开发时可通过 localStorage 临时设置 Key 以便调试。
+  // 详见 ./supabase-edge-function-proxy.md
   DEEPSEEK_API_KEY: localStorage.getItem('DEEPSEEK_API_KEY') || '',
   DEEPSEEK_BASE_URL: 'https://api.deepseek.com',
   DEEPSEEK_MODEL: 'deepseek-v4-pro',
   DEEPSEEK_MODEL_ALIAS: 'deepseek-v4-pro',
+
+  // ====== Supabase Edge Function代理（生产环境）======
+  // 生产环境下，前端通过此URL调用Supabase Edge Function，
+  // Edge Function内部持有DeepSeek API Key，不暴露给客户端。
+  // 留空时回退到直接调用DeepSeek API（本地开发/调试用）。
+  SUPABASE_EDGE_FUNCTION_URL: localStorage.getItem('SUPABASE_EDGE_FUNCTION_URL') || '',
 
   // ====== deepseek-v4-pro 推荐参数 ======
   TEMPERATURE: 0.7,
