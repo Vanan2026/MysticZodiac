@@ -14,8 +14,8 @@ window.APP_CONFIG = {
   DEEPSEEK_MODEL: 'deepseek-v4-pro',
   DEEPSEEK_MODEL_ALIAS: 'deepseek-v4-pro',
 
-  // ====== Supabase Edge Function（暂未部署）======
-  SUPABASE_EDGE_FUNCTION_URL: '',
+  // ====== Supabase Edge Function（已部署）======
+  SUPABASE_EDGE_FUNCTION_URL: 'https://tgggebljhvpxgaehsnvq.supabase.co/functions/v1/deepseek-proxy',
 
   // ====== deepseek-v4-pro 参数 ======
   TEMPERATURE: 0.7,
