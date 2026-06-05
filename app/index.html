@@ -20,6 +20,30 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 2px; }
     
+    /* ========== HAPTIC FEEDBACK ========== */
+    .haptic-trigger { position: relative; overflow: hidden; }
+    .haptic-trigger::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at var(--haptic-x, 50%) var(--haptic-y, 50%), rgba(201,169,110,0.15) 0%, transparent 70%);
+      opacity: 0; transition: opacity 0.2s;
+      pointer-events: none; border-radius: inherit;
+    }
+    .haptic-trigger:active::after { opacity: 1; }
+    
+    /* ========== AMBIENT ANIMATIONS ========== */
+    @keyframes starPulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    @keyframes goldBreath {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    .ambient-glow {
+      animation: goldBreath 4s ease-in-out infinite;
+    }
+    
     :root {
       --bg-primary: #0A0A0F;
       --bg-card: #14141F;
@@ -3002,6 +3026,147 @@
     }
 
 </style>
+
+<!-- Haptic Feedback & Ambient Sound Engine -->
+<script>
+/**
+ * Mystic Fate - Haptic Engine & Ambient Sound
+ * Provides haptic feedback via Navigator.vibrate and visual ripple effects
+ * Falls back gracefully on unsupported devices
+ */
+const Haptic = {
+  _supported: 'vibrate' in navigator,
+  
+  /** Light tap - button press, card selection */
+  light() {
+    if (this._supported) navigator.vibrate(10);
+    this._ripple(event);
+  },
+  
+  /** Medium tap - confirm, screen transition */
+  medium() {
+    if (this._supported) navigator.vibrate(20);
+    this._ripple(event);
+  },
+  
+  /** Heavy tap - reveal ceremony, major action */
+  heavy() {
+    if (this._supported) navigator.vibrate([30, 20, 20]);
+    this._ripple(event);
+  },
+  
+  /** Error / reject pattern */
+  error() {
+    if (this._supported) navigator.vibrate([50, 30, 50]);
+  },
+  
+  /** Double pulse - completion */
+  success() {
+    if (this._supported) navigator.vibrate([15, 10, 15, 10, 25]);
+  },
+  
+  _ripple(e) {
+    if (!e || !e.target) return;
+    const el = e.target.closest('.haptic-trigger, button, .clickable, .pain-card, .option-card');
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = ((e.clientX || e.pageX || 0) - rect.left) / rect.width * 100;
+    const y = ((e.clientY || e.pageY || 0) - rect.top) / rect.height * 100;
+    el.style.setProperty('--haptic-x', x + '%');
+    el.style.setProperty('--haptic-y', y + '%');
+  }
+};
+
+/**
+ * Mystic Fate - Ambient Sound Engine
+ * Generates ethereal tones using Web Audio API (no external audio files needed)
+ * Creates subtle ambient atmosphere without jarring sound effects
+ */
+const Soundscape = {
+  _ctx: null,
+  _masterGain: null,
+  _active: false,
+  
+  /** Initialize audio context (must be called from user gesture) */
+  init() {
+    if (this._ctx) return;
+    try {
+      this._ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this._masterGain = this._ctx.createGain();
+      this._masterGain.gain.value = 0.3;
+      this._masterGain.connect(this._ctx.destination);
+    } catch(e) { console.log('Audio not available'); }
+  },
+  
+  /** Play a soft chime (e.g., screen transition) */
+  chime() {
+    if (!this._ctx) this.init();
+    if (!this._ctx) return;
+    try {
+      const o = this._ctx.createOscillator();
+      const g = this._ctx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(528, this._ctx.currentTime);
+      o.frequency.linearRampToValueAtTime(432, this._ctx.currentTime + 0.5);
+      g.gain.setValueAtTime(0.08, this._ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, this._ctx.currentTime + 1.5);
+      o.connect(g);
+      g.connect(this._masterGain);
+      o.start();
+      o.stop(this._ctx.currentTime + 1.5);
+    } catch(e) { /* silent */ }
+  },
+  
+  /** Play a bell tone for ceremony/reveal moments */
+  bell() {
+    if (!this._ctx) this.init();
+    if (!this._ctx) return;
+    try {
+      [528, 660, 792].forEach((freq, i) => {
+        const o = this._ctx.createOscillator();
+        const g = this._ctx.createGain();
+        o.type = 'sine';
+        o.frequency.value = freq;
+        const t = this._ctx.currentTime + i * 0.15;
+        g.gain.setValueAtTime(0.06, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 2);
+        o.connect(g);
+        g.connect(this._masterGain);
+        o.start(t);
+        o.stop(t + 2);
+      });
+    } catch(e) { /* silent */ }
+  },
+  
+  /** Soft click for card/button press */
+  click() {
+    if (!this._ctx) this.init();
+    if (!this._ctx) return;
+    try {
+      const o = this._ctx.createOscillator();
+      const g = this._ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = 880;
+      g.gain.setValueAtTime(0.03, this._ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, this._ctx.currentTime + 0.1);
+      o.connect(g);
+      g.connect(this._masterGain);
+      o.start();
+      o.stop(this._ctx.currentTime + 0.1);
+    } catch(e) { /* silent */ }
+  }
+};
+
+// Wrap key user interaction listeners
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('button, .pain-card, .option-card, .palace-item, .tab-btn');
+  if (target) {
+    Haptic.light();
+  }
+}, true);
+
+console.log('✅ Haptic Engine + Soundscape loaded');
+</script>
 </head>
 <body>
   <!-- Toast notification -->
@@ -3083,7 +3248,7 @@
           <span class="text">My career feels stuck or misaligned</span>
         </div>
         <div class="pain-card" data-value="love">
-          <span class="text">Love feels like a riddle I can\'t solve</span>
+          <span class="text">Love feels like a riddle I can&rsquo;t solve</span>
         </div>
         <div class="pain-card" data-value="all">
           <span class="text">All of it—I feel uncertain about everything</span>
@@ -3446,7 +3611,7 @@
       <div class="whisper-source">- From your Destiny Palace</div>
     </div>
     
-    <div class="section-title">Today\'s Energy</div>
+    <div class="section-title">Today&rsquo;s Energy</div>
     <div class="energy-cards">
       <div class="energy-card do-card">
         <div class="energy-card-header">
@@ -3690,7 +3855,7 @@
       </div>
       
       <div class="form-group">
-        <label>Partner\'s Birth Month</label>
+        <label>Partner&rsquo;s Birth Month</label>
         <select class="form-select" id="compat-month"></select>
       </div>
       
@@ -3700,7 +3865,7 @@
       </div>
       
       <div class="form-group">
-        <label>Partner\'s Gender</label>
+        <label>Partner&rsquo;s Gender</label>
         <div class="energy-toggle">
           <div class="energy-option selected" data-gender="female" onclick="selectCompatGender(this)">
             <div class="icon"><div class="icon-moon" style="width:32px;height:32px;margin:0 auto;"></div></div>
@@ -4728,12 +4893,13 @@ function generateHexagram(question) {
     }
 
     function setupEventListeners() {
-      // Splash - tap anywhere to continue
-      document.getElementById('splash-skip')?.addEventListener('click', () => showScreen('pain1-screen'));
-      document.getElementById('splash-tap-area')?.addEventListener('click', () => showScreen('pain1-screen'));
+      // Splash - tap anywhere to continue (init audio on user gesture)
+      const initOnTap = () => { Soundscape.init(); Soundscape.click(); };
+      document.getElementById('splash-skip')?.addEventListener('click', () => { initOnTap(); showScreen('pain1-screen'); });
+      document.getElementById('splash-tap-area')?.addEventListener('click', () => { initOnTap(); showScreen('pain1-screen'); });
       // Full-screen fallback: tap on splash itself (catches taps on title/subtitle/yin-yang)
       document.getElementById('splash-screen')?.addEventListener('click', (e) => {
-        if (e.target.id !== 'splash-skip' && e.target.id !== 'splash-tap-area') showScreen('pain1-screen');
+        if (e.target.id !== 'splash-skip' && e.target.id !== 'splash-tap-area') { initOnTap(); showScreen('pain1-screen'); }
       });
 
       // Auto advance splash after 3s
@@ -4903,6 +5069,14 @@ function generateHexagram(question) {
         // Scroll to top with smooth behavior
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+      
+      // Ambient sound effects on screen transitions
+      try {
+        if (screenId === 'pain1-screen') Soundscape.chime();
+        else if (screenId === 'reveal-screen' || screenId === 'chart-screen') Soundscape.bell();
+        else if (screenId === 'full-chart-screen' || screenId === 'pain-reading-screen') Soundscape.chime();
+        else if (screenId.includes('pain')) Soundscape.click();
+      } catch(e) { /* silent fallback */ }
     }
 
     /**
