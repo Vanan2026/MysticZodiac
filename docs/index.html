@@ -5951,7 +5951,7 @@ function generateHexagram(question) {
     function shareCardOfDay() {
       const card = getTodayCard();
       const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-      const shareText = '* ' + card.name + ' *\n' + card.element + '\n' + card.meaning + '\n\n" ' + card.advice + ' "\n\nMystic Zodiac - ' + today;
+      const shareText = '* ' + card.name + ' *\n' + card.element + '\n' + card.meaning + '\n\n" ' + card.advice + ' "\n\nMystic Fate - ' + today;
       
       // Try native share, fallback to clipboard
       if (navigator.share) {

@@ -2,7 +2,7 @@
 
 ## 背景
 
-MysticZodiac 的 DeepSeek API Key (`sk-e6078716...`) 此前被硬编码在 `docs/app-config.js` 中并推送到了公开 GitHub 仓库。**该 Key 已废弃，已通知用户登录 DeepSeek 后台撤销。**
+MysticFate 的 DeepSeek API Key (`sk-e6078716...`) 此前被硬编码在 `docs/app-config.js` 中并推送到了公开 GitHub 仓库。**该 Key 已废弃，已通知用户登录 DeepSeek 后台撤销。**
 
 为了防止 API Key 再次暴露，生产环境必须通过 **Supabase Edge Function 代理** 调用 DeepSeek API，API Key 仅存在于服务器环境变量中。
 

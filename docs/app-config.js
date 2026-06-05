@@ -1,5 +1,5 @@
 /**
- * MysticZodiac - App Configuration
+ * MysticFate - App Configuration
  * 应用全局配置（API密钥、模型参数等）
  *
  * 生产环境必须通过环境变量注入或Supabase Edge Function代理
@@ -59,4 +59,4 @@ window.APP_CONFIG = {
   ENV: 'demo' // demo | staging | production
 };
 
-console.log('MysticZodiac Config loaded - model:', window.APP_CONFIG.DEEPSEEK_MODEL_ALIAS);
+console.log('MysticFate Config loaded - model:', window.APP_CONFIG.DEEPSEEK_MODEL_ALIAS);
