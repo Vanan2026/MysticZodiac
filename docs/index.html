@@ -3180,6 +3180,121 @@
       border-radius: 6px;
     }
 
+    #pain-reading-screen {
+      padding-bottom: 80px;
+    }
+    
+    .pain-reading-header {
+      margin-bottom: 24px;
+    }
+    
+    .pain-reading-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    
+    .pain-reminder {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    
+    .pain-reminder .label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    
+    .pain-reminder .choice {
+      color: var(--purple);
+      font-size: 0.95rem;
+    }
+    
+    .reading-content {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(201, 169, 110, 0.2);
+    }
+    
+    .reading-content h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    
+    .reading-content .text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+    
+    .classical-text {
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 3px solid var(--gold);
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .classical-text .zh {
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    
+    .classical-text .en {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+    
+    .reading-divider {
+      border: none;
+      border-top: 1px solid rgba(201, 169, 110, 0.2);
+      margin: 24px 0;
+    }
+    
+    .reading-section {
+      margin-bottom: 20px;
+    }
+    
+    .reading-section h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      color: var(--purple);
+      margin-bottom: 12px;
+    }
+    
+    .reading-action {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--purple), #6D28D9);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .reading-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+    }
+    
 </style>
 </head>
 <body>
@@ -3477,6 +3592,753 @@
     </div>
     <div class="page-sticky-bar">
       <button class="seal-btn" id="seal-btn" disabled>Seal My Destiny</button>
+    </div>
+  </div>
+
+
+  <!-- ========== CHART REVEAL SCREEN ========== -->
+  <div id="reveal-screen" class="screen">
+    <div class="reveal-container" id="reveal-container">
+      <!-- Frames injected by JS -->
+    </div>
+  </div>
+
+  <!-- ========== MAIN CHART SCREEN ========== -->
+  <div id="chart-screen" class="screen">
+    <div class="chart-scroll-area">
+      <div class="chart-header">
+        <h2 id="chart-user-name">Your Cosmic Blueprint</h2>
+        <div class="credit-badge">
+          <span style="color: var(--purple);">◆</span>
+          <span id="credit-count">30</span>
+        </div>
+      </div>
+      
+      <div class="bureau-card">
+        <h3 id="bureau-name">水二局</h3>
+        <p class="main-star" id="main-star-name">◈ Purple Star</p>
+        <p class="quote" id="main-star-quote">"Born to lead, tempered by wisdom."</p>
+      </div>
+      
+      <div class="dimension-cards">
+        <div class="dim-card">
+          <div class="label">Power</div>
+          <div class="value" id="power-value">85%</div>
+          <div class="bar"><div class="bar-fill" id="power-bar" style="width: 85%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="label">Love</div>
+          <div class="value" id="love-value">72%</div>
+          <div class="bar"><div class="bar-fill" id="love-bar" style="width: 72%"></div></div>
+        </div>
+        <div class="dim-card">
+          <div class="label">Path</div>
+          <div class="value" id="path-value">90%</div>
+          <div class="bar"><div class="bar-fill" id="path-bar" style="width: 90%"></div></div>
+        </div>
+      </div>
+      
+      <button class="pain-reading-btn" id="pain-reading-btn">
+        Your Pain Point Reading
+      </button>
+      
+      <div class="sihua-legend">
+        <span><span class="dot" style="background: var(--hua-lu)"></span> Lu</span>
+        <span><span class="dot" style="background: var(--hua-quan)"></span> Quan</span>
+        <span><span class="dot" style="background: var(--hua-ke)"></span> Ke</span>
+        <span><span class="dot" style="background: var(--hua-ji)"></span> Ji</span>
+      </div>
+      
+      <div class="palace-grid" id="palace-grid"></div>
+      
+      <div class="feature-buttons" style="display:flex; flex-direction:column; gap:10px; margin-top:16px;">
+        <button class="deep-reading-btn" onclick="showFullChartReading()" style="width:100%;">
+          Full Chart Reading <span style="color:var(--purple);">* 12</span>
+        </button>
+        <div style="display:flex; gap:10px;">
+          <button class="deep-reading-btn" onclick="showMonthlyGuide()" style="flex:1; font-size:0.8rem; padding:12px;">
+            Monthly Guide <span style="color:var(--purple);">* 10</span>
+          </button>
+          <button class="deep-reading-btn" onclick="showPastLife()" style="flex:1; font-size:0.8rem; padding:12px;">
+            Past Life <span style="color:var(--purple);">* 4</span>
+          </button>
+        </div>
+        <button class="deep-reading-btn" onclick="showSoulmateDeepDive()" style="width:100%;">
+          Soulmate Deep Dive <span style="color:var(--purple);">* 6</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="chart-sticky-bottom">
+      <button class="share-btn" onclick="shareChartCard()" style="width:100%; margin-top:0;">
+        ✦ Share Destiny Card
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== PAIN READING SCREEN ========== -->
+  <div id="pain-reading-screen" class="screen">
+    <button class="back-btn" onclick="showScreen('chart-screen')">← Back to Chart</button>
+    
+    <div class="pain-reading-header">
+      <h2>Your Pain Point Reading</h2>
+    </div>
+    
+    <div class="pain-reminder">
+      <div class="label">What you chose</div>
+      <div class="choice" id="pain-choice-text"></div>
+    </div>
+    
+    <div class="reading-content" id="reading-content">
+      <h3>The Purple Star Speaks</h3>
+      <div class="text" id="reading-text"></div>
+      <div class="classical-text" id="classical-text">
+        <div class="zh" id="classical-zh"></div>
+        <div class="en" id="classical-en"></div>
+      </div>
+    </div>
+    
+    <!-- Pain 2 Reading Section -->
+    <div class="reading-content reading-section" id="reading-pain2" style="display:none;">
+      <h3>The Uncertainty Map</h3>
+      <div class="text" id="reading-pain2-text"></div>
+      <div class="classical-text" id="classical-text-2">
+        <div class="zh" id="classical-zh-2"></div>
+        <div class="en" id="classical-en-2"></div>
+      </div>
+    </div>
+    
+    <hr class="reading-divider" id="reading-divider" style="display:none;">
+    
+    <!-- Pain 3 Reading Section -->
+    <div class="reading-content reading-section" id="reading-pain3" style="display:none;">
+      <h3>The Burning Question</h3>
+      <div class="text" id="reading-pain3-text"></div>
+      <div class="classical-text" id="classical-text-3">
+        <div class="zh" id="classical-zh-3"></div>
+        <div class="en" id="classical-en-3"></div>
+      </div>
+    </div>
+    
+    <button class="reading-action" id="read-full-btn">
+      Read Full Chapter ◆ 8 Credits
+    </button>
+  </div>
+
+  <!-- ========== PALACE MODAL ========== -->
+  <div class="modal-overlay" id="palace-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Palace</h3>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="detail-section">
+        <div class="detail-label">Stem / Branch</div>
+        <div id="modal-stem-branch" style="color: var(--text-primary);"></div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-label">Main Stars</div>
+        <div class="stars-list" id="modal-main-stars"></div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-label">Assistant Stars</div>
+        <div class="stars-list" id="modal-assistant-stars"></div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-label">Four Transformations</div>
+        <div id="modal-sihua" style="color: var(--text-primary);"></div>
+      </div>
+    </div>
+
+    <button class="share-btn" onclick="shareOracleCard()" style="margin-top: 16px;">
+      ✦ Share Today's Whisper
+    </button>
+  </div>
+
+  <!-- ========== TAB NAVIGATION ========== -->
+  <nav class="tab-nav" id="tab-nav" style="display: none;">
+    <button class="tab-btn active" onclick="switchTab('destiny')">
+      <span class="icon">✦</span>
+      <span>Destiny</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('oracle')">
+      <span class="icon">◇</span>
+      <span>Oracle</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('chapters')">
+      <span class="icon">◫</span>
+      <span>Chapters</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('bond')">
+      <span class="icon">☯</span>
+      <span>Bond</span>
+    </button>
+  </nav>
+  <!-- ========== ORACLE SCREEN ========== -->
+  <div id="oracle-screen" class="screen oracle-screen">
+    <button class="back-btn" onclick="showScreen('chart-screen'); switchTabDirect('destiny');">&larr; Back to Chart</button>
+    
+    <div class="oracle-header">
+      <h2>Today's Whisper</h2>
+      <div class="oracle-date" id="oracle-date"></div>
+      <div class="oracle-lunar-date" id="oracle-lunar-date"></div>
+    </div>
+    
+    <div class="whisper-card">
+      <div class="whisper-text" id="whisper-text"></div>
+      <div class="whisper-source">- From your Destiny Palace</div>
+    </div>
+    
+    <div class="section-title">Today&rsquo;s Energy</div>
+    <div class="energy-cards">
+      <div class="energy-card do-card">
+        <div class="energy-card-header">
+          <span class="sym">*</span> Do
+        </div>
+        <div id="do-list"></div>
+      </div>
+      <div class="energy-card dont-card">
+        <div class="energy-card-header">
+          <span class="sym"><></span> Don't
+        </div>
+        <div id="dont-list"></div>
+      </div>
+    </div>
+    
+    <!-- ========== CARD OF THE DAY ========== -->
+    <div class="card-of-day" id="card-of-day">
+      <div class="card-of-day-header">
+        <span class="label">* Today's Celestial Card</span>
+        <span class="cost">* 1</span>
+      </div>
+      <div class="card-of-day-face" id="card-of-day-face">
+        <div class="back">
+          <div class="symbol">*?</div>
+          <div class="hint">Tap to reveal today's star</div>
+        </div>
+        <div class="front">
+          <div class="card-of-day-star" id="cod-star"></div>
+          <div class="card-of-day-element" id="cod-element"></div>
+          <div class="card-of-day-fortune" id="cod-fortune"></div>
+          <div class="card-of-day-meaning" id="cod-meaning"></div>
+          <div class="card-of-day-advice" id="cod-advice"></div>
+        </div>
+      </div>
+      <div class="card-of-day-footer">
+        <button class="share-link" onclick="shareCardOfDay()">✦ Share This Card</button>
+      </div>
+    </div>
+    
+    <div class="section-title">Lucky Elements</div>
+    <div class="lucky-elements">
+      <div class="lucky-item">
+        <span class="icon">*</span>
+        <span class="label">Direction</span>
+        <span class="value" id="lucky-direction">East</span>
+      </div>
+      <div class="lucky-item">
+        <span class="icon"><></span>
+        <span class="label">Element</span>
+        <span class="value" id="lucky-element">Wood</span>
+      </div>
+      <div class="lucky-item">
+        <span class="icon">@</span>
+        <span class="label">Golden Hour</span>
+        <span class="value" id="lucky-hour">Shen (3-5PM)</span>
+      </div>
+    </div>
+    
+    <button class="deep-reading-btn" id="deep-reading-btn" onclick="toggleDeepReading()">
+      Full Oracle Reading <span id="deep-reading-cost" style="color: var(--purple);">* 1</span>
+    </button>
+    
+    <div class="deep-reading-content" id="deep-reading-content">
+      <div class="deep-reading-text" id="deep-reading-text"></div>
+      <div class="classical-quote">
+        <div class="zh" id="deep-classical-zh"></div>
+        <div class="en" id="deep-classical-en"></div>
+      </div>
+    </div>
+
+    <!-- ========== FORTUNE FORECAST SECTION ========== -->
+    <div class="fortune-section">
+      <div class="section-title" style="cursor:pointer; display:flex; align-items:center; gap:8px; padding:16px; background:rgba(255,215,0,0.05); border-radius:12px; margin-bottom:0;" onclick="toggleFortuneForecast()">
+        <span>☯</span>
+        <span>Your Life Chapter Forecast</span>
+        <span class="fortune-chevron" id="fortune-chevron" style="margin-left:auto; transition:transform 0.3s;">▼</span>
+        <!-- ai-badge removed in v2.2 -->
+      </div>
+      <div class="fortune-content" id="fortune-content" style="display:none; overflow:hidden; transition:max-height 0.4s ease;">
+        <div class="fortune-header" id="fortune-header">
+          <div class="fortune-period" id="fortune-period"></div>
+          <div class="fortune-palace" id="fortune-palace"></div>
+        </div>
+        <div class="fortune-stars" id="fortune-stars"></div>
+        <div class="fortune-reading" id="fortune-reading">
+          <div class="fortune-reading-text" id="fortune-reading-text"></div>
+        </div>
+        <button class="deep-reading-btn" onclick="shareFortuneCard()" style="margin-top:12px; font-size:12px; padding:8px 16px;">
+          ✦ Share My Chapter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CHAPTERS SCREEN ========== -->
+  <div id="chapters-screen" class="screen chapters-screen">
+    <button class="back-btn" onclick="showScreen('chart-screen'); switchTabDirect('destiny');">&larr; Back to Chart</button>
+    
+    <div class="chapters-header">
+      <h2>Life Chapters</h2>
+      <div class="subtitle">"Your story, written in stars"</div>
+    </div>
+    
+    <div class="chapter-list" id="chapter-list"></div>
+  </div>
+
+  <!-- ========== CHAPTER DETAIL SCREEN ========== -->
+  <div id="chapter-detail-screen" class="screen chapter-detail-screen">
+    <button class="back-btn" onclick="showScreen('chapters-screen');">&larr; Back to Chapters</button>
+    
+    <div class="detail-header">
+      <div class="detail-title">
+        <span class="icon">*</span>
+        <span id="detail-chapter-title"></span>
+      </div>
+      <div class="detail-subtitle" id="detail-chapter-subtitle"></div>
+    </div>
+    
+    <div class="classical-section">
+      <div class="section-label">Classical Text</div>
+      <div class="classical-text-block">
+        <div class="zh" id="detail-classical-zh"></div>
+        <div class="en" id="detail-classical-en"></div>
+      </div>
+    </div>
+    
+    <div class="interpretation-section">
+      <div class="section-label">Interpretation</div>
+      <div class="interpretation-text" id="detail-interpretation"></div>
+      
+      <div class="insight-box">
+        <div class="insight-label">Key Insight</div>
+        <div class="insight-text" id="detail-insight"></div>
+      </div>
+    </div>
+    
+    <button class="seal-wisdom-btn" onclick="showToast('Wisdom sealed in your memory')">Seal This Wisdom</button>
+  </div>
+
+  <!-- ========== BOND SCREEN ========== -->
+  <div id="bond-screen" class="screen bond-screen">
+    <button class="back-btn" onclick="showScreen('chart-screen'); switchTabDirect('destiny');">&larr; Back to Chart</button>
+    
+    <div class="bond-header">
+      <h2>Celestial Bonds</h2>
+      <div class="subtitle">"Written in the stars, revealed by the Purple Star"</div>
+    </div>
+    
+    <div class="bond-features">
+      <div class="bond-feature-card" onclick="showSoulmatePortrait()">
+        <div class="bond-feature-info">
+          <h3>* Soulmate Portrait</h3>
+          <p>Who the universe has written for you</p>
+        </div>
+        <div class="bond-feature-cost">* 12</div>
+      </div>
+      
+      <div class="bond-feature-card" onclick="showCompatInput()">
+        <div class="bond-feature-info">
+          <h3>* Chart Compatibility</h3>
+          <p>Compare two cosmic blueprints</p>
+        </div>
+        <div class="bond-feature-cost">* 10</div>
+      </div>
+      
+      <div class="bond-feature-card free" onclick="showCelebrityScreen()">
+        <div class="bond-feature-info">
+          <h3>* Celebrity Match</h3>
+          <p>How compatible are you with the stars?</p>
+        </div>
+        <div class="bond-feature-cost free">Free</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SOULMATE SCREEN ========== -->
+  <div id="soulmate-screen" class="screen soulmate-screen" style="padding-bottom:0;">
+    <div class="screen-scroll-area" style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:20px 20px 16px;">
+      <div class="soulmate-header">
+        <h2>Soulmate Portrait</h2>
+        <div class="subtitle">"The Partnership Palace reveals..."</div>
+      </div>
+      
+      <div class="soulmate-section">
+        <div class="soulmate-section-title">Their Energy</div>
+        <div class="soulmate-archetype" id="soulmate-archetype"></div>
+        <div class="soulmate-traits" id="soulmate-traits"></div>
+      </div>
+      
+      <div class="soulmate-section">
+        <div class="soulmate-section-title">Their Essence</div>
+        <div class="soulmate-info-row">
+          <span class="label">Element</span>
+          <span class="value" id="soulmate-element"></span>
+        </div>
+        <div class="soulmate-info-row">
+          <span class="label">Nature</span>
+          <span class="value" id="soulmate-nature"></span>
+        </div>
+      </div>
+      
+      <div class="soulmate-section">
+        <div class="soulmate-section-title">When You'll Meet</div>
+        <div class="interpretation-text" id="soulmate-timing"></div>
+      </div>
+      
+      <div class="soulmate-section">
+        <div class="soulmate-section-title">How You Connect</div>
+        <div class="interpretation-text" id="soulmate-connection"></div>
+      </div>
+      
+      <div class="soulmate-section">
+        <div class="soulmate-section-title">Ancient Wisdom</div>
+        <div class="classical-text-block">
+          <div class="zh" id="soulmate-classical-zh"></div>
+          <div class="en" id="soulmate-classical-en"></div>
+        </div>
+      </div>
+      
+      <button class="seal-wisdom-btn" onclick="showToast('Wisdom sealed in your memory')">Seal This Wisdom</button>
+    </div>
+    
+    <div class="screen-sticky-bar" style="flex-shrink:0; padding:12px 20px 24px; border-top:1px solid rgba(201,169,110,0.15); background:var(--bg-primary);">
+      <button class="continue-btn visible" onclick="showScreen('bond-screen')" style="width:100%;">Back to Bond</button>
+    </div>
+  </div>
+
+  <!-- ========== COMPAT INPUT SCREEN ========== -->
+  <div id="compat-input-screen" class="screen compat-input-screen">
+    <button class="back-btn" onclick="showScreen('bond-screen');">&larr; Back</button>
+    
+    <div class="compat-header">
+      <h2>Chart Compatibility</h2>
+      <div class="subtitle">"When two blueprints meet..."</div>
+    </div>
+    
+    <div class="compat-form">
+      <div class="form-group">
+        <label>Partner's Birth Year</label>
+        <select class="form-select" id="compat-year"></select>
+      </div>
+      
+      <div class="form-group">
+        <label>Partner&rsquo;s Birth Month</label>
+        <select class="form-select" id="compat-month"></select>
+      </div>
+      
+      <div class="form-group">
+        <label>Partner's Birth Day</label>
+        <select class="form-select" id="compat-day"></select>
+      </div>
+      
+      <div class="form-group">
+        <label>Partner&rsquo;s Gender</label>
+        <div class="energy-toggle">
+          <div class="energy-option selected" data-gender="female" onclick="selectCompatGender(this)">
+            <div class="icon"><div class="icon-moon" style="width:32px;height:32px;margin:0 auto;"></div></div>
+            <div class="label">Yin</div>
+          </div>
+          <div class="energy-option" data-gender="male" onclick="selectCompatGender(this)">
+            <div class="icon"><div class="icon-sun" style="width:32px;height:32px;margin:0 auto;"></div></div>
+            <div class="label">Yang</div>
+          </div>
+        </div>
+      </div>
+      
+      <button class="compat-submit-btn" onclick="calculateCompatibility()">
+        Compare Charts <span style="color: var(--purple);">*</span> 10
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== COMPAT RESULT SCREEN ========== -->
+  <div id="compat-result-screen" class="screen compat-result-screen">
+    <button class="back-btn" onclick="showScreen('bond-screen');">&larr; Back</button>
+    
+    <div class="compat-result-header">
+      <h2>Cosmic Compatibility</h2>
+    </div>
+    
+    <div class="compatibility-stars">
+      <div class="compat-star">
+        <span class="symbol">*</span> <span class="name" id="user-main-star"></span>
+      </div>
+      <span class="compat-connector">+</span>
+      <div class="compat-star">
+        <span class="symbol">*</span> <span class="name" id="partner-main-star"></span>
+      </div>
+    </div>
+    
+    <div class="score-cards">
+      <div class="score-card">
+        <div class="label">Soul</div>
+        <div class="value" id="score-soul">--</div>
+        <div class="bar"><div class="bar-fill" id="bar-soul" style="width:0%"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="label">Comm</div>
+        <div class="value" id="score-comm">--</div>
+        <div class="bar"><div class="bar-fill" id="bar-comm" style="width:0%"></div></div>
+      </div>
+      <div class="score-card">
+        <div class="label">Growth</div>
+        <div class="value" id="score-growth">--</div>
+        <div class="bar"><div class="bar-fill" id="bar-growth" style="width:0%"></div></div>
+      </div>
+    </div>
+    
+    <div class="compat-verdict">
+      <h3>The Ancient Verdict <span class="ai-badge" id="compat-ai-badge" style="display:none;"><!-- v2.2 removed --></span></h3>
+      <div class="text" id="compat-verdict-text"></div>
+    </div>
+    
+    <button class="seal-wisdom-btn" onclick="shareCompatCard()">✦ Share Compatibility Card</button>
+    <button class="seal-wisdom-btn" onclick="showToast('Compatibility sealed in your memory')">Seal This Wisdom</button>
+  </div>
+
+  <!-- ========== CELEBRITY SCREEN ========== -->
+  <div id="celebrity-screen" class="screen celebrity-screen">
+    <button class="back-btn" onclick="showScreen('bond-screen');">&larr; Back</button>
+    
+    <div class="celebrity-header">
+      <h2>Celebrity Match</h2>
+      <div class="subtitle">"How do the stars align?"</div>
+    </div>
+    
+    <div class="celebrity-list" id="celebrity-list"></div>
+  </div>
+
+  <!-- ========== FULL CHART READING SCREEN ========== -->
+  <div id="full-chart-screen" class="screen">
+    <div class="oracle-header">
+      <h2>Full Chart Reading</h2>
+      <div class="oracle-date" id="full-chart-date"></div>
+    </div>
+    
+    <div id="full-chart-loading" style="text-align:center; padding:40px 0;">
+      <div style="font-size:2rem; margin-bottom:16px; color:var(--purple);">*</div>
+      <div style="color:var(--text-secondary);">Consulting the 12 palaces...</div>
+    </div>
+    
+    <div id="full-chart-content" style="display:none; flex:1; display:flex; flex-direction:column;">
+      <div class="screen-scroll-area" style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:16px;">
+        <div class="whisper-card" id="full-chart-overview">
+          <div class="whisper-text" id="full-chart-overview-text"></div>
+        </div>
+        
+        <div id="full-chart-palaces"></div>
+        
+        <div class="whisper-card" style="margin-top:12px; background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);">
+          <div class="whisper-text" id="full-chart-key-theme" style="font-style:italic;"></div>
+        </div>
+        
+        <div class="classical-section" id="full-chart-classical" style="margin-top:16px; padding:16px; background:var(--bg-card); border-radius:12px;">
+          <div class="section-label" style="margin-bottom:8px;">Ancient Wisdom</div>
+          <div class="zh" id="full-chart-classical-zh" style="color:var(--gold); font-family:var(--font-classical); margin-bottom:8px;"></div>
+          <div class="en" id="full-chart-classical-en" style="color:var(--text-secondary); font-size:0.85rem;"></div>
+        </div>
+        
+        <button class="share-btn" onclick="shareFullChartCard()" style="margin-top:16px; width:100%;">
+          ✦ Share My Chart Reading
+        </button>
+      </div>
+      
+      <div class="screen-sticky-bar" style="flex-shrink:0; padding:12px 0 24px; border-top:1px solid rgba(201,169,110,0.15); margin:0 -20px; padding-left:20px; padding-right:20px; background:var(--bg-primary);">
+        <button class="continue-btn visible" onclick="showScreen('chart-screen')" style="width:100%;">Back to Chart</button>
+      </div>
+    </div>
+    
+    <div id="full-chart-error" style="display:none; text-align:center; padding:40px 0; color:var(--hua-ji);">
+      <div style="font-size:2rem; margin-bottom:16px;">*</div>
+      <div>The stars are silent today. Please try again later.</div>
+      <button class="continue-btn visible" onclick="showScreen('chart-screen')" style="margin-top:20px;">Back to Chart</button>
+    </div>
+  </div>
+
+  <!-- ========== MONTHLY GUIDE SCREEN ========== -->
+  <div id="monthly-guide-screen" class="screen">
+    <div class="oracle-header">
+      <h2>Monthly Guide</h2>
+      <div class="oracle-date">
+        <select id="month-guide-month" style="background:var(--bg-card); color:var(--text-primary); border:1px solid var(--gold-dim); border-radius:8px; padding:8px 12px; font-family:'Cinzel',serif; cursor:pointer;" onchange="requestMonthlyGuide()"></select>
+      </div>
+    </div>
+    
+    <div id="monthly-guide-loading" style="display:none; text-align:center; padding:40px 0;">
+      <div style="font-size:2rem; margin-bottom:16px; color:var(--purple);">*</div>
+      <div style="color:var(--text-secondary);">Reading the monthly celestial patterns...</div>
+    </div>
+    
+    <div id="monthly-guide-content" style="display:none; flex:1; display:flex; flex-direction:column;">
+      <div class="screen-scroll-area" style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:16px;">
+        <div class="whisper-card" style="text-align:center;">
+          <div style="font-size:0.85rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:2px; margin-bottom:4px;">Month Energy</div>
+          <div style="font-size:0.8rem; color:var(--purple); font-family:'Cinzel',serif; letter-spacing:2px;" id="monthly-keyword"></div>
+          <div class="whisper-text" id="monthly-energy" style="margin-top:8px;"></div>
+          <div id="monthly-overview" style="color:var(--text-secondary); margin-top:8px; line-height:1.6;"></div>
+        </div>
+        
+        <div id="monthly-weeks" style="margin-top:16px;"></div>
+        
+        <div class="lucky-elements" style="margin-top:16px;">
+          <div class="lucky-item">
+            <span class="label">Direction</span>
+            <span class="value" id="monthly-lucky-direction">--</span>
+          </div>
+          <div class="lucky-item">
+            <span class="label">Color</span>
+            <span class="value" id="monthly-lucky-color">--</span>
+          </div>
+          <div class="lucky-item">
+            <span class="label">Number</span>
+            <span class="value" id="monthly-lucky-number">--</span>
+          </div>
+          <div class="lucky-item">
+            <span class="label">Watch</span>
+            <span class="value" id="monthly-watch-palace">--</span>
+          </div>
+        </div>
+        
+        <div class="classical-section" style="margin-top:16px; padding:16px; background:var(--bg-card); border-radius:12px;">
+          <div class="section-label">Ancient Advice</div>
+          <div id="monthly-classical" style="color:var(--text-secondary); font-style:italic;"></div>
+        </div>
+        
+        <div class="whisper-card" id="monthly-closing-advice" style="display:none; background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);">
+          <div class="section-label" style="margin-bottom:8px;">The Fortune-Teller\u0027s Final Word</div>
+          <div id="monthly-closing-text" style="color:var(--gold); line-height:1.6; font-style:italic;"></div>
+        </div>
+        
+        <button class="share-btn" onclick="shareMonthlyGuide()" style="margin-top:16px; width:100%;">
+          ✦ Share Monthly Guide
+        </button>
+      </div>
+      
+      <div class="screen-sticky-bar" style="flex-shrink:0; padding:12px 0 24px; border-top:1px solid rgba(201,169,110,0.15); margin:0 -20px; padding-left:20px; padding-right:20px; background:var(--bg-primary);">
+        <button class="continue-btn visible" onclick="showScreen('chart-screen')" style="width:100%;">Back to Chart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAST LIFE INSIGHT SCREEN ========== -->
+  <div id="past-life-screen" class="screen">
+    <div id="past-life-loading" style="text-align:center; padding:60px 0;">
+      <div style="font-size:2.5rem; margin-bottom:16px; color:var(--purple); animation:spin 4s linear infinite;">*</div>
+      <div style="color:var(--text-secondary);">Tracing the threads of your past lives...</div>
+    </div>
+    
+    <div id="past-life-content" style="display:none; flex:1; display:flex; flex-direction:column;">
+      <div class="screen-scroll-area" style="flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding-bottom:16px;">
+        <div class="oracle-header">
+          <h2>Past Life Insight</h2>
+          <div class="oracle-date">"A whisper from another time..."</div>
+        </div>
+        
+        <div class="bureau-card" style="margin-bottom:16px;">
+          <h3 id="past-life-title" style="font-size:1.3rem;">--</h3>
+          <p style="color:var(--purple); margin-top:8px;" id="past-life-era">--</p>
+          <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:4px;" id="past-life-identity">--</p>
+        </div>
+        
+        <div class="whisper-card" style="margin-bottom:16px;">
+          <div class="section-label" style="margin-bottom:8px;">The Story</div>
+          <div class="whisper-text" id="past-life-story"></div>
+        </div>
+        
+        <div class="reading-content" style="padding:16px; background:var(--bg-card); border-radius:12px; margin-bottom:12px;">
+          <div class="section-label" style="margin-bottom:8px;">Why It Still Matters</div>
+          <div id="past-life-relevance" style="color:var(--text-secondary); line-height:1.6;"></div>
+        </div>
+        
+        <div class="reading-content" style="padding:16px; background:rgba(139,92,246,0.05); border:1px solid rgba(139,92,246,0.2); border-radius:12px; margin-bottom:12px;">
+          <div class="section-label" style="color:var(--purple); margin-bottom:8px;">The Lesson Carried Forward</div>
+          <div id="past-life-lesson" style="color:var(--text-primary); font-style:italic; line-height:1.6;"></div>
+        </div>
+        
+        <div class="whisper-card" style="background:rgba(201,169,110,0.05); border:1px solid var(--gold-dim);">
+          <div class="section-label" style="margin-bottom:8px;">An Echo in Today's Life</div>
+          <div id="past-life-connection" style="color:var(--gold); line-height:1.6;"></div>
+        </div>
+        
+        <button class="share-btn" onclick="sharePastLifeCard()" style="margin-top:16px; width:100%;">
+          ✦ Share Past Life Card
+        </button>
+      </div>
+      
+      <div class="screen-sticky-bar" style="flex-shrink:0; padding:12px 0 24px; border-top:1px solid rgba(201,169,110,0.15); margin:0 -20px; padding-left:20px; padding-right:20px; background:var(--bg-primary);">
+        <button class="continue-btn visible" onclick="showScreen('chart-screen')" style="width:100%;">Back to Chart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CREDIT PURCHASE MODAL ========== -->
+  <div class="modal-overlay" id="credit-modal">
+    <div class="modal-content credit-purchase">
+      <h3>Get More Credits</h3>
+      <div class="credit-options">
+        <div class="credit-option" data-amount="30" data-price="$1.99" onclick="purchaseCredits(30, 1.99)">
+          <div class="amount">* 30</div>
+          <div>
+            <div class="price">$1.99</div>
+            <div class="unit">$0.066/point</div>
+          </div>
+        </div>
+        <div class="credit-option popular" data-amount="100" data-price="$4.99" onclick="purchaseCredits(100, 4.99)">
+          <div class="badge">Popular</div>
+          <div class="amount">* 100</div>
+          <div>
+            <div class="price">$4.99</div>
+            <div class="unit">$0.050/point</div>
+          </div>
+        </div>
+        <div class="credit-option" data-amount="250" data-price="$9.99" onclick="purchaseCredits(250, 9.99)">
+          <div class="amount">* 250</div>
+          <div>
+            <div class="price">$9.99</div>
+            <div class="unit">$0.040/point</div>
+          </div>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeCreditModal()">Maybe Later</button>
+    </div>
+  </div>
+
+  <!-- ========== UNLOCK MODAL ========== -->
+  <div class="modal-overlay" id="unlock-modal">
+    <div class="modal-content unlock-modal">
+      <h3>Unlock Chapter</h3>
+      <p id="unlock-chapter-name"></p>
+      <div class="unlock-cost">This chapter costs <strong id="unlock-cost-amount"></strong></div>
+      <div class="unlock-actions">
+        <button class="unlock-btn cancel" onclick="closeUnlockModal()">Cancel</button>
+        <button class="unlock-btn confirm" id="confirm-unlock-btn">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SHARE PREVIEW MODAL ========== -->
+  <div class="modal-overlay" id="share-modal">
+    <div class="modal-content" style="max-width: 320px; text-align: center; padding: 20px;">
+      <h3 style="color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 12px;">✦ Share Card</h3>
+      <div class="share-preview-container" style="width: 100%; max-height: 480px; overflow: hidden; border-radius: 12px; margin-bottom: 16px; background: #000;">
+        <img id="share-preview-img" src="" alt="Share Card" style="width: 100%; height: auto; display: block;">
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button id="share-download-btn" class="share-btn" style="flex: 1; margin-top: 0; padding: 12px;">▼ Download</button>
+        <button id="share-native-btn" class="share-btn" style="flex: 1; margin-top: 0; padding: 12px;">◇ Share</button>
+      </div>
+      <button class="modal-close-btn" onclick="document.getElementById('share-modal').classList.remove('active')" style="margin-top: 12px;">Close</button>
     </div>
   </div>
 
