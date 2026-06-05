@@ -3296,6 +3296,8 @@
     }
     
 </style>
+  <script src="app-config.js"></script>
+  <script src="wisdom-engine.js"></script>
 </head>
 <body>
   <!-- Toast notification -->
@@ -5175,6 +5177,27 @@ function generateHexagram(question) {
       // Palace modal close
       document.getElementById('palace-modal')?.addEventListener('click', (e) => {
         if (e.target.id === 'palace-modal') closeModal();
+      });
+
+      // Read Full Chapter button
+      document.getElementById('read-full-btn')?.addEventListener('click', showFullChartReading);
+
+      // Share modal buttons
+      document.getElementById('share-download-btn')?.addEventListener('click', () => {
+        showToast('Download feature coming soon');
+      });
+      document.getElementById('share-native-btn')?.addEventListener('click', () => {
+        if (navigator.share) {
+          navigator.share({ title: 'Mystic Fate - My Cosmic Blueprint', text: 'Check out my cosmic blueprint!' });
+        } else {
+          showToast('Share: Mystic Fate - My Cosmic Blueprint');
+        }
+      });
+
+      // Confirm unlock button
+      document.getElementById('confirm-unlock-btn')?.addEventListener('click', () => {
+        showToast('Purchase flow coming soon');
+        closeCreditModal();
       });
     }
 
@@ -7129,8 +7152,13 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
      * ========== SHOW FULL CHART READING ==========
      */
     function showFullChartReading() {
+      // Prevent double spend: check if already loading this feature
+      if (window._loadingFullChart) return;
+      window._loadingFullChart = true;
+      
       var cost = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_COST_FULL_CHART : 12;
       if (getCredits() < cost) {
+        window._loadingFullChart = false;
         showCreditPurchaseModal();
         return;
       }
@@ -7171,15 +7199,19 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
         };
 
         window.AIEngine.generateFullChartReading(userData).then(function(result) {
+          window._loadingFullChart = false;
           if (result && result.palaces) {
             renderFullChartResult(result);
           } else {
             renderFullChartFallback();
           }
         }).catch(function() {
+          window._loadingFullChart = false;
           renderFullChartFallback();
+          window._loadingFullChart = false;
         });
       } else {
+        window._loadingFullChart = false;
         renderFullChartFallback();
       }
     }
@@ -7279,6 +7311,9 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
      * ========== SHOW MONTHLY GUIDE ==========
      */
     function showMonthlyGuide() {
+      if (window._loadingMonthlyGuide) return;
+      window._loadingMonthlyGuide = true;
+      
       showScreen('monthly-guide-screen');
       
       // Populate month selector
@@ -7329,12 +7364,14 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
         };
 
         window.AIEngine.generateMonthlyGuide(userData, month, year).then(function(result) {
+          window._loadingMonthlyGuide = false;
           if (result) {
             renderMonthlyGuide(result);
           } else {
             renderMonthlyGuideFallback(month, year);
           }
         }).catch(function() {
+          window._loadingMonthlyGuide = false;
           renderMonthlyGuideFallback(month, year);
         });
       } else {
@@ -7389,6 +7426,7 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
     }
 
     function renderMonthlyGuideFallback(month, year) {
+      window._loadingMonthlyGuide = false;
       document.getElementById('monthly-guide-loading').style.display = 'none';
       document.getElementById('monthly-guide-content').style.display = 'block';
 
@@ -7430,8 +7468,12 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
      * ========== SHOW PAST LIFE INSIGHT ==========
      */
     function showPastLife() {
+      if (window._loadingPastLife) return;
+      window._loadingPastLife = true;
+      
       var cost = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_COST_PAST_LIFE : 4;
       if (getCredits() < cost) {
+        window._loadingPastLife = false;
         showCreditPurchaseModal();
         return;
       }
@@ -7462,9 +7504,11 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
             renderPastLifeFallback();
           }
         }).catch(function() {
+          window._loadingPastLife = false;
           renderPastLifeFallback();
         });
       } else {
+        window._loadingPastLife = false;
         renderPastLifeFallback();
       }
     }
@@ -7508,8 +7552,12 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
      * ========== SHOW SOULMATE DEEP DIVE ==========
      */
     function showSoulmateDeepDive() {
+      if (window._loadingSoulmate) return;
+      window._loadingSoulmate = true;
+      
       var cost = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_COST_SOULMATE : 6;
       if (getCredits() < cost) {
+        window._loadingSoulmate = false;
         showCreditPurchaseModal();
         return;
       }
