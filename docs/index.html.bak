@@ -3686,11 +3686,11 @@
             Monthly Guide <span style="color:var(--purple);">* 10</span>
           </button>
           <button class="deep-reading-btn" onclick="showPastLife()" style="flex:1; font-size:0.8rem; padding:12px;">
-            Past Life <span style="color:var(--purple);">◆ 4</span>
+            Past Life <span style="color:var(--purple);">* 4</span>
           </button>
         </div>
         <button class="deep-reading-btn" onclick="showSoulmateDeepDive()" style="width:100%;">
-          Soulmate Deep Dive <span style="color:var(--purple);">◆ 6</span>
+          Soulmate Deep Dive <span style="color:var(--purple);">* 6</span>
         </button>
       </div>
     </div>
@@ -3819,13 +3819,13 @@
     <div class="energy-cards">
       <div class="energy-card do-card">
         <div class="energy-card-header">
-          <span class="sym">◆</span> Do
+          <span class="sym">*</span> Do
         </div>
         <div id="do-list"></div>
       </div>
       <div class="energy-card dont-card">
         <div class="energy-card-header">
-          <span class="sym">◇</span> Don't
+          <span class="sym"><></span> Don't
         </div>
         <div id="dont-list"></div>
       </div>
@@ -3834,12 +3834,12 @@
     <!-- ========== CARD OF THE DAY ========== -->
     <div class="card-of-day" id="card-of-day">
       <div class="card-of-day-header">
-        <span class="label">◇ Today's Celestial Card</span>
-        <span class="cost">◆ 1</span>
+        <span class="label">* Today's Celestial Card</span>
+        <span class="cost">* 1</span>
       </div>
       <div class="card-of-day-face" id="card-of-day-face">
         <div class="back">
-          <div class="symbol">✦</div>
+          <div class="symbol">*?</div>
           <div class="hint">Tap to reveal today's star</div>
         </div>
         <div class="front">
@@ -3858,24 +3858,24 @@
     <div class="section-title">Lucky Elements</div>
     <div class="lucky-elements">
       <div class="lucky-item">
-        <span class="icon">☽</span>
+        <span class="icon">*</span>
         <span class="label">Direction</span>
         <span class="value" id="lucky-direction">East</span>
       </div>
       <div class="lucky-item">
-        <span class="icon">⊙</span>
+        <span class="icon"><></span>
         <span class="label">Element</span>
         <span class="value" id="lucky-element">Wood</span>
       </div>
       <div class="lucky-item">
-        <span class="icon">⌛</span>
+        <span class="icon">@</span>
         <span class="label">Golden Hour</span>
         <span class="value" id="lucky-hour">Shen (3-5PM)</span>
       </div>
     </div>
     
     <button class="deep-reading-btn" id="deep-reading-btn" onclick="toggleDeepReading()">
-      Full Oracle Reading <span id="deep-reading-cost" style="color: var(--purple);">◆ 1</span>
+      Full Oracle Reading <span id="deep-reading-cost" style="color: var(--purple);">* 1</span>
     </button>
     
     <div class="deep-reading-content" id="deep-reading-content">
@@ -3928,7 +3928,7 @@
     
     <div class="detail-header">
       <div class="detail-title">
-        <span class="icon">◆</span>
+        <span class="icon">*</span>
         <span id="detail-chapter-title"></span>
       </div>
       <div class="detail-subtitle" id="detail-chapter-subtitle"></div>
@@ -3967,23 +3967,23 @@
     <div class="bond-features">
       <div class="bond-feature-card" onclick="showSoulmatePortrait()">
         <div class="bond-feature-info">
-          <h3>◇ Soulmate Portrait</h3>
+          <h3>* Soulmate Portrait</h3>
           <p>Who the universe has written for you</p>
         </div>
-        <div class="bond-feature-cost">◆ 12</div>
+        <div class="bond-feature-cost">* 12</div>
       </div>
       
       <div class="bond-feature-card" onclick="showCompatInput()">
         <div class="bond-feature-info">
-          <h3>◇ Chart Compatibility</h3>
+          <h3>* Chart Compatibility</h3>
           <p>Compare two cosmic blueprints</p>
         </div>
-        <div class="bond-feature-cost">◆ 10</div>
+        <div class="bond-feature-cost">* 10</div>
       </div>
       
       <div class="bond-feature-card free" onclick="showCelebrityScreen()">
         <div class="bond-feature-info">
-          <h3>✦ Celebrity Match</h3>
+          <h3>* Celebrity Match</h3>
           <p>How compatible are you with the stars?</p>
         </div>
         <div class="bond-feature-cost free">Free</div>
@@ -4354,7 +4354,7 @@
         </div>
         <div class="credit-option popular" data-amount="100" data-price="$4.99" onclick="purchaseCredits(100, 4.99)">
           <div class="badge">Popular</div>
-          <div class="amount">◆ 100</div>
+          <div class="amount">* 100</div>
           <div>
             <div class="price">$4.99</div>
             <div class="unit">$0.050/point</div>
@@ -4908,7 +4908,7 @@ function generateHexagram(question) {
      */
     let currentChart = null;
     let currentUserAge = 30;
-    // 积分已迁移至 localStorage 管理（见 getCredits/spendCredits）
+    let credits = 8; // v2.2: 注册送8点，默认8
     let selectedPain = { pain1: null, pain2: null, pain3: null };
     let selectedDate = { year: 1990, month: 1, day: 15 };
     let selectedHour = 11;
@@ -5814,7 +5814,7 @@ function generateHexagram(question) {
       const costEl = document.getElementById('deep-reading-cost');
       if (costEl) {
         const cost = window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 1;
-        costEl.textContent = '◆ ' + cost;
+        costEl.textContent = '* ' + cost;
       }
     }
 
@@ -5911,9 +5911,33 @@ function generateHexagram(question) {
       return CARDS_OF_THE_DAY[index];
     }
 
-
+    function revealCardOfDay() {
+      const card = getTodayCard();
+      const alreadyRevealed = localStorage.getItem('mystic_cod_revealed_' + card.id);
+      
+      if (alreadyRevealed) {
+        // Already revealed today, show directly
+        showCardFront(card);
+        document.getElementById('card-of-day').classList.add('revealed');
+        return;
+      }
+      
+      // Check credits
+      const cost = window.APP_CONFIG?.CREDIT_COST_CARD_OF_DAY || 1;
+      if (getCredits() < cost) {
+        showCreditPurchaseModal();
+        return;
+      }
+      
+      spendCredits(cost);
+      updateCreditsDisplay();
+      localStorage.setItem('mystic_cod_revealed_' + card.id, 'true');
+      showCardFront(card);
+      document.getElementById('card-of-day').classList.add('revealed');
+    }
+    
     function showCardFront(card) {
-      document.getElementById('cod-star').textContent = '◆ ' + card.name;
+      document.getElementById('cod-star').textContent = '*' + card.name;
       document.getElementById('cod-element').textContent = 'Element of ' + card.element;
       
       const fortuneEl = document.getElementById('cod-fortune');
@@ -6410,11 +6434,11 @@ Financial wisdom comes from understanding your own patterns around money. What d
       const dontList = document.getElementById('dont-list');
       
       if (doDonts.do && Array.isArray(doDonts.do)) {
-        doList.innerHTML = doDonts.do.map(item => '<div class="energy-item"><span class="sym">◆</span> ' + item + '</div>').join('');
-        dontList.innerHTML = doDonts.dont.map(item => '<div class="energy-item"><span class="sym">◇</span> ' + item + '</div>').join('');
+        doList.innerHTML = doDonts.do.map(item => '<div class="energy-item"><span class="sym">*</span> ' + item + '</div>').join('');
+        dontList.innerHTML = doDonts.dont.map(item => '<div class="energy-item"><span class="sym"><></span> ' + item + '</div>').join('');
       } else {
-        doList.innerHTML = '<div class="energy-item"><span class="sym">◆</span> Trust intuition</div><div class="energy-item"><span class="sym">◆</span> Embrace change</div>';
-        dontList.innerHTML = '<div class="energy-item"><span class="sym">◇</span> Force outcomes</div><div class="energy-item"><span class="sym">◇</span> Ignore gut feelings</div>';
+        doList.innerHTML = '<div class="energy-item"><span class="sym">*</span> Trust intuition</div><div class="energy-item"><span class="sym">*</span> Embrace change</div>';
+        dontList.innerHTML = '<div class="energy-item"><span class="sym"><></span> Force outcomes</div><div class="energy-item"><span class="sym"><></span> Ignore gut feelings</div>';
       }
 
       // Get lucky elements
@@ -6503,13 +6527,13 @@ Financial wisdom comes from understanding your own patterns around money. What d
           }
           if (result.doList && Array.isArray(result.doList) && doList) {
             doList.innerHTML = result.doList.map(item =>
-              '<div class="energy-item"><span class="sym">◆</span> ' + escapeHTML(item) + '</div>'
+              '<div class="energy-item"><span class="sym">*</span> ' + escapeHTML(item) + '</div>'
             ).join('');
             doList.dataset.aiEnhanced = 'true';
           }
           if (result.dontList && Array.isArray(result.dontList) && dontList) {
             dontList.innerHTML = result.dontList.map(item =>
-              '<div class="energy-item"><span class="sym">◇</span> ' + escapeHTML(item) + '</div>'
+              '<div class="energy-item"><span class="sym"><></span> ' + escapeHTML(item) + '</div>'
             ).join('');
             dontList.dataset.aiEnhanced = 'true';
           }
@@ -6717,7 +6741,7 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
         card.className = 'chapter-card' + (isUnlocked ? ' unlocked' : '');
         card.onclick = function() { openChapter(key); };
         
-        card.innerHTML = '<div class="chapter-info"><div class="chapter-title"><span class="icon">◆</span> ' + chapter.title + '</div><div class="chapter-subtitle">' + chapter.subtitle + '</div><div class="chapter-desc">' + descMap[key] + '</div></div><div class="chapter-cost' + (isUnlocked ? ' unlocked' : '') + '">' + (isUnlocked ? 'Unlocked' : '◆ ' + chapter.cost) + '</div>';
+        card.innerHTML = '<div class="chapter-info"><div class="chapter-title"><span class="icon">*</span> ' + chapter.title + '</div><div class="chapter-subtitle">' + chapter.subtitle + '</div><div class="chapter-desc">' + descMap[key] + '</div></div><div class="chapter-cost' + (isUnlocked ? ' unlocked' : '') + '">' + (isUnlocked ? 'Unlocked' : '* ' + chapter.cost) + '</div>';
         list.appendChild(card);
       });
     }
@@ -6739,7 +6763,7 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
 
       pendingChapterKey = key;
       document.getElementById('unlock-chapter-name').textContent = chapter.title;
-      document.getElementById('unlock-cost-amount').textContent = '◆ ' + chapter.cost;
+      document.getElementById('unlock-cost-amount').textContent = '* ' + chapter.cost;
       
       document.getElementById('confirm-unlock-btn').onclick = function() {
         spendCredits(chapter.cost);
@@ -7149,51 +7173,68 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
      * ========== CREDIT MODAL FUNCTIONS ==========
      */
     function showCreditPurchaseModal() {
-      document.getElementById('credit-modal').classList.add('active');
+      // 使用 payment-module 的统一弹窗
+      if (window.paymentManager) {
+        window.showCreditPurchaseModal();
+      } else {
+        document.getElementById('credit-modal').classList.add('active');
+      }
     }
 
     function closeCreditModal() {
-      document.getElementById('credit-modal').classList.remove('active');
+      if (window.paymentManager) {
+        window.closeCreditPurchaseModal();
+      } else {
+        document.getElementById('credit-modal').classList.remove('active');
+      }
     }
 
-    function purchaseCredits(amount) {
-      addCredits(amount);
-      updateCreditsDisplay();
-      closeCreditModal();
-      showToast('Credits added: +' + amount);
+    function purchaseCredits(amount, price) {
+      if (window.paymentManager) {
+        window.purchaseCredits(amount, price);
+        updateCreditsDisplay();
+      } else {
+        // Fallback: 直接加
+        credits += amount;
+        updateCreditsDisplay();
+        closeCreditModal();
+        showToast('Credits added: +' + amount);
+      }
     }
 
     /**
-     * ========== CREDIT SYSTEM (localStorage persistent) ==========
+     * 安全获取当前积分（优先 payment-module，回退旧变量）
      */
     function getCredits() {
-      var val = localStorage.getItem('mystic_credits');
-      if (val === null) {
-        var init = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_NEW_USER : 8;
-        localStorage.setItem('mystic_credits', String(init));
-        return init;
+      if (window.paymentManager) {
+        return window.paymentManager.getCredits();
       }
-      return parseInt(val, 10) || 0;
+      return credits;
     }
 
+    /**
+     * 安全扣费（优先 payment-module，回退旧方式）
+     */
     function spendCredits(amount) {
-      var current = getCredits();
-      if (current < amount) return false;
-      localStorage.setItem('mystic_credits', String(current - amount));
-      return true;
+      if (window.paymentManager) {
+        return window.paymentManager.spendCredits(amount);
+      }
+      if (credits >= amount) {
+        credits -= amount;
+        return true;
+      }
+      return false;
     }
 
+    /**
+     * 安全添加积分（优先 payment-module，回退旧方式）
+     */
     function addCredits(amount) {
-      var current = getCredits();
-      localStorage.setItem('mystic_credits', String(current + amount));
-    }
-
-    function isUnlocked(key) {
-      return localStorage.getItem('mystic_purchased_' + key) === 'true';
-    }
-
-    function markUnlocked(key) {
-      localStorage.setItem('mystic_purchased_' + key, 'true');
+      if (window.paymentManager) {
+        window.paymentManager.addCredits(amount);
+      } else {
+        credits += amount;
+      }
     }
 
     /**
@@ -7838,74 +7879,6 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
       } else {
         showToast('Share: ' + shareText);
       }
-    }
-
-    /**
-     * ========== SHARE CARD GENERATORS ==========
-     */
-    function shareDestinyCard(data) {
-      var shareText = 'My Cosmic Signature: ' + (data.mainStar || 'Unknown') + ' | ' + (data.bureau || '') + '\n' +
-        '"' + (data.quote || 'The stars have written your story.') + '"\n' +
-        '-- ' + (data.name || 'Seeker') + '\n' +
-        'Created with Mystic Fate';
-      return { cardData: 'data:text/plain,share', shareText: shareText };
-    }
-
-    function shareDailyWhisper(data) {
-      var shareText = 'Oracle of ' + (data.date || 'Today') + '\n' +
-        '"' + (data.whisper || 'The stars speak.') + '"\n' +
-        'Created with Mystic Fate';
-      return { cardData: 'data:text/plain,share', shareText: shareText };
-    }
-
-    function downloadShareCard(dataUrl, filename) {
-      var link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    function shareToSocial(type, dataUrl, text) {
-      if (navigator.share) {
-        navigator.share({ title: 'Mystic Fate', text: text });
-      } else {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        try {
-          document.execCommand('copy');
-          showToast('Copied to clipboard!');
-        } catch(e) {
-          showToast('Share: ' + text.substring(0, 50) + '...');
-        }
-        document.body.removeChild(ta);
-      }
-    }
-
-    /**
-     * ========== CARD OF THE DAY (no double-spend) ==========
-     */
-    function revealCardOfDay() {
-      var card = getTodayCard();
-      var unlockKey = 'cod_' + card.id;
-      if (isUnlocked(unlockKey)) {
-        showCardFront(card);
-        document.getElementById('card-of-day').classList.add('revealed');
-        return;
-      }
-      var cost = window.APP_CONFIG ? window.APP_CONFIG.CREDIT_COST_CARD_OF_DAY : 1;
-      if (getCredits() < cost) {
-        showCreditPurchaseModal();
-        return;
-      }
-      spendCredits(cost);
-      markUnlocked(unlockKey);
-      updateCreditsDisplay();
-      showCardFront(card);
-      document.getElementById('card-of-day').classList.add('revealed');
     }
 
 </script>
