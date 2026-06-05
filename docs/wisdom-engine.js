@@ -110,7 +110,7 @@ async function callDeepSeekAPI_viaProxy(messages, options = {}) {
 // ==================== Prompt 模板 ====================
 
 const PROMPT_TEMPLATES = {
-  dailyWhisper: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a daily fortune reading.
+  dailyWhisper: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer who has studied the celestial patterns for a thousand years. Generate a daily fortune reading.
 
 ## User's Chart
 - Name: {name}
@@ -119,27 +119,50 @@ const PROMPT_TEMPLATES = {
 - Five Element Bureau: {bureau}
 - Key Transformations: {transformations}
 
+## User's Life Questions
+- What keeps them awake at night: {pain1}
+- Their deepest uncertainty: {pain2}
+- What they're searching for: {pain3}
+
 ## Today's Date
 {date}
 
+## Special Date Detection
+Consider if today is a special celestial date:
+- **Solar Terms (节气)**: Check if today falls near a solar term (立春, 春分, 谷雨, 立夏, 夏至, 立秋, 秋分, 立冬, 冬至, etc.). If so, name it and explain its significance.
+- **New Moon or Full Moon**: Determine the moon phase. New Moon (朔日) is for planting intentions. Full Moon (望日) is for release and harvest.
+- **Friday the 13th**: If applicable, note this as a day of thin veils between luck and mischief.
+- **Seasonal Transition**: First/last day of a season carries amplified energy.
+- **Double Date**: Days where date=month (e.g., 5/5) carry mirror energy — what you give, you receive.
+- If none of the above apply, just note the day's general celestial character.
+
 ## Response Format (JSON)
 {
-  "whisper": "One poetic sentence about today's energy (in English)",
+  "whisper": "One poetic, mysterious sentence about today's energy (in English)",
   "doList": ["action1", "action2", "action3"],
   "dontList": ["avoid1", "avoid2", "avoid3"],
   "luckyDirection": "Direction name",
   "luckyElement": "Element name",
   "goldenHour": "Time period description",
-  "classicalText": "One classical Chinese fortune text",
-  "interpretation": "Brief interpretation"
+  "luckyNumber": number,
+  "dayEnergy": "Description of today's Five Element energy trend (Wood/Fire/Earth/Metal/Water) and how it interacts with the user's Bureau",
+  "cosmicAdvice": "One concise, actionable line of advice that the user can act on today — not vague, not generic",
+  "classicalText": "One classical Chinese fortune text from 紫微斗数, 易經 or similar traditional source",
+  "classicalTranslation": "English translation of the classical text",
+  "interpretation": "Brief interpretation of how the classical text applies today"
 }
 
 Requirements:
 - Whisper must be poetic and mysterious
 - Do/Don't list must be specific and actionable
 - Use Eastern astrology terminology (palace names, star names)
-- Classical text should be from 紫微斗数 or similar traditional text
-- Keep the tone mystical but grounded`,
+- dayEnergy must describe the day's Five Element flow and how it affects the user specifically
+- cosmicAdvice should read like a wise elder giving one sharp piece of directional advice
+- Classical text must include its source (e.g., "紫微斗數全書" or "易經")
+- classicalTranslation must be natural English, not literal word-for-word
+- Keep the tone mystical but grounded
+- Special dates (solar terms, moon phases) must be explicitly named if they apply
+- Weave at least one of the user's stated life concerns into the whisper or cosmicAdvice — make today's message feel personal to what keeps them awake at night`,
 
   personalityReading: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a personality reading based on zodiac and five elements.
 
@@ -200,7 +223,7 @@ Requirements:
 - Use "the stars suggest" not "you will definitely"
 - Keep interpretation under 300 words`,
 
-  soulmateReading: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a soulmate portrait based on the user's Partnership Palace.
+  soulmateReading: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a soulmate portrait based on the user's Partnership Palace. Speak like you have seen their future lover in the stars.
 
 ## User's Chart
 - Name: {name}
@@ -209,26 +232,39 @@ Requirements:
 - Five Element Bureau: {bureau}
 - Key Transformation: {keyTransformation}
 
+## User's Life Questions
+- What keeps them awake at night: {pain1}
+- Their deepest uncertainty: {pain2}
+- What they're searching for: {pain3}
+
 ## Response Format (JSON)
 {
-  "archetype": "Poetic name for the soulmate archetype",
-  "element": "Their elemental energy",
-  "nature": "Their core nature description",
+  "archetype": "Poetic name for the soulmate archetype — like 'The Moonlit Gardener' or 'The Storm That Quietly Arrives'",
+  "element": "Their elemental energy (Wood/Fire/Earth/Metal/Water) and what it means",
+  "nature": "Their core nature — a vivid 1-2 sentence description of their soul essence",
   "traits": ["trait1", "trait2", "trait3", "trait4"],
-  "timing": "When they might meet (be vague but intriguing)",
-  "connection": "How the connection will feel",
-  "classicalText": "Classical Chinese text about soulmate bonds",
-  "classicalTranslation": "Translation of classical text"
+  "visualDescription": "A poetic but specific description of their likely appearance, bearing, or the way they carry themselves — not just physical traits, but the energy they project (e.g., 'They have the kind of quiet that makes you want to lean in closer. Their eyes hold a light that flickers between mischief and melancholy, and their hands move like they are sculpting the air itself.')",
+  "firstMeetingSign": "A specific sign or synchronicity that will precede or accompany the first meeting — something the stars will arrange (e.g., 'Three days before you meet, you will hear a song you have not heard in years, and it will stir something you cannot name.')",
+  "timing": "When they might meet (be vague but intriguing, reference 大运/流年 if possible)",
+  "connection": "How the connection will feel — the emotional texture of meeting them",
+  "challengePattern": "A recurring pattern the user carries in love that this soulmate will illuminate or challenge (e.g., 'You have a habit of falling for people who need saving. This one will not need saving — and that will unsettle you at first.')",
+  "growthInvitation": "What this relationship will ask of the user — the personal growth it demands (e.g., 'This bond will ask you to stop performing strength and start showing softness. It will not let you hide.')",
+  "classicalText": "Classical Chinese text from traditional texts about love and fate — must include source",
+  "classicalTranslation": "English translation of the classical text"
 }
 
 Requirements:
-- Be romantic and mysterious
-- Reference Partnership Palace stars
-- Include specific traits
-- Timing should reference 大运/流年
-- Classical text from traditional texts about love and fate`,
+- Be romantic and mysterious but specific — the user should feel like this describes a real person
+- Reference Partnership Palace stars in the traits and nature
+- visualDescription should feel like poetry but grounded in real human presence
+- firstMeetingSign should feel like fate giving a signal — specific enough to recognize
+- challengePattern must name a real behavioral pattern the user can recognize, tied to their chart stars
+- growthInvitation must describe the emotional or spiritual work this relationship demands
+- Classical text must include its source (e.g., from 紫微斗数全书 or similar)
+- Timing should reference 大运/流年 if possible
+- Weave at least one of the user's stated life concerns into the archetype, challengePattern, or growthInvitation — the portrait should acknowledge what the user deeply cares about`,
 
-  compatibilityReading: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a compatibility reading for two charts.
+  compatibilityReading: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. Generate a compatibility reading for two charts. You see the dance between two destinies and must name its rhythm.
 
 ## User 1
 - Name: {name1}
@@ -244,21 +280,40 @@ Requirements:
 
 ## Response Format (JSON)
 {
-  "soulScore": number (0-100),
-  "communicationScore": number (0-100),
-  "growthScore": number (0-100),
-  "verdict": "Overall compatibility verdict (2-3 sentences)",
-  "strengths": ["strength1", "strength2", "strength3"],
-  "challenges": ["challenge1", "challenge2", "challenge3"],
-  "classicalText": "Classical text about the relationship",
-  "advice": "Ancient advice for this pairing"
+  "overallScore": number (0-100),
+  "dimensions": {
+    "soulConnection": number (0-100),
+    "communication": number (0-100),
+    "growthPotential": number (0-100),
+    "passion": number (0-100),
+    "values": number (0-100)
+  },
+  "verdict": "Overall compatibility verdict (2-3 sentences describing the core dynamic between these two)",
+  "strengths": [
+    {"aspect": "Name of strength area", "detail": "Specific description of this strength, referencing stars and elements"},
+    {"aspect": "...", "detail": "..."}
+  ],
+  "challenges": [
+    {"aspect": "Name of challenge area", "detail": "Specific description of the challenge", "advice": "One piece of actionable advice for navigating this challenge"},
+    {"aspect": "...", "detail": "...", "advice": "..."},
+    {"aspect": "...", "detail": "...", "advice": "..."}
+  ],
+  "meetingStory": "A poetic 1-2 sentence description of how these two souls might meet — vivid, specific enough to feel real, mysterious enough to feel fated",
+  "growthPath": "What this relationship, at its best, could help each person become — the growth direction for the bond (e.g., 'Together, they learn that stillness is not weakness and that two strong wills can bend without breaking.')",
+  "classicalText": "Classical text about the relationship — must include source",
+  "classicalTranslation": "English translation of the classical text",
+  "advice": "Ancient advice for this pairing — one sharp, memorable line"
 }
 
 Requirements:
 - Score should reflect harmony of elements and stars
-- Reference specific compatibility factors
-- Be honest about challenges but positive
-- Classical text should be authentic`,
+- Each dimension must have a different, meaningful score — avoid identical scores
+- strengths and challenges must each reference specific star names and elemental interactions
+- Each challenge must come with a specific, actionable advice — not generic relationship advice
+- meetingStory should feel like a scene from a novel — vivid and specific
+- growthPath must describe mutual transformation, not one-sided
+- Classical text should be authentic from traditional Chinese texts (紫微斗数全书, 易经, etc.)
+- Be honest about challenges but leave the couple feeling equipped to navigate them`,
 
   fullChartReading: `You are an old Chinese fortune-teller who has been reading 紫微斗数 charts for 50 years. Your shop is in a small alley in Taipei. You speak in plain, sharp, specific English—like you're talking directly to the person sitting across from you. No flowery language, no vague fortune-cookie nonsense.
 
@@ -282,6 +337,13 @@ The customer has paid good money for a full 12-palace reading. Give them somethi
 - Parents Palace (父母宫): {parentsStars}
 - Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
 - Life Palace (身宫): {shenGong}
+
+## Customer's Life Questions
+- What keeps them awake at night: {pain1}
+- Their deepest uncertainty: {pain2}
+- What they're searching for: {pain3}
+
+CRITICAL RULE: This is YOUR customer's personal reading. You MUST directly reference these three answers. Connect each palace to at least one of their stated concerns. The user paid for a reading that feels personal — if you don't reference their own words, you have failed. Make sure they feel like "This was made for ME."
 
 ## Rules
 1. BE SPECIFIC. The customer needs to feel like this is ABOUT THEM, not anyone else.
@@ -322,6 +384,13 @@ The customer has paid good money for a full 12-palace reading. Give them somethi
 - Wealth Palace: {wealthStars}
 - Partnership Palace: {partnershipStars}
 - Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
+
+## Customer's Life Questions
+- What keeps them awake at night: {pain1}
+- Their deepest uncertainty: {pain2}
+- What they're searching for: {pain3}
+
+CRITICAL RULE: In your month overview and weekly advice, reference at least one of these personal concerns. When giving advice for a week, connect it back to what the customer deeply cares about. Make this feel like a personal monthly guide, not a general horoscope.
 
 ## Month
 {month} {year}
@@ -387,6 +456,13 @@ This is a reading for **{month} {year}**. You MUST reference the specific energy
 - Fortune Palace: {fortuneStars}
 - Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
 
+## Customer's Life Questions
+- What keeps them awake at night: {pain1}
+- Their deepest uncertainty: {pain2}
+- What they're searching for: {pain3}
+
+CRITICAL RULE: Connect the past life story and its lesson to at least one of these stated concerns. The past life should feel like it explains WHY they struggle with this specific issue in this lifetime. Example: if they worry about {pain1}, tell a past life story that shows the origin of this worry.
+
 ## Rules
 1. The title must be specific and memorable (not "The Scholar" but "The Silk Road Mapmaker Who Lost His Way").
 2. The era must be real and specific (actual Chinese dynasty, not "ancient times").
@@ -421,6 +497,13 @@ This is a reading for **{month} {year}**. You MUST reference the specific energy
 - Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
 - Ming Palace: {mingGong}
 
+## Customer's Life Questions
+- What keeps them awake at night: {pain1}
+- Their deepest uncertainty: {pain2}
+- What they're searching for: {pain3}
+
+CRITICAL RULE: Weave at least one of these personal concerns into the love reading. If they mentioned trust or loneliness in {pain1}, make sure the love archetype, challenge, or deeper connection section directly addresses it. This reading must feel like it was written for THEM.
+
 ## Rules
 1. The love archetype must feel like a real psychological type, not a zodiac sign label. Make it specific. **Frame it through a psychological lens — describe the attachment pattern, the defense mechanism, the unmet childhood need that drives their romantic choices.**
 2. Core desire must be honest and specific—what do they ACTUALLY want in a partner? Not "love and connection" but "someone who challenges their opinions without dismissing them."
@@ -443,7 +526,88 @@ This is a reading for **{month} {year}**. You MUST reference the specific energy
   "closingWisdom": "One final, memorable line about their relationship path that they'll want to screenshot"
 }
 
-## Critical: This must feel like a psychological insight wrapped in astrology, not a generic love horoscope. Be specific enough that the customer thinks "how did this app know that about me?" Target the pain points and the hidden desires—that's what makes it feel "so accurate it's scary."`
+## Critical: This must feel like a psychological insight wrapped in astrology, not a generic love horoscope. Be specific enough that the customer thinks "how did this app know that about me?" Target the pain points and the hidden desires—that's what makes it feel "so accurate it's scary"`,
+
+  weeklyOutlook: `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer. A seeker asks: "What does this week hold for me?" You look at their chart and the shifting celestial patterns to give them a day-by-day forecast of the week ahead.
+
+## User's Chart
+- Name: {name}
+- Main Star: {mainStar}
+- Five Element Bureau: {bureau}
+- Ming Palace: {mingGong}
+- Career Palace: {careerStars}
+- Wealth Palace: {wealthStars}
+- Partnership Palace: {partnershipStars}
+- Four Transformations: Lu={lu}, Quan={quan}, Ke={ke}, Ji={ji}
+
+## Week Context
+Week of: {startDate} to {endDate}
+Current Season: {season}
+Solar Term (节气): {solarTerm}
+Moon Phase: {moonPhase}
+
+## Response Format (JSON)
+{
+  "overview": "A 2-3 sentence overview of the week's overall energy - what to expect, what to watch for. Reference seasonal or celestial context.",
+  "weeklyEnergy": "Description of the week's Five Element energy flow and how it interacts with the user's Bureau",
+  "days": [
+    {
+      "day": "Monday",
+      "energy": "The dominant energy of this day (e.g. 'Wood rising - initiative is favored')",
+      "focus": "What to focus on today - one specific area of life (career, relationships, self, etc.)",
+      "advice": "One actionable piece of advice for this day"
+    },
+    {
+      "day": "Tuesday",
+      "energy": "...",
+      "focus": "...",
+      "advice": "..."
+    },
+    {
+      "day": "Wednesday",
+      "energy": "...",
+      "focus": "...",
+      "advice": "..."
+    },
+    {
+      "day": "Thursday",
+      "energy": "...",
+      "focus": "...",
+      "advice": "..."
+    },
+    {
+      "day": "Friday",
+      "energy": "...",
+      "focus": "...",
+      "advice": "..."
+    },
+    {
+      "day": "Saturday",
+      "energy": "...",
+      "focus": "...",
+      "advice": "..."
+    },
+    {
+      "day": "Sunday",
+      "energy": "...",
+      "focus": "...",
+      "advice": "..."
+    }
+  ],
+  "keyTheme": "One sentence capturing the week's single most important theme",
+  "classicalText": "A classical Chinese text (from 紫微斗数, 易经, or similar) that resonates with this week's energy - include source",
+  "classicalTranslation": "English translation of the classical text"
+}
+
+Requirements:
+- The overview must feel like a real weather report for the soul, not a generic horoscope
+- Each day must have a distinct energy that shifts naturally through the week - do not repeat
+- Each day's focus and advice must be specific and actionable
+- weeklyEnergy should describe the Five Element flow (Wood/Fire/Earth/Metal/Water) and its implications
+- keyTheme should be concise and memorable - something the user will carry through the week
+- Consider seasonal transitions, the moon phase, and any solar terms when crafting each day's energy
+- Classical text must include its source
+- Keep the tone wise, grounded, and slightly mystical - like an elder reading omens for the week ahead`
 };
 
 // ==================== 核心函数 ====================
@@ -730,6 +894,7 @@ function generateFallbackResponse(prompt) {
   var isMonthly = prompt.includes('monthlyGuide') || prompt.includes('monthly guide') || prompt.includes('What\'s coming for me next month');
   var isPastLife = prompt.includes('pastLifeInsight') || prompt.includes('past life') || prompt.includes('Who was I before');
   var isSoulmateDeep = prompt.includes('soulmateDeepDive') || prompt.includes('deep reading') || prompt.includes('DEEP reading');
+  var isWeekly = prompt.includes('weeklyOutlook') || prompt.includes('weekly outlook') || prompt.includes('week ahead');
   
   // ------ fullChartReading fallback (完整12宫命盘解读) ------
   if (isFullChart) {
@@ -1083,7 +1248,10 @@ async function generateDailyWhisper(userData) {
     .replace('{mainStar}', userData.mainStar || 'Purple Star')
     .replace('{bureau}', userData.bureau || 'Water Bureau')
     .replace('{transformations}', userData.transformations || 'Balanced')
-    .replace('{date}', dateStr);
+    .replace('{date}', dateStr)
+    .replace('{pain1}', userData.pain1 || '...')
+    .replace('{pain2}', userData.pain2 || '...')
+    .replace('{pain3}', userData.pain3 || '...');
   
   try {
     const content = await callDeepSeekAPI(prompt);
@@ -1159,7 +1327,10 @@ async function generateSoulmatePortrait(userData) {
     .replace('{partnershipStars}', userData.partnershipStars || 'Tian Tong')
     .replace('{mainStar}', userData.mainStar || 'Purple Star')
     .replace('{bureau}', userData.bureau || 'Water Bureau')
-    .replace('{keyTransformation}', userData.lu || 'Balanced');
+    .replace('{keyTransformation}', userData.lu || 'Balanced')
+    .replace('{pain1}', userData.pain1 || '...')
+    .replace('{pain2}', userData.pain2 || '...')
+    .replace('{pain3}', userData.pain3 || '...');
   
   try {
     const content = await callDeepSeekAPI(prompt);
@@ -1253,7 +1424,10 @@ async function generateFullChartReading(userData) {
     .replace('{quan}', userData.quan || 'None')
     .replace('{ke}', userData.ke || 'None')
     .replace('{ji}', userData.ji || 'None')
-    .replace('{shenGong}', userData.shenGong || 'Life Palace');
+    .replace('{shenGong}', userData.shenGong || 'Life Palace')
+    .replace('{pain1}', userData.pain1 || '...')
+    .replace('{pain2}', userData.pain2 || '...')
+    .replace('{pain3}', userData.pain3 || '...');
 
   try {
     const content = await callDeepSeekAPI(prompt);
@@ -1297,7 +1471,10 @@ async function generateMonthlyGuide(userData, month, year) {
     .replace('{ke}', userData.ke || 'None')
     .replace('{ji}', userData.ji || 'None')
     .replace('{month}', monthName)
-    .replace('{year}', year || '2026');
+    .replace('{year}', year || '2026')
+    .replace('{pain1}', userData.pain1 || '...')
+    .replace('{pain2}', userData.pain2 || '...')
+    .replace('{pain3}', userData.pain3 || '...');
 
   try {
     const content = await callDeepSeekAPI(prompt);
@@ -1310,6 +1487,58 @@ async function generateMonthlyGuide(userData, month, year) {
     return result;
   } catch (error) {
     console.error('Error generating monthly guide:', error);
+
+/**
+ * 生成周运
+ */
+async function generateWeeklyOutlook(userData) {
+  var today = new Date();
+  var dayOfWeek = today.getDay(); // 0=Sun
+  var monday = new Date(today);
+  monday.setDate(today.getDate() - ((dayOfWeek === 0 ? 7 : dayOfWeek) - 1));
+  var sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+
+  var dateStr = monday.toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) + ' - ' +
+                sunday.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  var seasonNames = ['Winter', 'Winter', 'Spring', 'Spring', 'Spring', 'Summer', 'Summer', 'Summer', 'Autumn', 'Autumn', 'Autumn', 'Winter'];
+  var solarTerms = ['Xiaohan (Small Cold)', 'Dahan (Great Cold)', 'Lichun (Spring Begins)', 'Jingzhe (Insects Awaken)', 'Qingming (Clear Brightness)', 'Lixia (Summer Begins)', 'Mangzhong (Grain in Ear)', 'Xiaoshu (Small Heat)', 'Liqiu (Autumn Begins)', 'Bailu (White Dew)', 'Hanlu (Cold Dew)', 'Lidong (Winter Begins)', 'Daxue (Great Snow)'];
+  var month = today.getMonth();
+  var season = seasonNames[month] || 'Unknown';
+  var solarTerm = solarTerms[month] || 'None';
+
+  var dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+  var moonPhases = ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous',
+                    'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent'];
+  var moonPhase = moonPhases[dayOfYear % 8];
+
+  var prompt = PROMPT_TEMPLATES.weeklyOutlook
+    .replace('{name}', userData.name || 'Seeker')
+    .replace('{mainStar}', userData.mainStar || 'Purple Star')
+    .replace('{bureau}', userData.bureau || 'Water Bureau')
+    .replace('{mingGong}', userData.mingGong || 'Life Palace')
+    .replace('{careerStars}', userData.careerStars || 'Zi Wei')
+    .replace('{wealthStars}', userData.wealthStars || 'Wu Qu')
+    .replace('{partnershipStars}', userData.partnershipStars || 'Tian Tong')
+    .replace('{lu}', userData.lu || 'None')
+    .replace('{quan}', userData.quan || 'None')
+    .replace('{ke}', userData.ke || 'None')
+    .replace('{ji}', userData.ji || 'None')
+    .replace('{startDate}', dateStr.split(' - ')[0] || 'Monday')
+    .replace('{endDate}', dateStr.split(' - ')[1] || 'Sunday')
+    .replace('{season}', season)
+    .replace('{solarTerm}', solarTerm)
+    .replace('{moonPhase}', moonPhase);
+
+  try {
+    var result = await callDeepSeekAPI(prompt);
+    return result;
+  } catch (error) {
+    console.error('Error generating weekly outlook:', error);
+    return generateFallbackResponse(prompt);
+  }
+}
     return generateFallbackResponse(prompt);
   }
 }
@@ -1334,7 +1563,10 @@ async function generatePastLifeInsight(userData) {
     .replace('{lu}', userData.lu || 'None')
     .replace('{quan}', userData.quan || 'None')
     .replace('{ke}', userData.ke || 'None')
-    .replace('{ji}', userData.ji || 'None');
+    .replace('{ji}', userData.ji || 'None')
+    .replace('{pain1}', userData.pain1 || '...')
+    .replace('{pain2}', userData.pain2 || '...')
+    .replace('{pain3}', userData.pain3 || '...');
 
   try {
     const content = await callDeepSeekAPI(prompt);
@@ -1372,7 +1604,10 @@ async function generateSoulmateDeepDive(userData) {
     .replace('{quan}', userData.quan || 'None')
     .replace('{ke}', userData.ke || 'None')
     .replace('{ji}', userData.ji || 'None')
-    .replace('{mingGong}', userData.mingGong || 'Life Palace');
+    .replace('{mingGong}', userData.mingGong || 'Life Palace')
+    .replace('{pain1}', userData.pain1 || '...')
+    .replace('{pain2}', userData.pain2 || '...')
+    .replace('{pain3}', userData.pain3 || '...');
 
   try {
     const content = await callDeepSeekAPI(prompt);
@@ -1389,6 +1624,102 @@ async function generateSoulmateDeepDive(userData) {
   }
 }
 
+/**
+ * Enhance soulmate portrait with a deeper story-based reading
+ * Generates meeting story, life together, and soul purpose narrative
+ */
+async function enhanceSoulmatePortrait(userData) {
+  const cacheKey = 'soulmate_enhance_' + userData.name + '_' + new Date().toDateString();
+
+  if (AI_CONFIG.cacheEnabled) {
+    const cached = AI_CONFIG.cache.get(cacheKey);
+    if (cached) return cached;
+  }
+
+  const prompt = `You are the Oracle of the Purple Star (紫微星君), an ancient Eastern astrologer who reads the threads of fate between destined souls. A seeker who has already received their Soulmate Portrait now asks for the deeper story — the hidden narrative that the stars have woven.
+
+## Seeker's Chart
+- Name: ${userData.name || 'Seeker'}
+- Partnership Palace: ${userData.partnershipPalace || 'Partnership Palace'} with ${userData.partnershipStars || 'Tian Tong'}
+- Main Star: ${userData.mainStar || 'Purple Star'}
+- Five Element Bureau: ${userData.bureau || 'Water Bureau'}
+- Key Transformation: ${userData.keyTransformation || 'Balanced'}
+- Existing Archetype: ${userData.existingArchetype || 'Unknown'}
+- Existing Element: ${userData.existingElement || 'Unknown'}
+- Existing Traits: ${userData.existingTraits ? userData.existingTraits.join(', ') : 'Unknown'}
+
+## Seeker's Life Questions
+- What keeps them awake at night: ${userData.pain1 || '...'}
+- Their deepest uncertainty: ${userData.pain2 || '...'}
+- What they're searching for: ${userData.pain3 || '...'}
+
+CRITICAL RULE: Weave these personal concerns into the soulmate story. The meeting story, life together, or soul purpose should directly reference at least one of what the seeker deeply cares about.
+
+## Response Format (JSON)
+{
+  "meetingStory": "A vivid, scene-based narrative of how they will meet their soulmate. 3-4 sentences. Describe the atmosphere, the moment, the feeling — like a scene from a wuxia novel or a dream. Include a sensory detail (a scent, a sound, a quality of light). End with the line the seeker will say to them.",
+  "lifeTogether": "What their shared life will feel like. 3-4 sentences. Not specific events — the emotional texture of being together. What conflicts will teach them, what quiet moments will feel like, how they will grow together.",
+  "soulPurpose": "The cosmic reason this soulmate exists in their life. 2-3 sentences. What karmic lesson or soul evolution this relationship serves. Frame it as destiny's intention.",
+  "classicalText": "A classical Chinese passage about destined meetings or soul bonds (姻缘), from traditional texts",
+  "classicalTranslation": "English translation of the classical text"
+}
+
+Requirements:
+- The meetingStory must feel cinematic but never overly specific (no exact dates, no specific locations)
+- The lifeTogether should acknowledge that love includes challenge — not just sweetness
+- The soulPurpose should connect to their Partnership Palace stars
+- Classical text from 诗经, 牡丹亭, 西厢记, or other classical works about love and fate
+- Write in lyrical, plain English — as if the stars themselves are whispering`;
+
+  try {
+    const content = await callDeepSeekAPI(prompt);
+    const result = parseJSONResponse(content);
+
+    if (AI_CONFIG.cacheEnabled && result) {
+      AI_CONFIG.cache.set(cacheKey, result);
+    }
+
+    return result;
+  } catch (error) {
+    console.error('Error enhancing soulmate portrait:', error);
+    // Fallback: generate a poetic default response
+    return {
+      meetingStory: 'The stars align on a quiet evening when the air carries the first chill of autumn. You are not looking — you have stopped looking — and that is precisely when the universe moves. They step into your orbit not with fanfare but with presence. A voice that cuts through the noise, a laugh that sounds like recognition. And in that moment, the world goes still. You will turn to them and say: "I think I have been waiting for you."',
+      lifeTogether: 'Your lives will weave together like two rivers meeting — at first there is turbulence, the clashing of currents, the adjustment of two separate worlds becoming one. But eventually, the water settles into something deeper. You will argue about small things and understand each other in the silences. The gift of this bond is not that it is easy — it is that it is worth it. You will grow not despite each other, but because of each other.',
+      soulPurpose: 'This soulmate comes to you not to complete you — you were already whole — but to mirror the parts of yourself you have not yet learned to love. They are here to teach you that vulnerability is not weakness, that being seen is not the same as being judged. The karmic contract between you is simple: to remind each other what is real.',
+      classicalText: '有缘千里来相会，无缘对面不相逢。'
+    };
+ 
+  // ------ weeklyOutlook fallback (周运) ------
+  if (isWeekly) {
+    var weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    var energies = ['Wood rising - plant what matters', 'Fire building - take bold action', 'Earth steady - ground your plans', 'Metal sharpening - cut what no longer serves', 'Water flowing - adapt and reflect', 'Wind carrying - release and receive', 'Stillness settling - prepare for what comes'];
+    var focuses = ['Career and long-term goals', 'Communication and connection', 'Financial decisions', 'Relationships and partnership', 'Self-care and inner work', 'Community and social ties', 'Rest and spiritual reflection'];
+    var advices = ['Make one decision you have been postponing', 'Speak honestly even if it feels uncomfortable', 'Review your budget and adjust one habit', 'Reach out to someone you have been thinking about', 'Do something that brings you joy without guilt', 'Let your guard down with someone who has earned it', 'Do nothing ambitious. Rest is productive.'];
+    
+    var days = [];
+    for (var d = 0; d < 7; d++) {
+      days.push({
+        day: weekDays[d],
+        energy: energies[d],
+        focus: focuses[d],
+        advice: advices[d]
+      });
+    }
+    
+    return JSON.stringify({
+      overview: 'This week carries the energy of transition and subtle alignment. Each day brings a different flavor of elemental influence. Pay attention to how your energy shifts as the week unfolds.',
+      weeklyEnergy: 'A balanced week with each element finding its moment. Let the rhythm of the days guide you rather than forcing a single agenda.',
+      days: days,
+      keyTheme: 'Flow with the week, do not fight it. Each day has its purpose.',
+      classicalText: '顺其自然，万物各得其和而生。',
+      classicalTranslation: 'Follow the natural course — all things find harmony when they move in their own time.'
+    });
+  }
+  
+ }
+}
+
 // ==================== 导出 ====================
 
 if (typeof window !== 'undefined') {
@@ -1400,8 +1731,10 @@ if (typeof window !== 'undefined') {
     generateCompatibilityReading,
     generateFullChartReading,
     generateMonthlyGuide,
+    generateWeeklyOutlook,
     generatePastLifeInsight,
     generateSoulmateDeepDive,
+    enhanceSoulmatePortrait,
     enhanceDailyWhisper,
     callDeepSeekAPI,
     PROMPT_TEMPLATES,

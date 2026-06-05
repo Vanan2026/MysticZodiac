@@ -2701,6 +2701,30 @@
       font-size: 0.9rem;
     }
     
+    /* Soulmate Deeper Story Loading Dots */
+    .loading-dots {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .loading-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--purple);
+      animation: dotPulse 1.4s ease-in-out infinite;
+    }
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes dotPulse {
+      0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); }
+      30% { opacity: 1; transform: scale(1.2); }
+    }
+    
     /* Compatibility Input Screen */
     .compat-input-screen {
       padding-bottom: 80px;
@@ -4010,6 +4034,38 @@
           <div class="en" id="soulmate-classical-en"></div>
         </div>
       </div>
+      
+      <!-- Soulmate Deeper Story section (hidden until unveiled) -->
+      <div id="soulmate-deeper-story-section" style="display:none;">
+        <div class="soulmate-section">
+          <div class="soulmate-section-title">The Meeting</div>
+          <div class="interpretation-text" id="soulmate-meeting-story" style="line-height:1.7;"></div>
+        </div>
+        <div class="soulmate-section">
+          <div class="soulmate-section-title">Life Together</div>
+          <div class="interpretation-text" id="soulmate-life-together" style="line-height:1.7;"></div>
+        </div>
+        <div class="soulmate-section">
+          <div class="soulmate-section-title">Soul Purpose</div>
+          <div class="interpretation-text" id="soulmate-soul-purpose" style="line-height:1.7; color:var(--gold);"></div>
+        </div>
+        <div class="soulmate-section">
+          <div class="soulmate-section-title">Ancient Verse</div>
+          <div class="classical-text-block">
+            <div class="zh" id="soulmate-deeper-classical-zh"></div>
+            <div class="en" id="soulmate-deeper-classical-en"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="soulmate-deeper-story-loading" style="display:none; text-align:center; padding:24px;">
+        <div style="color:var(--purple); font-style:italic; margin-bottom:8px;">The stars are weaving your story...</div>
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+      </div>
+      
+      <button class="seal-wisdom-btn" id="unveil-deeper-story-btn" onclick="unveilDeeperSoulmateStory()" style="margin-bottom:12px;">
+        &#x25C7; Unveil the Deeper Story
+      </button>
       
       <button class="seal-wisdom-btn" onclick="showToast('Wisdom sealed in your memory')">Seal This Wisdom</button>
     </div>
@@ -5696,6 +5752,9 @@ function generateHexagram(question) {
           quan: currentChart.siHuaMarks?.quan || 'None',
           ke: currentChart.siHuaMarks?.ke || 'None',
           ji: currentChart.siHuaMarks?.ji || 'None',
+          pain1: window.selectedPain?.pain1 || '',
+          pain2: window.selectedPain?.pain2 || '',
+          pain3: window.selectedPain?.pain3 || '',
           question
         };
 
@@ -6448,7 +6507,10 @@ Financial wisdom comes from understanding your own patterns around money. What d
             currentChart.siHuaMarks?.quan || '',
             currentChart.siHuaMarks?.ke || '',
             currentChart.siHuaMarks?.ji || ''
-          ].filter(Boolean).join(', ') || 'Balanced'
+          ].filter(Boolean).join(', ') || 'Balanced',
+          pain1: window.selectedPain?.pain1 || '',
+          pain2: window.selectedPain?.pain2 || '',
+          pain3: window.selectedPain?.pain3 || ''
         };
 
         const result = await Promise.race([
@@ -6550,7 +6612,10 @@ Financial wisdom comes from understanding your own patterns around money. What d
             currentChart.siHuaMarks?.quan || '',
             currentChart.siHuaMarks?.ke || '',
             currentChart.siHuaMarks?.ji || ''
-          ].filter(Boolean).join(', ') || 'Balanced'
+          ].filter(Boolean).join(', ') || 'Balanced',
+          pain1: window.selectedPain?.pain1 || '',
+          pain2: window.selectedPain?.pain2 || '',
+          pain3: window.selectedPain?.pain3 || ''
         });
 
         if (result) {
@@ -6773,7 +6838,10 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
           lu: currentChart.siHuaMarks?.lu || '',
           quan: currentChart.siHuaMarks?.quan || '',
           ke: currentChart.siHuaMarks?.ke || '',
-          ji: currentChart.siHuaMarks?.ji || ''
+          ji: currentChart.siHuaMarks?.ji || '',
+          pain1: window.selectedPain?.pain1 || '',
+          pain2: window.selectedPain?.pain2 || '',
+          pain3: window.selectedPain?.pain3 || ''
         };
 
         const aiResult = await Promise.race([
@@ -6828,6 +6896,110 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
 
       showScreen('soulmate-screen');
       showToast('Soulmate Portrait revealed');
+    }
+
+    /**
+     * Unveil the Deeper Story — enhances soulmate portrait with narrative layers
+     */
+    function unveilDeeperSoulmateStory() {
+      var btn = document.getElementById('unveil-deeper-story-btn');
+      if (window._unveilingSoulmate) return;
+      if (!currentChart) { showToast('Complete your chart first'); return; }
+      
+      window._unveilingSoulmate = true;
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+      
+      var loadingEl = document.getElementById('soulmate-deeper-story-loading');
+      var sectionEl = document.getElementById('soulmate-deeper-story-section');
+      if (loadingEl) loadingEl.style.display = 'block';
+      if (sectionEl) sectionEl.style.display = 'none';
+      
+      var archetypeEl = document.getElementById('soulmate-archetype');
+      var existingArchetype = archetypeEl ? archetypeEl.textContent : 'Unknown';
+      
+      var partnershipPalace = currentChart.palaces[2];
+      
+      var userData = {
+        name: 'Seeker',
+        partnershipPalace: partnershipPalace ? (partnershipPalace.name || 'Partnership Palace') : 'Partnership Palace',
+        partnershipStars: getPalaceStars ? getPalaceStars(currentChart, 2) : 'Tian Tong',
+        mainStar: currentChart.mingGongMainStar || 'Purple Star',
+        bureau: currentChart.fiveElementBureau || 'Water Bureau',
+        keyTransformation: currentChart.sihua ? (currentChart.sihua.lu || 'Balanced') : 'Balanced',
+        existingArchetype: existingArchetype,
+        existingElement: document.getElementById('soulmate-element') ? document.getElementById('soulmate-element').textContent : '',
+        existingTraits: existingArchetype ? [existingArchetype] : [],
+        pain1: window.selectedPain?.pain1 || '',
+        pain2: window.selectedPain?.pain2 || '',
+        pain3: window.selectedPain?.pain3 || ''
+      };
+      
+      if (window.AIEngine && window.AIEngine.enhanceSoulmatePortrait) {
+        window.AIEngine.enhanceSoulmatePortrait(userData).then(function(result) {
+          if (result) {
+            renderDeeperSoulmateStory(result);
+          }
+          window._unveilingSoulmate = false;
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.textContent = '\u25C7 The Story Has Been Told';
+          btn.onclick = null;
+          if (loadingEl) loadingEl.style.display = 'none';
+        }).catch(function() {
+          window._unveilingSoulmate = false;
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          if (loadingEl) loadingEl.style.display = 'none';
+          showToast('The stars are quiet for now...');
+        });
+      } else {
+        // Fallback if AI engine not ready
+        setTimeout(function() {
+          renderDeeperSoulmateStory({
+            meetingStory: 'The stars align on a quiet evening when the air carries the first chill of autumn. You are not looking — you have stopped looking — and that is precisely when the universe moves. They step into your orbit not with fanfare but with presence.',
+            lifeTogether: 'Your lives will weave together like two rivers meeting — at first there is turbulence, but eventually the water settles into something deeper.',
+            soulPurpose: 'This soulmate comes to mirror the parts of yourself you have not yet learned to love.',
+            classicalText: '\u6709\u7f18\u5343\u91cc\u6765\u76f8\u4f1a',
+            classicalTranslation: 'Those destined to meet will find each other across a thousand miles.'
+          });
+          window._unveilingSoulmate = false;
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.textContent = '\u25C7 The Story Has Been Told';
+          btn.onclick = null;
+          if (loadingEl) loadingEl.style.display = 'none';
+        }, 500);
+      }
+    }
+    
+    function renderDeeperSoulmateStory(result) {
+      var sectionEl = document.getElementById('soulmate-deeper-story-section');
+      if (!sectionEl) return;
+      
+      sectionEl.style.display = 'block';
+      
+      var meetingEl = document.getElementById('soulmate-meeting-story');
+      if (meetingEl) meetingEl.textContent = result.meetingStory || '';
+      
+      var lifeEl = document.getElementById('soulmate-life-together');
+      if (lifeEl) lifeEl.textContent = result.lifeTogether || '';
+      
+      var purposeEl = document.getElementById('soulmate-soul-purpose');
+      if (purposeEl) purposeEl.textContent = result.soulPurpose || '';
+      
+      var zhEl = document.getElementById('soulmate-deeper-classical-zh');
+      if (zhEl) zhEl.textContent = result.classicalText || '';
+      
+      var enEl = document.getElementById('soulmate-deeper-classical-en');
+      if (enEl) enEl.textContent = result.classicalTranslation || '';
+      
+      // Scroll to the new section
+      setTimeout(function() {
+        if (sectionEl) {
+          sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
     }
 
     function showCompatInput() {
@@ -6925,7 +7097,10 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
         name: userName || 'Seeker',
         mainStar: userChart.mingGongMainStar || 'Purple Star',
         destinyPalace: 'Life Palace with ' + (userChart.siZhongHua || 'balance'),
-        element: userChart.fiveElementBureau || 'Wood'
+        element: userChart.fiveElementBureau || 'Wood',
+        pain1: window.selectedPain?.pain1 || '',
+        pain2: window.selectedPain?.pain2 || '',
+        pain3: window.selectedPain?.pain3 || ''
       };
       const partnerData = {
         name: 'Partner',
@@ -7195,7 +7370,10 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
           quan: chartData.sihua ? (chartData.sihua.quan || 'None') : 'None',
           ke: chartData.sihua ? (chartData.sihua.ke || 'None') : 'None',
           ji: chartData.sihua ? (chartData.sihua.ji || 'None') : 'None',
-          shenGong: 'Life Palace'
+          shenGong: 'Life Palace',
+          pain1: window.selectedPain?.pain1 || '',
+          pain2: window.selectedPain?.pain2 || '',
+          pain3: window.selectedPain?.pain3 || ''
         };
 
         window.AIEngine.generateFullChartReading(userData).then(function(result) {
@@ -7360,7 +7538,10 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
           lu: currentChart.sihua ? (currentChart.sihua.lu || 'None') : 'None',
           quan: currentChart.sihua ? (currentChart.sihua.quan || 'None') : 'None',
           ke: currentChart.sihua ? (currentChart.sihua.ke || 'None') : 'None',
-          ji: currentChart.sihua ? (currentChart.sihua.ji || 'None') : 'None'
+          ji: currentChart.sihua ? (currentChart.sihua.ji || 'None') : 'None',
+          pain1: window.selectedPain?.pain1 || '',
+          pain2: window.selectedPain?.pain2 || '',
+          pain3: window.selectedPain?.pain3 || ''
         };
 
         window.AIEngine.generateMonthlyGuide(userData, month, year).then(function(result) {
@@ -7494,7 +7675,10 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
           lu: currentChart.sihua ? (currentChart.sihua.lu || 'None') : 'None',
           quan: currentChart.sihua ? (currentChart.sihua.quan || 'None') : 'None',
           ke: currentChart.sihua ? (currentChart.sihua.ke || 'None') : 'None',
-          ji: currentChart.sihua ? (currentChart.sihua.ji || 'None') : 'None'
+          ji: currentChart.sihua ? (currentChart.sihua.ji || 'None') : 'None',
+          pain1: window.selectedPain?.pain1 || '',
+          pain2: window.selectedPain?.pain2 || '',
+          pain3: window.selectedPain?.pain3 || ''
         };
 
         window.AIEngine.generatePastLifeInsight(userData).then(function(result) {
@@ -7599,7 +7783,10 @@ Five Element Bureau: ${currentChart.fiveElementBureau}` }
             quan: currentChart.sihua ? (currentChart.sihua.quan || 'None') : 'None',
             ke: currentChart.sihua ? (currentChart.sihua.ke || 'None') : 'None',
             ji: currentChart.sihua ? (currentChart.sihua.ji || 'None') : 'None',
-            mingGong: 'Ming Palace'
+            mingGong: 'Ming Palace',
+            pain1: window.selectedPain?.pain1 || '',
+            pain2: window.selectedPain?.pain2 || '',
+            pain3: window.selectedPain?.pain3 || ''
           };
 
           window.AIEngine.generateSoulmateDeepDive(userData).then(function(result) {
