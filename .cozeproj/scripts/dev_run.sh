@@ -1,14 +1,17 @@
 #!/bin/bash
 set -e
 
-# Kill existing services
-kill $(lsof -ti:5000) 2>/dev/null || true
+# Kill existing services on our ports
+kill $(lsof -ti:9090) 2>/dev/null || true
 kill $(lsof -ti:9091) 2>/dev/null || true
+
+# Start frontend static server on 9090 (Nginx proxies 5000 → 9090)
+cd /workspace/projects/app && nohup npx serve dist -l 9090 --no-clipboard > /tmp/frontend9090.log 2>&1 &
 
 # Start backend health server on 9091
 nohup node /tmp/health-server.js > /tmp/health-server.log 2>&1 &
 
-# Start Nginx on 5000
-nginx -t && nginx -s reload 2>/dev/null || nginx
+# Reload Nginx (managed by Coze platform)
+nginx -t && nginx -s reload 2>/dev/null || true
 
-echo "Services started on ports 5000 and 9091"
+echo "Services started: 5000(Nginx) → 9090(Frontend), 9091(Health API)"

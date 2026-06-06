@@ -3621,7 +3621,7 @@ console.log('✅ Haptic Engine + Soundscape loaded');
       </div>
       <div class="energy-card dont-card">
         <div class="energy-card-header">
-          <span class="sym"><></span> Don't
+          <span class="sym">&lt;&gt;</span> Don't
         </div>
         <div id="dont-list"></div>
       </div>
@@ -3659,7 +3659,7 @@ console.log('✅ Haptic Engine + Soundscape loaded');
         <span class="value" id="lucky-direction">East</span>
       </div>
       <div class="lucky-item">
-        <span class="icon"><></span>
+        <span class="icon">&lt;&gt;</span>
         <span class="label">Element</span>
         <span class="value" id="lucky-element">Wood</span>
       </div>
@@ -6156,10 +6156,10 @@ Financial wisdom comes from understanding your own patterns around money. What d
       
       if (doDonts.do && Array.isArray(doDonts.do)) {
         doList.innerHTML = doDonts.do.map(item => '<div class="energy-item"><span class="sym">*</span> ' + item + '</div>').join('');
-        dontList.innerHTML = doDonts.dont.map(item => '<div class="energy-item"><span class="sym"><></span> ' + item + '</div>').join('');
+        dontList.innerHTML = doDonts.dont.map(item => '<div class="energy-item"><span class="sym">&lt;&gt;</span> ' + item + '</div>').join('');
       } else {
         doList.innerHTML = '<div class="energy-item"><span class="sym">*</span> Trust intuition</div><div class="energy-item"><span class="sym">*</span> Embrace change</div>';
-        dontList.innerHTML = '<div class="energy-item"><span class="sym"><></span> Force outcomes</div><div class="energy-item"><span class="sym"><></span> Ignore gut feelings</div>';
+        dontList.innerHTML = '<div class="energy-item"><span class="sym">&lt;&gt;</span> Force outcomes</div><div class="energy-item"><span class="sym">&lt;&gt;</span> Ignore gut feelings</div>';
       }
 
       // Get lucky elements
