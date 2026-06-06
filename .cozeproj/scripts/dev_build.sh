@@ -7,7 +7,7 @@ npm install --silent 2>/dev/null || true
 npx vite build
 
 # Copy external JS files to dist
-for f in app-config.js ai-engine.js wisdom-engine.js share-cards.js personality-engine.js compliance.js payment-module.js; do
+for f in app-config.js wisdom-engine.js share-cards.js personality-engine.js compliance.js cloud-sync.js payment-module.js; do
   cp "$f" "dist/$f" 2>/dev/null || true
 done
 

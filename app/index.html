@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -3038,21 +3038,21 @@ const Haptic = {
   _supported: 'vibrate' in navigator,
   
   /** Light tap - button press, card selection */
-  light() {
+  light(e) {
     if (this._supported) navigator.vibrate(10);
-    this._ripple(event);
+    if (e) this._ripple(e);
   },
   
   /** Medium tap - confirm, screen transition */
-  medium() {
+  medium(e) {
     if (this._supported) navigator.vibrate(20);
-    this._ripple(event);
+    if (e) this._ripple(e);
   },
   
   /** Heavy tap - reveal ceremony, major action */
-  heavy() {
+  heavy(e) {
     if (this._supported) navigator.vibrate([30, 20, 20]);
-    this._ripple(event);
+    if (e) this._ripple(e);
   },
   
   /** Error / reject pattern */
@@ -3161,7 +3161,7 @@ const Soundscape = {
 document.addEventListener('click', function(e) {
   const target = e.target.closest('button, .pain-card, .option-card, .palace-item, .tab-btn');
   if (target) {
-    Haptic.light();
+    Haptic.light(e);
   }
 }, true);
 
@@ -4169,6 +4169,7 @@ console.log('✅ Haptic Engine + Soundscape loaded');
   <script src="personality-engine.js"></script>
   <script src="share-cards.js"></script>
   <script src="compliance.js"></script>
+  <script src="cloud-sync.js"></script>
   <script src="payment-module.js"></script>
   <script>
 /**

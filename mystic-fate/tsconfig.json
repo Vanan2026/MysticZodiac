@@ -1,5 +1,4 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
     "moduleResolution": "bundler",
@@ -8,8 +7,14 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "jsx": "react-jsx",
-    "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["es2020"],
+    "isolatedModules": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "sourceMap": true,
+    "types": ["react", "react-native"]
   },
   "include": [
     "**/*.ts",

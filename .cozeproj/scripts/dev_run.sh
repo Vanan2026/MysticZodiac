@@ -2,8 +2,8 @@
 set -e
 
 # Kill existing services on our ports
-kill $(lsof -ti:9090) 2>/dev/null || true
-kill $(lsof -ti:9091) 2>/dev/null || true
+pid9090=$(lsof -ti:9090 2>/dev/null) && kill "$pid9090" 2>/dev/null || true
+pid9091=$(lsof -ti:9091 2>/dev/null) && kill "$pid9091" 2>/dev/null || true
 
 # Start frontend static server on 9090 (Nginx proxies 5000 → 9090)
 cd /workspace/projects/app/dist && nohup python3 -m http.server 9090 --bind 0.0.0.0 > /tmp/frontend9090.log 2>&1 &

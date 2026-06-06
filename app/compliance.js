@@ -43,7 +43,7 @@ By using this app, you acknowledge and agree that:
 We do NOT collect:
 • Location data
 • Contact information (unless you voluntarily provide it)
-• Financial information (processed by Google Play)'
+• Financial information (processed by Google Play)
 `
       },
       {
@@ -338,12 +338,14 @@ function acceptDisclaimer() {
 
 function confirmAge() {
   localStorage.setItem('age_verified', 'true');
-  closeModal();
+  const modal = document.getElementById('age-modal');
+  if (modal) modal.remove();
   showDisclaimerModal();
 }
 
 function declineAge() {
-  closeModal();
+  const modal = document.getElementById('age-modal');
+  if (modal) modal.remove();
   alert('Sorry, you must be 13 or older to use this app. Please ask a parent or guardian for assistance.');
   // 可以重定向到其他页面
 }

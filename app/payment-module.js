@@ -107,6 +107,23 @@ class PaymentManager {
     
     // 加载保存的状态
     this.loadState();
+    
+    // 云端同步（异步，不阻塞）
+    this.syncFromCloud();
+  }
+  
+  /**
+   * 从云端拉取积分同步
+   */
+  async syncFromCloud() {
+    if (window.CloudSync) {
+      const cloudCredits = await window.CloudSync.pullCredits();
+      if (cloudCredits !== null && cloudCredits !== this.credits) {
+        this.credits = cloudCredits;
+        this.saveState();
+        this.notifyListeners('creditChange', { credits: this.credits });
+      }
+    }
   }
   
   /**
@@ -137,6 +154,10 @@ class PaymentManager {
       localStorage.setItem('mystic_credits', this.credits.toString());
       if (this.subscription) {
         localStorage.setItem('mystic_subscription', JSON.stringify(this.subscription));
+      }
+      // Cloud sync (fire & forget)
+      if (window.CloudSync) {
+        window.CloudSync.pushCredits(this.credits);
       }
     } catch (e) {
       console.error('Error saving payment state:', e);
