@@ -1,0 +1,33 @@
+{
+  "name": "mystic-zodiac-ziwei",
+  "version": "1.0.0",
+  "description": "紫微斗数 (Ziwei Dōufū) Fortune Telling System for Mystic Fate App",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node src/test.ts",
+    "test:watch": "ts-node-dev --respawn src/test.ts"
+  },
+  "keywords": [
+    "ziwei",
+    "chinese-astrology",
+    "fortune-telling",
+    "lunar-calendar",
+    "react-native"
+  ],
+  "author": "Mystic Fate",
+  "license": "MIT",
+  "dependencies": {
+    "lunar-javascript": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.41",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
