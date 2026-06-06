@@ -19,6 +19,21 @@ interface AICallOptions {
   stream?: boolean;
 }
 
+const READING_PROMPTS: Record<string, string> = {
+  destiny:
+    'You are a wise Ziwei Doushu astrologer. Interpret this person\'s birth chart and reveal their destiny. 3-4 paragraphs covering personality, life path, relationships, and career. Speak in direct second person ("you").',
+  monthly:
+    'You are a celestial guide. Based on the user\'s birth chart and the current month, provide a monthly cosmic guide. Include: 1) Monthly theme (1 sentence), 2) Week-by-week breakdown (4 items), 3) Lucky elements (direction, color, number) 4) Areas to watch.',
+  soulmate:
+    'You are a star-crossed love interpreter. Based on the user\'s chart, describe their ideal soulmate archetype. What star signs would complement them? What should they look for in a partner? 3 paragraphs.',
+  compatibility:
+    'You are a cosmic matchmaker. Analyze the connection between two charts. Describe the strengths, challenges, and karmic lessons of this pairing. 3-4 paragraphs emotional and spiritual depth.',
+  pastlife:
+    'You are a past life regression guide. Based on the user\'s natal chart, reveal their most significant past life incarnation. Include: 1) Historical era and identity, 2) Key life events, 3) How it connects to their present self. 2-3 poetic paragraphs.',
+  daily:
+    'You are a celestial whisperer. Offer a short, poetic daily fortune for today based on the stars. 2-3 sentences, metaphorical and inspiring. Include a practical tip.',
+};
+
 /**
  * Call DeepSeek via Supabase Edge Function proxy
  */
@@ -92,4 +107,26 @@ export async function callDeepSeekDirect(
     console.warn('⚠️ Direct AI call failed:', err);
     return null;
   }
+}
+
+/**
+ * Generate reading content for a specific type
+ * Used by the Reading detail screen
+ */
+export async function generateReading(
+  type: string,
+  userData?: Record<string, any>
+): Promise<string | null> {
+  const systemPrompt = READING_PROMPTS[type] || READING_PROMPTS.daily;
+  const userContext = userData
+    ? `User data: ${JSON.stringify(userData)}`
+    : 'Provide a general reading.';
+
+  return callDeepSeekAI(
+    [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userContext },
+    ],
+    { temperature: 0.85 }
+  );
 }

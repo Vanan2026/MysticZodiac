@@ -5,8 +5,8 @@
  * and provides a clean async API for chart calculation.
  */
 import { Solar, Lunar } from 'lunar-javascript';
-import { calculateChart as rawCalculate } from './ziwei/index';
-import type { ChartResult } from './ziwei/types';
+import { calculateBirthChartSync } from '../utils/ziwei/index';
+import type { BirthChart, ChartInput } from '../utils/ziwei/types';
 
 export interface BirthInfo {
   year: number;
@@ -19,7 +19,7 @@ export interface BirthInfo {
 
 export interface ChartCache {
   hash: string;
-  result: ChartResult;
+  result: BirthChart;
   timestamp: number;
 }
 
@@ -32,7 +32,7 @@ function hashBirth(info: BirthInfo): string {
 /**
  * Calculate ZiWei chart from birth info
  */
-export async function calculateChart(info: BirthInfo): Promise<ChartResult> {
+export async function calculateChart(info: BirthInfo): Promise<BirthChart> {
   const key = hashBirth(info);
 
   // Check cache first
@@ -46,24 +46,17 @@ export async function calculateChart(info: BirthInfo): Promise<ChartResult> {
   const lunar = solar.getLunar();
 
   // Build input for the engine
-  const input = {
-    lunarYear: lunar.getYear(),
-    lunarMonth: lunar.getMonth(),
-    lunarDay: lunar.getDay(),
-    isLeap: lunar.isLeap(),
+  const input: ChartInput = {
+    year: lunar.getYear(),
+    month: lunar.getMonth(),
+    day: lunar.getDay(),
     hour: info.hour,
-    gender: info.gender === 'male' ? 0 : 1,
+    gender: info.gender,
   };
 
   try {
-    // Call the raw engine
-    const result = rawCalculate(
-      input.lunarYear,
-      input.lunarMonth,
-      input.lunarDay,
-      input.hour,
-      input.gender
-    );
+    // Call the sync engine
+    const result = calculateBirthChartSync(input);
 
     // Cache it
     chartCache.set(key, {
@@ -82,7 +75,7 @@ export async function calculateChart(info: BirthInfo): Promise<ChartResult> {
 /**
  * Get cached chart or null
  */
-export function getCachedChart(info: BirthInfo): ChartResult | null {
+export function getCachedChart(info: BirthInfo): BirthChart | null {
   const cached = chartCache.get(hashBirth(info));
   return cached ? cached.result : null;
 }

@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: Colors.border,
-    backgroundColor: Colors.surface,
+    backgroundColor: Colors.bgCard,
     paddingHorizontal: Spacing.md,
     paddingVertical: 12,
     fontSize: FontSize.body,

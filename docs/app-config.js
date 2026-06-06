@@ -3,8 +3,8 @@
  * 
  * 🔒 API Key 安全说明：
  * API Key 绝不硬编码在此文件中。
- * 使用方式：localStorage.setItem('DEEPSEEK_API_KEY', 'sk-xxx')
- * 设置后刷新页面即可生效，Key不会出现在Git历史中。
+ * 生产环境：走 Supabase Edge Function 代理，API Key 仅存于 Supabase 环境变量
+ * 开发环境：localStorage.setItem('DEEPSEEK_API_KEY', 'sk-xxx') 临时设置
  */
 
 window.APP_CONFIG = {
@@ -15,7 +15,8 @@ window.APP_CONFIG = {
   DEEPSEEK_MODEL_ALIAS: 'deepseek-v4-pro',
 
   // ====== Supabase Edge Function（已部署）======
-  SUPABASE_EDGE_FUNCTION_URL: 'https://tgggebljhvpxgaehsnvq.supabase.co/functions/v1/deepseek-proxy',
+  SUPABASE_EDGE_FUNCTION_URL: localStorage.getItem('SUPABASE_EDGE_FUNCTION_URL') ||
+    'https://tgggebljhvpxgaehsnvq.supabase.co/functions/v1/deepseek-proxy',
 
   // ====== deepseek-v4-pro 参数 ======
   TEMPERATURE: 0.7,

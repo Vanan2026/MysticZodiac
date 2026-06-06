@@ -19,6 +19,10 @@ const AI_CONFIG = {
   model: 'fast-model', // 网关别名 xiaowen，后端映射 deepseek-v4-pro
   modelAlias: 'xiaowen',
 
+  // ===== Supabase Edge Function 代理 =====
+  // 生产环境优先走代理，API Key 仅存在于 Supabase 环境变量
+  supabaseEdgeFunctionUrl: '',
+
   // ===== 模型参数（deepseek-v4-pro 推荐）=====
   temperature: 0.95,
   top_p: 0.97,
@@ -46,6 +50,8 @@ function applyAppConfig() {
   // OpenAI兼容路径：{BASE_URL}/v1/chat/completions
   const base = (cfg.DEEPSEEK_BASE_URL || 'https://api.deepseek.com').replace(/\/+$/, '');
   AI_CONFIG.apiUrl = base + '/v1/chat/completions';
+  // Supabase Edge Function 代理 URL
+  AI_CONFIG.supabaseEdgeFunctionUrl = cfg.SUPABASE_EDGE_FUNCTION_URL || '';
   AI_CONFIG.temperature = (cfg.TEMPERATURE ?? AI_CONFIG.temperature);
   AI_CONFIG.top_p = (cfg.TOP_P ?? AI_CONFIG.top_p);
   AI_CONFIG.frequency_penalty = (cfg.FREQUENCY_PENALTY ?? AI_CONFIG.frequency_penalty);
@@ -383,70 +389,114 @@ The customer has paid good money for a full 12-palace reading. Give them somethi
 // ==================== 核心函数 ====================
 
 /**
- * 调用 DeepSeek API（xiaowen / deepseek-v4-pro via OpenAI兼容网关）
+ * 调用 DeepSeek API（三阶段路由）
+ * 阶段 1: Supabase Edge Function 代理（生产环境优先）
+ * 阶段 2: 直调 DeepSeek API（开发/调试用，依赖 localStorage API Key）
+ * 阶段 3: 本地 fallback 响应（离线可用）
  */
 async function callDeepSeekAPI(prompt, systemPrompt = '') {
-  if (!AI_CONFIG.apiKey || !AI_CONFIG.apiUrl) {
-    console.warn('⚠️ No API key/url configured, using fallback');
+  const messages = [];
+  if (systemPrompt) {
+    messages.push({ role: 'system', content: systemPrompt });
+  }
+  messages.push({ role: 'user', content: prompt });
+
+  // ===== 阶段 1: Supabase Edge Function 代理 =====
+  if (AI_CONFIG.supabaseEdgeFunctionUrl) {
+    console.log('🔮 Attempting Supabase Edge Function proxy...');
+    try {
+      const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      let timer = null;
+      if (controller && AI_CONFIG.timeoutMs) {
+        timer = setTimeout(() => controller.abort(), AI_CONFIG.timeoutMs);
+      }
+
+      const response = await fetch(AI_CONFIG.supabaseEdgeFunctionUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: AI_CONFIG.model,
+          messages: messages,
+          temperature: AI_CONFIG.temperature,
+          top_p: AI_CONFIG.top_p,
+          frequency_penalty: AI_CONFIG.frequency_penalty,
+          presence_penalty: AI_CONFIG.presence_penalty,
+          max_tokens: AI_CONFIG.max_tokens,
+          stream: false,
+          thinking: { type: 'disabled' }
+        })
+      });
+      if (controller) clearTimeout(timer);
+
+      if (response.ok) {
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content;
+        if (content) {
+          console.log('✅ Edge Function proxy succeeded');
+          return content;
+        }
+        console.warn('⚠️ Edge Function returned empty content, falling through');
+      } else {
+        console.warn('⚠️ Edge Function returned', response.status, 'falling through');
+      }
+    } catch (error) {
+      console.warn('⚠️ Edge Function proxy failed:', error.message, 'falling through');
+    }
+  }
+
+  // ===== 阶段 2: 直调 DeepSeek API =====
+  if (AI_CONFIG.apiKey && AI_CONFIG.apiUrl) {
+    console.log('🔮 Attempting direct DeepSeek API call...');
+    try {
+      const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      let timer = null;
+      if (controller && AI_CONFIG.timeoutMs) {
+        timer = setTimeout(() => controller.abort(), AI_CONFIG.timeoutMs);
+      }
+
+      const fetchOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + AI_CONFIG.apiKey
+        },
+        body: JSON.stringify({
+          model: AI_CONFIG.model,
+          messages: messages,
+          temperature: AI_CONFIG.temperature,
+          top_p: AI_CONFIG.top_p,
+          frequency_penalty: AI_CONFIG.frequency_penalty,
+          presence_penalty: AI_CONFIG.presence_penalty,
+          max_tokens: AI_CONFIG.max_tokens,
+          stream: false,
+          thinking: { type: 'disabled' }
+        })
+      };
+      if (controller) fetchOptions.signal = controller.signal;
+
+      const response = await fetch(AI_CONFIG.apiUrl, fetchOptions);
+      if (timer) clearTimeout(timer);
+
+      if (response.ok) {
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content;
+        if (content) {
+          console.log('✅ Direct DeepSeek API succeeded');
+          return content;
+        }
+      }
+      console.warn('⚠️ Direct API returned', response.status, 'using fallback');
+    } catch (error) {
+      console.error('DeepSeek API error:', error);
+    }
+  }
+
+  // ===== 阶段 3: 本地 fallback =====
+  console.log('📿 Using local fallback response');
+  if (AI_CONFIG.fallbackEnabled) {
     return generateFallbackResponse(prompt);
   }
-
-  try {
-    const messages = [];
-    if (systemPrompt) {
-      messages.push({ role: 'system', content: systemPrompt });
-    }
-    messages.push({ role: 'user', content: prompt });
-
-    const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-    let timer = null;
-    if (controller && AI_CONFIG.timeoutMs) {
-      timer = setTimeout(() => controller.abort(), AI_CONFIG.timeoutMs);
-    }
-
-    const fetchOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + AI_CONFIG.apiKey
-      },
-      body: JSON.stringify({
-        model: AI_CONFIG.model,
-        messages: messages,
-        temperature: AI_CONFIG.temperature,
-        top_p: AI_CONFIG.top_p,
-        frequency_penalty: AI_CONFIG.frequency_penalty,
-        presence_penalty: AI_CONFIG.presence_penalty,
-        max_tokens: AI_CONFIG.max_tokens,
-        stream: false,
-        // 禁用思考模式（deepseek-v4-pro 默认启思考，占星解读用非思考即可）
-        thinking: { type: 'disabled' }
-      })
-    };
-    if (controller) fetchOptions.signal = controller.signal;
-
-    const response = await fetch(AI_CONFIG.apiUrl, fetchOptions);
-    if (timer) clearTimeout(timer);
-
-    if (!response.ok) {
-      throw new Error('API error: ' + response.status);
-    }
-
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
-
-    if (!content) {
-      throw new Error('No content in response');
-    }
-
-    return content;
-  } catch (error) {
-    console.error('DeepSeek API error:', error);
-    if (AI_CONFIG.fallbackEnabled) {
-      return generateFallbackResponse(prompt);
-    }
-    throw error;
-  }
+  return 'The stars are quiet today. Consult again tomorrow. ✨';
 }
 
 /**

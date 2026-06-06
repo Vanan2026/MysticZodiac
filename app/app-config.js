@@ -8,10 +8,15 @@
 
 window.APP_CONFIG = {
   // ====== DeepSeek V4 Pro (official) ======
-  DEEPSEEK_API_KEY: localStorage.getItem('DEEPSEEK_API_KEY') || 'sk-e6078716aa6141dcaf753cda9d26272f',
+  DEEPSEEK_API_KEY: localStorage.getItem('DEEPSEEK_API_KEY') || '',
   DEEPSEEK_BASE_URL: 'https://api.deepseek.com',
   DEEPSEEK_MODEL: 'deepseek-v4-pro',
   DEEPSEEK_MODEL_ALIAS: 'deepseek-v4-pro',
+
+  // ====== Supabase Edge Function（DeepSeek API 代理） ======
+  // 生产环境优先走 Edge Function，API Key 仅存在 Supabase 环境变量中
+  SUPABASE_EDGE_FUNCTION_URL: localStorage.getItem('SUPABASE_EDGE_FUNCTION_URL') ||
+    'https://tgggebljhvpxgaehsnvq.supabase.co/functions/v1/deepseek-proxy',
 
   // ====== deepseek-v4-pro 推荐参数 ======
   TEMPERATURE: 0.7,
