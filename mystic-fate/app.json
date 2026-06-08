@@ -42,7 +42,8 @@
       ],
       "expo-status-bar",
       "expo-splash-screen",
-      "expo-web-browser"
+      "expo-web-browser",
+      "./plugins/with-gradle-version"
     ],
     "experiments": {
       "typedRoutes": true
