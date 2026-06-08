@@ -5,12 +5,17 @@
  * so manual edits to gradle-wrapper.properties are lost. This plugin
  * runs during prebuild and patches the file to use a known-good Gradle
  * version that the CI environment can reliably download.
+ *
+ * NOTE: CI servers are China-based and cannot reach services.gradle.org
+ * (both 504 and 10s timeout have been observed). We use Tencent's Gradle
+ * mirror which the CI already uses for Maven dependencies.
  */
 const { withDangerousMod } = require('expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
 const TARGET_GRADLE_VERSION = '8.11.1';
+const GRADLE_MIRROR_BASE = 'https\\://mirrors.tencent.com/gradle';
 
 function withGradleVersion(config) {
   return withDangerousMod(config, [
@@ -29,7 +34,7 @@ function withGradleVersion(config) {
       }
 
       let contents = fs.readFileSync(wrapperPath, 'utf-8');
-      const targetUrl = `https\\://services.gradle.org/distributions/gradle-${TARGET_GRADLE_VERSION}-bin.zip`;
+      const targetUrl = `${GRADLE_MIRROR_BASE}/gradle-${TARGET_GRADLE_VERSION}-bin.zip`;
 
       contents = contents.replace(
         /distributionUrl=.+/,
