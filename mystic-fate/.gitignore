@@ -25,6 +25,9 @@ __pycache__/
 coverage
 storybook-static
 
+# Expo cache
+.expo/
+
 # Package manager artifacts
 .pnp*
 .npm
