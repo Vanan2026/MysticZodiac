@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
 
-# Build the Vite project
-cd /workspace/projects/app
+# Build the Vite project (run from project root, where .coze is)
+cd "$(dirname "$0")/../../app"
+echo "Working dir: $(pwd)"
 npm install --silent 2>/dev/null || true
 npx vite build
 

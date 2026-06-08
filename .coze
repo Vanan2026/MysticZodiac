@@ -1,6 +1,6 @@
 [project]
 entrypoint = "app/dist/index.html"
-requires = ["python-3.12"]
+requires = ["python-3.12", "nodejs-24"]
 
 [dev]
 build = ["bash", ".cozeproj/scripts/dev_build.sh"]
