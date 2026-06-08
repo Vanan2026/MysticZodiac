@@ -1,7 +1,11 @@
 [project]
-entrypoint = "index.html"
+entrypoint = "app/dist/index.html"
 requires = ["python-3.12"]
 
 [dev]
 build = ["bash", ".cozeproj/scripts/dev_build.sh"]
 run = ["bash", ".cozeproj/scripts/dev_run.sh"]
+
+[deploy]
+build = ["bash", ".cozeproj/scripts/dev_build.sh"]
+run = ["bash", ".cozeproj/scripts/deploy_run.sh"]
